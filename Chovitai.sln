@@ -1,0 +1,35 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32901.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Chovitai", "Chovitai\Chovitai.csproj", "{362526A5-23FB-43E5-A446-F6A3B77F1D46}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MVVMCore", "MVVMCore\MVVMCore.csproj", "{CA7625DF-3F58-4D83-B9A4-5AED1363A27B}"
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "ChovitaiInstaller", "ChovitaiInstaller\ChovitaiInstaller.vdproj", "{3EF608D2-DE54-427B-B7C5-BFCCC34BC88A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{362526A5-23FB-43E5-A446-F6A3B77F1D46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{362526A5-23FB-43E5-A446-F6A3B77F1D46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{362526A5-23FB-43E5-A446-F6A3B77F1D46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{362526A5-23FB-43E5-A446-F6A3B77F1D46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA7625DF-3F58-4D83-B9A4-5AED1363A27B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA7625DF-3F58-4D83-B9A4-5AED1363A27B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA7625DF-3F58-4D83-B9A4-5AED1363A27B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA7625DF-3F58-4D83-B9A4-5AED1363A27B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EF608D2-DE54-427B-B7C5-BFCCC34BC88A}.Debug|Any CPU.ActiveCfg = Debug
+		{3EF608D2-DE54-427B-B7C5-BFCCC34BC88A}.Release|Any CPU.ActiveCfg = Release
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {6856E15F-0F0C-4C03-A63A-9D751F97B998}
+	EndGlobalSection
+EndGlobal

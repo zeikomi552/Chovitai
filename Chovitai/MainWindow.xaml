@@ -1,0 +1,81 @@
+﻿<mah:MetroWindow
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:Converters="clr-namespace:Chovitai.Common.Converters"
+        xmlns:enum="clr-namespace:Chovitai.Common.Enums"
+        xmlns:local="clr-namespace:Chovitai"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors" xmlns:ViewModels="clr-namespace:Chovitai.ViewModels" xmlns:UserControls="clr-namespace:Chovitai.Views.UserControls" x:Class="Chovitai.MainWindow"
+        mc:Ignorable="d"
+        Title="Chovitai" Height="800" Width="1200" WindowStartupLocation="CenterScreen" TitleCharacterCasing="Normal" Style="{StaticResource MaterialDesignWindow}">
+    <TabControl>
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <svgc:SvgViewbox Source="/Common/Images/ai-artificial-intelligence-computer-ai-svgrepo-com.svg" Width="50" />
+                    <TextBlock Margin="5" VerticalAlignment="Center" Text="CIVITAI Model"/>
+                </StackPanel>
+            </TabItem.Header>
+            <TabControl TabStripPlacement="Left">
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <svgc:SvgViewbox Source="/Common/Images/lens2-svgrepo-com.svg" ToolTip="Search" Width="50" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <UserControls:UcSearchModelV/>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <svgc:SvgViewbox Source="/Common/Images/star-svgrepo-com.svg" ToolTip="Bookmark" Width="50" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <UserControls:UcModelBookmarkV />
+                </TabItem>
+            </TabControl>
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <svgc:SvgViewbox Source="/Common/Images/image-svgrepo-com.svg" Width="50" />
+                    <TextBlock Margin="5" VerticalAlignment="Center" Text="CIVITAI Image"/>
+                </StackPanel>
+            </TabItem.Header>
+            <TabControl TabStripPlacement="Left">
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <svgc:SvgViewbox Source="/Common/Images/lens2-svgrepo-com.svg" Width="50" ToolTip="Search"/>
+                        </StackPanel>
+                    </TabItem.Header>
+                    <UserControls:UcSearchImageV/>
+                </TabItem>
+                <TabItem>
+                    <TabItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <svgc:SvgViewbox Source="/Common/Images/star-svgrepo-com.svg" ToolTip="Bookmark" Width="50" />
+                        </StackPanel>
+                    </TabItem.Header>
+                    <UserControls:UcImageBookmarkV />
+                </TabItem>
+
+            </TabControl>
+        </TabItem>
+        <TabItem>
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <svgc:SvgViewbox Source="/Common/Images/folder-1793-svgrepo-com.svg" Width="50" />
+                    <TextBlock Margin="5" VerticalAlignment="Center" Text="Folder"/>
+                </StackPanel>
+            </TabItem.Header>
+            <UserControls:UcFileCheckV />
+        </TabItem>
+    </TabControl>
+
+</mah:MetroWindow>

@@ -1,0 +1,24 @@
+﻿################################################################################
+# この .gitignore ファイルは Microsoft(R) Visual Studio によって自動的に作成されました。
+################################################################################
+
+/.vs/CvSeachTool/DesignTimeBuild
+/.vs/CvSeachTool/FileContentIndex
+/.vs/CvSeachTool/v17
+/.vs/ProjectEvaluation
+/CvSeachTool/bin/Debug/net6.0-windows
+/CvSeachTool/obj
+/MVVMCore/bin
+/MVVMCore/obj/Debug/net5.0-windows
+/MVVMCore/obj/Release/net5.0-windows
+/MVVMCore/obj
+/CvSeachToolInstaller/Debug
+/CvSeachTool/bin/Release/net6.0-windows
+/CvSeachToolInstaller/Release
+/CvSeachTool/bin/Debug
+/.vs/Chovitai
+/Chovitai/bin
+/Chovitai/obj
+/ChovitaiInstaller/Debug
+/ChovitaiInstaller/Release
+/.vs

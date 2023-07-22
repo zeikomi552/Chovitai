@@ -1,0 +1,372 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:my="clr-namespace:Chovitai.Common.Utilities"
+             xmlns:enum="clr-namespace:Chovitai.Common.Enums"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Chovitai.Views.UserControls"
+             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/" 
+             xmlns:Converters="clr-namespace:Chovitai.Common.Converters"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:ViewModels="clr-namespace:Chovitai.ViewModels"
+             xmlns:Actions="clr-namespace:Chovitai.Common.Actions" x:Class="Chovitai.Views.UserControls.UcImageBookmarkV"
+             mc:Ignorable="d"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Converters:NullToBooleanFalseConverter x:Key="NullToBooleanFalseConverter"/>
+        <Converters:ImageNsfwEnumToVisibilityConverter x:Key="ImageNsfwEnumToVisibilityConverter"/>
+        <Converters:URLStringToImageSourceConverter x:Key="URLStringToImageSourceConverter"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <ViewModels:UcImageBookmarkVM/>
+    </UserControl.DataContext>
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="Loaded">
+            <b:CallMethodAction TargetObject="{Binding}" MethodName="Init"/>
+        </b:EventTrigger>
+        <b:EventTrigger EventName="Closing">
+            <b:CallMethodAction TargetObject="{Binding}" MethodName="Close"/>
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Margin="5">
+            <GroupBox.Header>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                    <TextBlock VerticalAlignment="Center" Margin="5" Text="Bookmark"/>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <svgc:SvgViewbox Height="15" Source="/Common/Images/filter-1384-svgrepo-com.svg" />
+                        <ComboBox VerticalAlignment="Center" Width="100"
+                                            ItemsSource="{Binding Mode=OneWay, Source={my:Enumeration {x:Type enum:ImageNsfwEnum}}}"
+                                            SelectedValue="{Binding ImageList.ImageFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            DisplayMemberPath="Description" SelectedValuePath="Value">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="SelectionChanged">
+                                    <b:CallMethodAction TargetObject="{Binding ImageList, Mode=TwoWay}" MethodName="RefreshFilter"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </ComboBox>
+
+                    </StackPanel>
+                </StackPanel>
+            </GroupBox.Header>
+
+            <Grid Cursor="Hand">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Margin="5" VerticalAlignment="Center" Text="Name"/>
+                        <ComboBox Margin="5" Width="150" ItemsSource="{Binding BookmarkList.Items}"
+                                  SelectedItem="{Binding BookmarkList.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                  DisplayMemberPath="BookmarkFile">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="SelectionChanged">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="BookmarkSelectionChanged"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </ComboBox>
+                        <Button ToolTip="New" Margin="5" Cursor="Hand">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Click">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="CreateNew"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                            <StackPanel Orientation="Vertical">
+                                <svgc:SvgViewbox Width="15" Source="/Common/Images/new-file-svgrepo-com.svg" />
+                            </StackPanel>
+                        </Button>
+                        <Button Margin="5" ToolTip="Rename" Cursor="Hand">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Click">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenBookmarkRenameV"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                            <StackPanel Orientation="Vertical">
+                                <svgc:SvgViewbox Width="15" Source="/Common/Images/pencil-svgrepo-com.svg" />
+                            </StackPanel>
+                        </Button>
+                        <Button Margin="5" Cursor="Hand">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Click">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="DeleteBookmark"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                            <StackPanel Orientation="Vertical">
+                                <svgc:SvgViewbox Width="25" Source="/Common/Images/delete-recycle-bin-trash-can-svgrepo-com.svg" />
+                            </StackPanel>
+                        </Button>
+                        <Button Margin="5">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Click">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="CreatePromptList"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                            <StackPanel Orientation="Vertical">
+                                <svgc:SvgViewbox Height="20" Source="/Common/Images/magic-square-3-svgrepo-com.svg" />
+                            </StackPanel>
+                        </Button>
+
+                    </StackPanel>
+                </Grid>
+                <ListView Grid.Row="1" Margin="5,5,5,5" x:Name="lvImages" ItemsSource="{Binding ImageList.FilteredImages}"
+                          SelectedItem="{Binding ImageList.SelectedImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <ListView.Template>
+                        <ControlTemplate TargetType="{x:Type ListView}">
+                            <Border BorderThickness="5">
+                                <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+                                    <ItemsPresenter x:Name="itemsPresenter" Margin="5"/>
+                                </ScrollViewer>
+                            </Border>
+                        </ControlTemplate>
+                    </ListView.Template>
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" Width="{Binding ActualWidth, ElementName=itemsPresenter, Mode=OneWay}"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel>
+                                <TextBlock Text="{Binding Username}"/>
+                                <Grid>
+                                    <Image Width="100" Source="{Binding Url, Converter={StaticResource URLStringToImageSourceConverter}}">
+                                        <!--<Image.InputBindings>
+                                            <MouseBinding MouseAction="LeftDoubleClick" Command="{Binding MouseDoubleClickCommand}"/>
+                                        </Image.InputBindings>-->
+                                        <!--<Image.ContextMenu>
+                                            <ContextMenu x:Name="cm" StaysOpen="true">
+                                                <MenuItem Header="Clipboard">
+                                                    <MenuItem Header="Username">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <b:CallMethodAction TargetObject="{Binding}" MethodName="ClipboardUsername"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                    <MenuItem Header="ModelName">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <b:CallMethodAction TargetObject="{Binding}" MethodName="ClipboardModel"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                    <MenuItem Header="Prompt">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <b:CallMethodAction TargetObject="{Binding}" MethodName="ClipboardPrompt"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                    <MenuItem Header="NegativePrompt">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <b:CallMethodAction TargetObject="{Binding}" MethodName="ClipboardNegativePrompt"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                    <MenuItem Header="URL">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <b:CallMethodAction TargetObject="{Binding}" MethodName="ClipboardURL"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                </MenuItem>
+                                                <MenuItem Header="Open URL">
+                                                    <b:Interaction.Triggers>
+                                                        <b:EventTrigger EventName="Click">
+                                                            <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenURL"/>
+                                                        </b:EventTrigger>
+                                                    </b:Interaction.Triggers>
+                                                </MenuItem>
+
+                                            </ContextMenu>
+                                        </Image.ContextMenu>-->
+                                    </Image>
+                                    <ToggleButton VerticalAlignment="Top" HorizontalAlignment="Left"
+                                                      Style="{StaticResource MaterialDesignActionToggleButton}"
+                                                      IsChecked="{Binding IsBookmark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                        <b:Interaction.Triggers>
+                                            <b:EventTrigger EventName="Click">
+                                                <b:CallMethodAction TargetObject="{Binding}" MethodName="ChangeBookmark"/>
+                                            </b:EventTrigger>
+                                        </b:Interaction.Triggers>
+                                        <StackPanel Orientation="Vertical">
+                                            <svgc:SvgViewbox Height="15" Source="/Common/Images/bookmark-svgrepo-com.svg" />
+                                        </StackPanel>
+                                    </ToggleButton>
+                                </Grid>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+
+            </Grid>
+        </GroupBox>
+        <GroupBox Margin="5" Grid.Column="1" Header="Images">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <WrapPanel Margin="5" Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Text="[Model]"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding ImageList.SelectedImage.Meta.Model}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Text="[Sampler]"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding ImageList.SelectedImage.Meta.Sampler}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Text="[Size]"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding ImageList.SelectedImage.Meta.Size}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Text="[Seed]"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding ImageList.SelectedImage.Meta.Seed}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Text="[Steps]"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding ImageList.SelectedImage.Meta.Steps}"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Text="[ModelHash]"/>
+                        <TextBlock VerticalAlignment="Center" Text="{Binding ImageList.SelectedImage.Meta.Model_hash}"/>
+                    </StackPanel>
+                </WrapPanel>
+
+                <Image Grid.Row="1" Source="{Binding ImageList.SelectedImage.Url, Converter={StaticResource URLStringToImageSourceConverter}}">
+                    <Image.ContextMenu>
+                        <ContextMenu x:Name="cm2" StaysOpen="true">
+                            <MenuItem Header="Clipboard">
+                                <MenuItem Header="Model" IsEnabled="{Binding ImageList.SelectedImage.Meta.Model, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="Click">
+                                            <Actions:ClipboardCopyAction CopyText="{Binding ImageList.SelectedImage.Meta.Model}"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                </MenuItem>
+                                <MenuItem Header="Sampler" IsEnabled="{Binding ImageList.SelectedImage.Meta.Sampler, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="Click">
+                                            <Actions:ClipboardCopyAction CopyText="{Binding ImageList.SelectedImage.Meta.Sampler}"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                </MenuItem>
+                                <MenuItem Header="Size" IsEnabled="{Binding ImageList.SelectedImage.Meta.Size, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="Click">
+                                            <Actions:ClipboardCopyAction CopyText="{Binding ImageList.SelectedImage.Meta.Size}"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                </MenuItem>
+                                <MenuItem Header="Seed" IsEnabled="{Binding ImageList.SelectedImage.Meta.Seed, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="Click">
+                                            <Actions:ClipboardCopyAction CopyText="{Binding ImageList.SelectedImage.Meta.Seed}"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                </MenuItem>
+                                <MenuItem Header="Steps" IsEnabled="{Binding ImageList.SelectedImage.Meta.Steps, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="Click">
+                                            <Actions:ClipboardCopyAction CopyText="{Binding ImageList.SelectedImage.Meta.Steps}"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                </MenuItem>
+                                <MenuItem Header="ModdelHash" IsEnabled="{Binding ImageList.SelectedImage.Meta.Model_hash, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="Click">
+                                            <Actions:ClipboardCopyAction CopyText="{Binding ImageList.SelectedImage.Meta.Model_hash}"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                </MenuItem>
+                                <MenuItem Header="Prompt" IsEnabled="{Binding ImageList.SelectedImage.Meta.Prompt, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="Click">
+                                            <Actions:ClipboardCopyAction CopyText="{Binding ImageList.SelectedImage.Meta.Prompt}"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                </MenuItem>
+                                <MenuItem Header="NegativePrompt" IsEnabled="{Binding ImageList.SelectedImage.Meta.NegativePrompt, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="Click">
+                                            <Actions:ClipboardCopyAction CopyText="{Binding ImageList.SelectedImage.Meta.NegativePrompt}"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                </MenuItem>
+                            </MenuItem>
+                            <MenuItem Header="Open URL">
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Click">
+                                        <Actions:OpenURLAction URL="{Binding ImageList.SelectedImage.ImageURL, Mode=OneWay}"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                            </MenuItem>
+
+                        </ContextMenu>
+                    </Image.ContextMenu>
+                </Image>
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock VerticalAlignment="Center" TextAlignment="Right" Text="Prompt:"/>
+                        <TextBox VerticalAlignment="Center" Grid.Column="1" IsReadOnly="True" Margin="5"
+                                    TextAlignment="Center" Text="{Binding ImageList.SelectedImage.Meta.Prompt}"/>
+                        <Button Grid.Column="2" Margin="5" Cursor="Hand">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Click">
+                                    <Actions:ClipboardCopyAction CopyText="{Binding ImageList.SelectedImage.Meta.Prompt}"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+
+                            <StackPanel Orientation="Vertical">
+                                <svgc:SvgViewbox Source="/Common/Images/copy-1-svgrepo-com.svg" />
+                            </StackPanel>
+
+                        </Button>
+                    </Grid>
+                    <Grid Grid.Column="1">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock VerticalAlignment="Center" TextAlignment="Right" Text="NegativPrompt:"/>
+                        <TextBox VerticalAlignment="Center" Grid.Column="1" IsReadOnly="True" Margin="5" TextAlignment="Center"
+                                    Text="{Binding ImageList.SelectedImage.Meta.NegativePrompt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <Button Grid.Column="2" Margin="5" Cursor="Hand">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Click">
+                                    <Actions:ClipboardCopyAction CopyText="{Binding ImageList.SelectedImage.Meta.NegativePrompt}"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                            <StackPanel Orientation="Vertical">
+                                <svgc:SvgViewbox Source="/Common/Images/copy-1-svgrepo-com.svg" />
+                            </StackPanel>
+                        </Button>
+                    </Grid>
+                </Grid>
+
+            </Grid>
+        </GroupBox>
+    </Grid>
+</UserControl>

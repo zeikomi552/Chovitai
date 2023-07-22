@@ -1,0 +1,139 @@
+﻿<UserControl
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:Converters="clr-namespace:Chovitai.Common.Converters"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Chovitai.Views.UserControls"
+             xmlns:Actions="clr-namespace:Chovitai.Common.Actions"
+             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:ViewModels="clr-namespace:Chovitai.ViewModels" x:Class="Chovitai.Views.UserControls.UcFileCheckV"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <Converters:ConvertBooleanConverter x:Key="ConvertBooleanConverter"/>
+        <Converters:URLStringToImageSourceConverter x:Key="URLStringToImageSourceConverter"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <ViewModels:UcFileCheckVM/>
+    </UserControl.DataContext>
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="PreviewKeyDown">
+            <b:CallMethodAction TargetObject="{Binding}" MethodName="PreviewKeyDown"/>
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal">
+            <Button IsEnabled="{Binding ExecuteReadDirF, Converter={StaticResource ConvertBooleanConverter}}" Margin="5" Cursor="Hand">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Click">
+                        <b:CallMethodAction TargetObject="{Binding}" MethodName="ReadDirectory"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+                <StackPanel Orientation="Vertical">
+                    <svgc:SvgViewbox Source="/Common/Images/directory-search-1623-svgrepo-com.svg" />
+                </StackPanel>
+            </Button>
+            <Button IsEnabled="{Binding ExecuteReadDirF, Converter={StaticResource ConvertBooleanConverter}}" Margin="5" Cursor="Hand" ToolTip="Renew Files    F5">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Click">
+                        <b:CallMethodAction TargetObject="{Binding}" MethodName="RenewDirectory"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+                <StackPanel Orientation="Vertical">
+                    <svgc:SvgViewbox Source="/Common/Images/auto-renewal-2-svgrepo-com.svg"/>
+                </StackPanel>
+            </Button>
+            <Button Cursor="Hand">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="Click">
+                        <b:CallMethodAction TargetObject="{Binding}" MethodName="OutputMarkdown"/>
+                    </b:EventTrigger>   
+                </b:Interaction.Triggers>
+                <StackPanel Orientation="Vertical">
+                    <svgc:SvgViewbox Source="/Common/Images/markdown-svgrepo-com.svg" />
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <GroupBox Header="Image">
+                <Grid Margin="5">
+                    <ListView Margin="5,5,5,5" x:Name="lvImages" ItemsSource="{Binding FileList.Items}"
+                              SelectedItem="{Binding FileList.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ListView.Template>
+                            <ControlTemplate TargetType="{x:Type ListView}">
+                                <Border BorderThickness="5">
+                                    <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                        <ItemsPresenter x:Name="itemsPresenter" Margin="5"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </ControlTemplate>
+                        </ListView.Template>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <WrapPanel Orientation="Horizontal" Width="{Binding ActualWidth, ElementName=itemsPresenter, Mode=OneWay}"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <Image Width="100" Source="{Binding FilePath, Converter={StaticResource URLStringToImageSourceConverter}}">
+                                    <Image.ContextMenu>
+                                        <ContextMenu Name="cm" StaysOpen="true">
+                                            <MenuItem Header="Reveal in File Explore">
+                                                <b:Interaction.Triggers>
+                                                    <b:EventTrigger EventName="Click">
+                                                        <b:CallMethodAction TargetObject="{Binding}" MethodName="RevealInFileExplore"/>
+                                                    </b:EventTrigger>
+                                                </b:Interaction.Triggers>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </Image.ContextMenu>
+
+                                </Image>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </Grid>
+            </GroupBox>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Image Margin="5" Source="{Binding FileList.SelectedItem.FilePath,
+                    Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                    Converter={StaticResource URLStringToImageSourceConverter}}"/>
+                <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Margin="5" Text="{Binding FileList.SelectedItem.ImageText}"/>
+                    <Button Grid.Column="2" Margin="5" Cursor="Hand">
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="Click">
+                                <Actions:ClipboardCopyAction CopyText="{Binding FileList.SelectedItem.ImageText}"/>
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+
+                        <StackPanel Orientation="Vertical">
+                            <svgc:SvgViewbox Source="/Common/Images/copy-1-svgrepo-com.svg" />
+                        </StackPanel>
+
+                    </Button>
+                </Grid>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>

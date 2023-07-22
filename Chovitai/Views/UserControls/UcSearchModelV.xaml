@@ -1,0 +1,668 @@
+﻿<UserControl x:Class="Chovitai.Views.UserControls.UcSearchModelV"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:my="clr-namespace:Chovitai.Common.Utilities"
+             xmlns:mah="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:Converters="clr-namespace:Chovitai.Common.Converters"
+             xmlns:model="clr-namespace:Chovitai.Models"
+             xmlns:enum="clr-namespace:Chovitai.Common.Enums"
+             xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:ViewModels="clr-namespace:Chovitai.ViewModels"
+             xmlns:VMCmd="clr-namespace:Chovitai.ViewModels.Comands"
+             xmlns:Actions="clr-namespace:Chovitai.Common.Actions"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Chovitai.Views.UserControls"
+             mc:Ignorable="d" 
+             d:DesignHeight="800" d:DesignWidth="1200">
+    <UserControl.Resources>
+        <Converters:NullToBooleanFalseConverter x:Key="NullToBooleanFalseConverter"/>
+        <Converters:ConvertBooleanConverter x:Key="ConvertBooleanConverter"/>
+        <Converters:URLStringToImageSourceConverter x:Key="URLStringToImageSourceConverter"/>
+        <Converters:ImageNsfwEnumToVisibilityConverter x:Key="ImageNsfwEnumToVisibilityConverter"/>
+        <Converters:EmptyStringConverter x:Key="EmptyStringConverter"/>
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="ModelTypeEnum">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enum:ModelTypeEnum" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="ModelPeriodEnum">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enum:ModelPeriodEnum" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="ModelSortEnum">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enum:ModelSortEnum" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="ModelAllowCommercialUseEnum">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enum:ModelAllowCommercialUseEnum" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider MethodName="GetValues" ObjectType="{x:Type sys:Enum}" x:Key="ImageNsfwEnum">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="enum:ImageNsfwEnum" />
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <VMCmd:ClipboardCopyCommandM x:Key="cmd"/>
+    </UserControl.Resources>
+    <UserControl.DataContext>
+        <ViewModels:UcSearchModelVM/>
+    </UserControl.DataContext>
+
+    <b:Interaction.Triggers>
+        <b:EventTrigger>
+            <b:CallMethodAction TargetObject="{Binding}" MethodName="Init"/>
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Margin="5">
+                <Grid Margin="5">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <StackPanel Orientation="Vertical" ScrollViewer.HorizontalScrollBarVisibility="Auto">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="Limit"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <TextBox Width="80" Margin="5" Text="{Binding GetCondition.Limit}" VerticalAlignment="Center" TextAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="Page"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <TextBox Width="80" Margin="5" Text="{Binding GetCondition.Page}" VerticalAlignment="Center" TextAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="Query"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <TextBox Width="200" Margin="5" Text="{Binding GetCondition.Query}" VerticalAlignment="Center" TextAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="Tag"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <TextBox Width="80" Margin="5"
+                                             Text="{Binding GetCondition.Tag, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Center"
+                                             TextAlignment="Center"/>
+                            <Button Margin="5" Cursor="Hand">
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Click">
+                                        <b:CallMethodAction TargetObject="{Binding}" MethodName="SearchTag"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                                <StackPanel Orientation="Vertical">
+                                    <svgc:SvgViewbox Height="20" Source="/Common/Images/lens-svgrepo-com.svg" />
+                                </StackPanel>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="Username"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <TextBox Width="80" Margin="5" Text="{Binding GetCondition.Username}" VerticalAlignment="Center" TextAlignment="Center"/>
+                            <Button Margin="5" Cursor="Hand">
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Click">
+                                        <b:CallMethodAction TargetObject="{Binding}" MethodName="SearchCreator"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                                <StackPanel Orientation="Vertical">
+                                    <svgc:SvgViewbox Height="20" Source="/Common/Images/lens-svgrepo-com.svg" />
+                                </StackPanel>
+                            </Button>
+
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="Types"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <ComboBox Margin="5" Width="80" ItemsSource="{Binding Mode=OneWay, Source={my:Enumeration {x:Type enum:ModelTypeEnum}}}"
+                                              SelectedValue="{Binding GetCondition.Types, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                              DisplayMemberPath="Description" SelectedValuePath="Value"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="Sort"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <ComboBox Margin="5" Width="80" ItemsSource="{Binding Mode=OneWay, Source={my:Enumeration {x:Type enum:ModelSortEnum}}}"
+                                              SelectedValue="{Binding GetCondition.Sort, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                              DisplayMemberPath="Description" SelectedValuePath="Value"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="Period"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <ComboBox Margin="5" Width="80" ItemsSource="{Binding Mode=OneWay, Source={my:Enumeration {x:Type enum:ModelPeriodEnum}}}"
+                                              SelectedValue="{Binding GetCondition.Period, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
+                                              DisplayMemberPath="Description" SelectedValuePath="Value"  />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="Rating"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <TextBox Width="80" Margin="5" Text="{Binding GetCondition.Rating,Converter={StaticResource EmptyStringConverter}}" VerticalAlignment="Center" TextAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="Favorites"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <CheckBox Width="80" Margin="5" IsChecked="{Binding GetCondition.Favorites}" IsThreeState="True" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="Hidden"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <CheckBox Width="80" Margin="5" IsChecked="{Binding GetCondition.Hidden}" IsThreeState="True" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="PrimaryFileOnly"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <CheckBox Width="80" Margin="5" IsChecked="{Binding GetCondition.PrimaryFileOnly}" IsThreeState="True" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <!-- CIVITAI側が未対応？-->
+                        <!--<StackPanel Orientation="Horizontal">
+                                    <TextBlock Width="120" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="AllowNoCredit"/>
+                                    <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                                    <CheckBox Width="100" Margin="5" IsChecked="{Binding GetCondition.AllowNoCredit}" IsThreeState="True" VerticalAlignment="Center"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Width="120" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="AllowDerivatives"/>
+                                    <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                                    <CheckBox Width="100" Margin="5" IsChecked="{Binding GetCondition.AllowDerivatives}" IsThreeState="True" VerticalAlignment="Center"/>
+                                </StackPanel>-->
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="AllowDifferentLicenses"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <CheckBox Width="80" Margin="5" IsChecked="{Binding GetCondition.AllowDifferentLicenses}" IsThreeState="True" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="AllowCommercialUse"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <ComboBox Margin="5" Width="80" ItemsSource="{Binding Mode=OneWay, Source={my:Enumeration {x:Type enum:ModelAllowCommercialUseEnum}}}"
+                                              SelectedValue="{Binding GetCondition.AllowCommercialUse, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              DisplayMemberPath="Description" SelectedValuePath="Value"/>
+                            
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="Nsfw"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <CheckBox Width="80" Margin="5" IsChecked="{Binding GetCondition.Nsfw}" IsThreeState="True" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <Button Margin="5" IsEnabled="{Binding ExecuteGetAPI, Converter={StaticResource ConvertBooleanConverter}}" Cursor="Hand">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Click">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="GETQuery"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                            <StackPanel Orientation="Vertical">
+                                <svgc:SvgViewbox Height="20" Source="/Common/Images/search-file-svgrepo-com.svg" />
+                            </StackPanel>
+                        </Button>
+
+                    </StackPanel>
+                    <StackPanel Grid.Row="1">
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock MaxWidth="250" ToolTip="{Binding CvsModel.RequestURL}" TextWrapping="WrapWithOverflow" VerticalAlignment="Center" Text="{Binding CvsModel.RequestURL}" />
+                            <Button Grid.Column="1" Margin="5">
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Click">
+                                        <b:CallMethodAction TargetObject="{Binding}" MethodName="CopyRequest"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                                <StackPanel Orientation="Vertical">
+                                    <svgc:SvgViewbox Source="/Common/Images/copy-1-svgrepo-com.svg" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+
+                    </StackPanel>
+                </Grid>
+            </Border>
+
+            <Grid Grid.Column="1">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="auto"/>
+                    </Grid.RowDefinitions>
+
+                    <GroupBox Style="{StaticResource MaterialDesignCardGroupBox}" Margin="5">
+                        <GroupBox.Header>
+                            <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Left">
+                                <Button Margin="5,0" IsEnabled="{Binding ExecuteGetAPI, Converter={StaticResource ConvertBooleanConverter}}" Cursor="Hand">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="Click">
+                                            <b:CallMethodAction TargetObject="{Binding}" MethodName="MovePrev"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                    <StackPanel Orientation="Vertical">
+                                        <svgc:SvgViewbox Height="10" Source="/Common/Images/arrowleft-svgrepo-com.svg" />
+                                    </StackPanel>
+                                </Button>
+                                <TextBlock MinWidth="25" Text="{Binding CvsModel.Metadata.CurrentPage}" TextAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock Text="/" TextAlignment="Center" VerticalAlignment="Center"/>
+                                <TextBlock MinWidth="25" Text="{Binding CvsModel.Metadata.TotalPages}" TextAlignment="Center" VerticalAlignment="Center"/>
+                                <Button Margin="5,0" IsEnabled="{Binding ExecuteGetAPI, Converter={StaticResource ConvertBooleanConverter}}" Cursor="Hand">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="Click">
+                                            <b:CallMethodAction TargetObject="{Binding}" MethodName="MoveNext"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                    <StackPanel Orientation="Vertical">
+                                        <svgc:SvgViewbox Height="10" Source="/Common/Images/arrowright-svgrepo-com.svg" />
+                                    </StackPanel>
+                                </Button>
+                                <Button  Margin="5" Cursor="Hand" ToolTip="Output to markdown">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="Click">
+                                            <b:CallMethodAction TargetObject="{Binding}" MethodName="Output2"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                    <StackPanel Orientation="Vertical">
+                                        <svgc:SvgViewbox Source="/Common/Images/markdown-svgrepo-com.svg" />
+                                    </StackPanel>
+                                </Button>
+                                <Button Margin="5" ToolTip="Check the prompts">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="Click">
+                                            <b:CallMethodAction TargetObject="{Binding}" MethodName="CreatePromptList"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                    <StackPanel Orientation="Vertical">
+                                        <svgc:SvgViewbox Height="20" Source="/Common/Images/magic-square-3-svgrepo-com.svg" />
+                                    </StackPanel>
+                                </Button>
+
+                                <!--<StackPanel Orientation="Horizontal">
+                                    <Button Margin="5,0" Width="auto" Height="auto" Cursor="Hand">
+                                        <b:Interaction.Triggers>
+                                            <b:EventTrigger EventName="Click">
+                                                <b:CallMethodAction TargetObject="{Binding}" MethodName="Output"/>
+                                            </b:EventTrigger>
+                                        </b:Interaction.Triggers>
+                                        <StackPanel Orientation="Vertical">
+                                            <svgc:SvgViewbox Source="/Common/Images/markdown-svgrepo-com.svg" />
+                                        </StackPanel>
+                                    </Button>
+                                </StackPanel>-->
+                            </StackPanel>
+                        </GroupBox.Header>
+                        <DataGrid x:Name="dgModel" Margin="2,0" IsReadOnly="True" ItemsSource="{Binding CvsModel.Items.Items}" 
+                            SelectedItem="{Binding CvsModel.Items.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False">
+                            
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow" BasedOn="{StaticResource MaterialDesignDataGridRow}">
+                                    <Setter Property="MaxHeight" Value="50" />
+                                    <Setter Property="ContextMenu">
+                                        <Setter.Value>
+                                            <!--右クリックで表示されるメニュー-->
+                                            <ContextMenu>
+                                                <MenuItem Header="Clipboard">
+                                                    <MenuItem Header="ModelId" IsEnabled="{Binding Id, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <Actions:ClipboardCopyAction CopyText="{Binding Id}"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                    <MenuItem Header="ModelName" IsEnabled="{Binding Name, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <Actions:ClipboardCopyAction CopyText="{Binding Name}"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                    <MenuItem Header="Username" IsEnabled="{Binding Creator.Username, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <Actions:ClipboardCopyAction CopyText="{Binding Creator.Username}"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                    <MenuItem Header="Tags" ItemsSource="{Binding Tags}">
+                                                        <MenuItem.ItemContainerStyle>
+                                                            <Style  TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MaterialDesignMenuItem}">
+                                                                <Setter Property="Header" Value="{Binding}"/>
+                                                                <Setter Property="Command" Value="{Binding ClipboardCopy, Source={StaticResource cmd}}"/>
+                                                                <Setter Property="CommandParameter" Value="{Binding}"/>
+                                                            </Style>
+                                                        </MenuItem.ItemContainerStyle>
+                                                    </MenuItem>
+                                                </MenuItem>
+                                            </ContextMenu>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </DataGrid.RowStyle>
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn Header="☆">
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <ToggleButton Style="{StaticResource MaterialDesignActionToggleButton}" IsChecked="{Binding IsBookmark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                                                <b:Interaction.Triggers>
+                                                    <b:EventTrigger EventName="Click">
+                                                        <b:CallMethodAction TargetObject="{Binding}" MethodName="ChangeBookmark"/>
+                                                    </b:EventTrigger>
+                                                </b:Interaction.Triggers>
+                                                <StackPanel Orientation="Vertical">
+                                                    <svgc:SvgViewbox Height="15" Source="/Common/Images/bookmark-svgrepo-com.svg" />
+                                                </StackPanel>
+                                            </ToggleButton>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="modelid" Binding="{Binding Id}"/>
+                                <DataGridTextColumn Header="modelname" Width="150" Binding="{Binding Name}">
+                                    <DataGridTextColumn.CellStyle>
+                                        <Style TargetType="DataGridCell" BasedOn="{StaticResource MaterialDesignDataGridCell}">
+                                            <Setter Property="ToolTip" Value="{Binding Name}" />
+                                        </Style>
+                                    </DataGridTextColumn.CellStyle>
+                                </DataGridTextColumn>
+                                <DataGridTextColumn Header="type" Binding="{Binding Type}"/>
+                                <DataGridCheckBoxColumn Header="nsfw" Binding="{Binding Nsfw}" IsReadOnly="True"/>
+                                <DataGridTextColumn Header="allowCommercialUse" Binding="{Binding AllowCommercialUse}"/>
+                                <DataGridTextColumn Header="username" Binding="{Binding Creator.Username}"/>
+                            </DataGrid.Columns>
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="MouseDoubleClick">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenURL"/>
+                                </b:EventTrigger>
+                                <b:EventTrigger EventName="SelectionChanged">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="ModelSelectionChanged"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </DataGrid>
+                    </GroupBox>
+
+                    <GroupBox Style="{StaticResource MaterialDesignCardGroupBox}" Margin="5" Grid.Row="1" Header="Ver.">
+                        <DataGrid x:Name="dgModelVersions" Height="200" Margin="5" IsReadOnly="True" ItemsSource="{Binding CvsModel.Items.SelectedItem.ModelVersions}" 
+                            SelectedItem="{Binding CvsModel.Items.SelectedItem.SelectedModelVersion, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            AutoGenerateColumns="False">
+                            <DataGrid.RowStyle>
+                                <Style TargetType="DataGridRow"  BasedOn="{StaticResource MaterialDesignDataGridRow}">
+                                    <Setter Property="Height" Value="50" ></Setter>
+                                    <Setter Property="ContextMenu">
+                                        <Setter.Value>
+                                            <!--右クリックで表示されるメニュー-->
+                                            <ContextMenu>
+                                                <MenuItem Header="Clipboard">
+                                                    <MenuItem Header="ModelId" IsEnabled="{Binding Id, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <Actions:ClipboardCopyAction CopyText="{Binding Id}"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                    <MenuItem Header="ModelName" IsEnabled="{Binding Name, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <Actions:ClipboardCopyAction CopyText="{Binding Name}"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                    <MenuItem Header="DownloadURL" IsEnabled="{Binding DownloadUrl, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <Actions:ClipboardCopyAction CopyText="{Binding DownloadUrl}"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                </MenuItem>
+                                            </ContextMenu>
+                                        </Setter.Value>
+                                    </Setter>
+
+                                </Style>
+                            </DataGrid.RowStyle>
+                            <DataGrid.Columns>
+                                <DataGridTemplateColumn>
+                                    <DataGridTemplateColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Button>
+                                                <b:Interaction.Triggers>
+                                                    <b:EventTrigger EventName="Click">
+                                                        <b:CallMethodAction TargetObject="{Binding}" MethodName="Download"/>
+                                                    </b:EventTrigger>
+                                                </b:Interaction.Triggers>
+                                                <StackPanel Orientation="Vertical">
+                                                    <svgc:SvgViewbox Height="20" Source="/Common/Images/download-cloud-1-svgrepo-com.svg" />
+                                                </StackPanel>
+                                            </Button>
+                                        </DataTemplate>
+                                    </DataGridTemplateColumn.CellTemplate>
+                                </DataGridTemplateColumn>
+                                <DataGridTextColumn Header="id" Binding="{Binding Id}"/>
+                                <DataGridTextColumn Header="name" Binding="{Binding Name}"/>
+                                <DataGridTextColumn Header="createdAt" Binding="{Binding CreatedAt}"/>
+                                <!--<DataGridTextColumn Header="downloadUrl" Binding="{Binding DownloadUrl}"/>-->
+                                <!--<DataGridTextColumn Header="trainedWords" Binding="{Binding TrainedWords}"/>-->
+                                <!--<DataGridTextColumn Width="300" Header="description" Binding="{Binding Description}"/>-->
+                            </DataGrid.Columns>
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="MouseDoubleClick">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenURLModelVersion"/>
+                                </b:EventTrigger>
+                                <b:EventTrigger EventName="SelectionChanged">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="ModelVersionSelectionChanged"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+
+                        </DataGrid>
+                    </GroupBox>
+                </Grid>
+                <GridSplitter Margin="5" Background="{DynamicResource MahApps.Brushes.Accent4}" Width="5" HorizontalAlignment="Right" />
+                <Grid Margin="5" Grid.Column="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition MaxHeight="200" Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Grid.Row="0" Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center">
+                            <StackPanel Orientation="Vertical">
+                                <svgc:SvgViewbox Margin="5" Source="/Common/Images/filter-1384-svgrepo-com.svg" />
+                            </StackPanel>
+
+                        </TextBlock>
+                        <ComboBox VerticalAlignment="Center" Width="100"
+                                            ItemsSource="{Binding Mode=OneWay, Source={my:Enumeration {x:Type enum:ImageNsfwEnum}}}"
+                                            SelectedValue="{Binding ImageList.ImageFilter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                            DisplayMemberPath="Description" SelectedValuePath="Value">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="SelectionChanged">
+                                    <b:CallMethodAction TargetObject="{Binding ImageList, Mode=TwoWay}" MethodName="RefreshFilter"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </ComboBox>
+                    </StackPanel>
+
+                    <ListView Grid.Row="1" x:Name="lvImages" ItemsSource="{Binding ImageList.FilteredImages}" SelectedItem="{Binding ImageList.SelectedImage, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                        <ListView.Template>
+                            <ControlTemplate TargetType="{x:Type ListView}">
+                                <Border BorderThickness="5">
+                                    <ScrollViewer>
+                                        <ItemsPresenter Margin="5"/>
+                                    </ScrollViewer>
+                                </Border>
+                            </ControlTemplate>
+                        </ListView.Template>
+                        <ListView.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal"/>
+                            </ItemsPanelTemplate>
+                        </ListView.ItemsPanel>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel Visibility="{Binding Nsfw, Converter={StaticResource ImageNsfwEnumToVisibilityConverter}}">
+                                    <WrapPanel Width="400" Orientation="Horizontal">
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="[Model]"/>
+                                            <TextBlock Text="{Binding Meta.Model}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="[Sampler]"/>
+                                            <TextBlock Text="{Binding Meta.Sampler}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="[Size]"/>
+                                            <TextBlock Text="{Binding Meta.Size}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="[Seed]"/>
+                                            <TextBlock Text="{Binding Meta.Seed}"/>
+                                        </StackPanel>
+                                        <StackPanel Orientation="Horizontal">
+                                            <TextBlock Text="[Model hash]"/>
+                                            <TextBlock Text="{Binding Meta.ModelHash}"/>
+                                        </StackPanel>
+                                    </WrapPanel>
+                                    <Image Width="400" Source="{Binding Url, Converter={StaticResource URLStringToImageSourceConverter}}">
+                                        <Image.ContextMenu>
+                                            <ContextMenu x:Name="cm2" StaysOpen="true">
+                                                <MenuItem Header="Clipboard">
+                                                    <MenuItem Header="Model" IsEnabled="{Binding Meta.Model, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <Actions:ClipboardCopyAction CopyText="{Binding Meta.Model}"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                    <MenuItem Header="Sampler" IsEnabled="{Binding Meta.Sampler, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <Actions:ClipboardCopyAction CopyText="{Binding Meta.Sampler}"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                    <MenuItem Header="Size" IsEnabled="{Binding Meta.Size, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <Actions:ClipboardCopyAction CopyText="{Binding Meta.Size}"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                    <MenuItem Header="Seed" IsEnabled="{Binding Meta.Seed, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <Actions:ClipboardCopyAction CopyText="{Binding Meta.Seed}"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                    <!--<MenuItem Header="Steps">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <Actions:ClipboardCopyAction CopyText="{Binding ImageList.SelectedImage.Meta.Steps}"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>-->
+                                                    <MenuItem Header="ModdelHash" IsEnabled="{Binding Meta.ModelHash, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <Actions:ClipboardCopyAction CopyText="{Binding Meta.ModelHash}"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                    <MenuItem Header="Prompt" IsEnabled="{Binding Meta.Prompt, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <Actions:ClipboardCopyAction CopyText="{Binding Meta.Prompt}"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                    <MenuItem Header="NegativePrompt" IsEnabled="{Binding Meta.NegativPrompt, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <Actions:ClipboardCopyAction CopyText="{Binding Meta.NegativPrompt}"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                </MenuItem>
+                                                <MenuItem Header="Open PromptTool">
+                                                    <b:Interaction.Triggers>
+                                                        <b:EventTrigger EventName="Click">
+                                                            <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenPromptTool"/>
+                                                        </b:EventTrigger>
+                                                    </b:Interaction.Triggers>
+                                                </MenuItem>
+                                            </ContextMenu>
+                                        </Image.ContextMenu>
+                                    </Image>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+
+                    <Grid Grid.Row="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center" TextAlignment="Right" Text="Prompt:" ToolTip="{Binding ImageList.SelectedImage.Meta.Prompt}"/>
+                            <TextBox VerticalAlignment="Center" Grid.Column="1" IsReadOnly="True" Margin="5"
+                                    TextAlignment="Center" Text="{Binding ImageList.SelectedImage.Meta.Prompt}"/>
+                            <Button Grid.Column="2" Margin="5" Cursor="Hand">
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Click">
+                                        <Actions:ClipboardCopyAction CopyText="{Binding ImageList.SelectedImage.Meta.Prompt}"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+
+                                <StackPanel Orientation="Vertical">
+                                    <svgc:SvgViewbox Source="/Common/Images/copy-1-svgrepo-com.svg" />
+                                </StackPanel>
+
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Column="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="auto"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock VerticalAlignment="Center" TextAlignment="Right" Text="NegativPrompt:" ToolTip="{Binding ImageList.SelectedImage.Meta.NegativPrompt}"/>
+                            <TextBox VerticalAlignment="Center" Grid.Column="1" IsReadOnly="True" Margin="5" TextAlignment="Center"
+                                    Text="{Binding ImageList.SelectedImage.Meta.NegativPrompt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                            <Button Grid.Column="2" Margin="5" Cursor="Hand">
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Click">
+                                        <Actions:ClipboardCopyAction CopyText="{Binding ImageList.SelectedImage.Meta.NegativPrompt}"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                                <StackPanel Orientation="Vertical">
+                                    <svgc:SvgViewbox Source="/Common/Images/copy-1-svgrepo-com.svg" />
+                                </StackPanel>
+                            </Button>
+                        </Grid>
+                    </Grid>
+                </Grid>
+            </Grid>
+        </Grid>
+
+    </Grid>
+</UserControl>
