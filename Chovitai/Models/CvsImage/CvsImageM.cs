@@ -55,6 +55,170 @@ namespace Chovitai.Models.CvsImage
             }
             #endregion
 
+            #region Stats
+            /// <summary>
+            /// Stats
+            /// </summary>
+            public class CvsStats : ModelBase
+            {
+                #region cry count of stats[CryCount]プロパティ
+                /// <summary>
+                /// cry count of stats[CryCount]プロパティ用変数
+                /// </summary>
+                int _CryCount = 0;
+                /// <summary>
+                /// cry count of stats[CryCount]プロパティ
+                /// </summary>
+                [JsonPropertyName("cryCount")]
+                public int CryCount
+                {
+                    get
+                    {
+                        return _CryCount;
+                    }
+                    set
+                    {
+                        if (!_CryCount.Equals(value))
+                        {
+                            _CryCount = value;
+                            NotifyPropertyChanged("CryCount");
+                        }
+                    }
+                }
+                #endregion
+
+                #region laugh count of stats[LaughCount]プロパティ
+                /// <summary>
+                /// laugh count of stats[LaughCount]プロパティ用変数
+                /// </summary>
+                int _LaughCount = 0;
+                /// <summary>
+                /// laugh count of stats[LaughCount]プロパティ
+                /// </summary>
+                [JsonPropertyName("laughCount")]
+                public int LaughCount
+                {
+                    get
+                    {
+                        return _LaughCount;
+                    }
+                    set
+                    {
+                        if (!_LaughCount.Equals(value))
+                        {
+                            _LaughCount = value;
+                            NotifyPropertyChanged("LaughCount");
+                        }
+                    }
+                }
+                #endregion
+
+                #region Like count of stats[LikeCount]プロパティ
+                /// <summary>
+                /// Like count of stats[LikeCount]プロパティ用変数
+                /// </summary>
+                int _LikeCount = 0;
+                /// <summary>
+                /// Like count of stats[LikeCount]プロパティ
+                /// </summary>
+                [JsonPropertyName("likeCount")]
+                public int LikeCount
+                {
+                    get
+                    {
+                        return _LikeCount;
+                    }
+                    set
+                    {
+                        if (!_LikeCount.Equals(value))
+                        {
+                            _LikeCount = value;
+                            NotifyPropertyChanged("LikeCount");
+                        }
+                    }
+                }
+                #endregion
+
+                #region Dislike count of stats[DisLikeCount]プロパティ
+                /// <summary>
+                /// Dislike count of stats[DisLikeCount]プロパティ用変数
+                /// </summary>
+                int _DisLikeCount = 0;
+                /// <summary>
+                /// Dislike count of stats[DisLikeCount]プロパティ
+                /// </summary>
+                [JsonPropertyName("dislikeCount")]
+                public int DisLikeCount
+                {
+                    get
+                    {
+                        return _DisLikeCount;
+                    }
+                    set
+                    {
+                        if (!_DisLikeCount.Equals(value))
+                        {
+                            _DisLikeCount = value;
+                            NotifyPropertyChanged("DisLikeCount");
+                        }
+                    }
+                }
+                #endregion
+
+                #region Heart count of stats[HeartCount]プロパティ
+                /// <summary>
+                /// Heart count of stats[HeartCount]プロパティ用変数
+                /// </summary>
+                int _HeartCount = 0;
+                /// <summary>
+                /// Heart count of stats[HeartCount]プロパティ
+                /// </summary>
+                [JsonPropertyName("heartCount")]
+                public int HeartCount
+                {
+                    get
+                    {
+                        return _HeartCount;
+                    }
+                    set
+                    {
+                        if (!_HeartCount.Equals(value))
+                        {
+                            _HeartCount = value;
+                            NotifyPropertyChanged("HeartCount");
+                        }
+                    }
+                }
+                #endregion
+
+                #region Comment count of stats[CommentCount]プロパティ
+                /// <summary>
+                /// Comment count of stats[CommentCount]プロパティ用変数
+                /// </summary>
+                int _CommentCount = 0;
+                /// <summary>
+                /// Comment count of stats[CommentCount]プロパティ
+                /// </summary>
+                [JsonPropertyName("commentCount")]
+                public int CommentCount
+                {
+                    get
+                    {
+                        return _CommentCount;
+                    }
+                    set
+                    {
+                        if (!_CommentCount.Equals(value))
+                        {
+                            _CommentCount = value;
+                            NotifyPropertyChanged("CommentCount");
+                        }
+                    }
+                }
+                #endregion
+            }
+            #endregion
+
             #region InnerClass
             public class CvsImageMeta : ModelBase
             {
@@ -813,6 +977,33 @@ namespace Chovitai.Models.CvsImage
                 }
             }
             #endregion
+            #region Stats data[Stats]プロパティ
+            /// <summary>
+            /// Stats data[Stats]プロパティ用変数
+            /// </summary>
+            CvsStats _Stats = new CvsStats();
+            /// <summary>
+            /// Stats data[Stats]プロパティ
+            /// </summary>
+            [JsonPropertyName("stats")]
+            public CvsStats Stats
+            {
+                get
+                {
+                    return _Stats;
+                }
+                set
+                {
+                    if (_Stats == null || !_Stats.Equals(value))
+                    {
+                        _Stats = value;
+                        NotifyPropertyChanged("Stats");
+                    }
+                }
+            }
+            #endregion
+
+
 
             #region The username of the creator[Username]プロパティ
             /// <summary>

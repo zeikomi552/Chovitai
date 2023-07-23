@@ -224,6 +224,10 @@
                                 <StackPanel>
                                     <TextBlock Text="{Binding Username}"/>
                                     <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"/>
+                                            <RowDefinition Height="auto"/>
+                                        </Grid.RowDefinitions>
                                         <Image Width="100" Source="{Binding Url, Converter={StaticResource URLStringToImageSourceConverter}}">
                                             <Image.ContextMenu>
                                                 <ContextMenu Name="cm" StaysOpen="true">
@@ -295,6 +299,22 @@
                                                 <svgc:SvgViewbox Height="15" Source="/Common/Images/bookmark-svgrepo-com.svg" />
                                             </StackPanel>
                                         </ToggleButton>
+                                        <StackPanel Grid.Row="1">
+                                            <StackPanel Orientation="Horizontal">
+                                                <svgc:SvgViewbox Height="10" Source="/Common/Images/like-svgrepo-com.svg" />
+                                                <TextBlock Margin="5,0" VerticalAlignment="Center" Text="{Binding Stats.LikeCount}"/>
+                                                <svgc:SvgViewbox Height="10" Source="/Common/Images/thumbs-down-svgrepo-com.svg" />
+                                                <TextBlock Margin="5,0" VerticalAlignment="Center" Text="{Binding Stats.DisLikeCount}"/>
+                                                <svgc:SvgViewbox Height="10" Source="/Common/Images/heart-svgrepo-com.svg" />
+                                                <TextBlock Margin="5,0" VerticalAlignment="Center" Text="{Binding Stats.HeartCount}"/>
+                                            </StackPanel>
+                                            <StackPanel Orientation="Horizontal">
+                                                <svgc:SvgViewbox Height="10" Source="/Common/Images/laugh-squint-svgrepo-com.svg" />
+                                                <TextBlock Margin="5,0" VerticalAlignment="Center" Text="{Binding Stats.LaughCount}"/>
+                                                <svgc:SvgViewbox Height="10" Source="/Common/Images/cry-emoji-emoticon-svgrepo-com.svg" />
+                                                <TextBlock Margin="5,0" VerticalAlignment="Center" Text="{Binding Stats.CryCount}"/>
+                                            </StackPanel>
+                                        </StackPanel>
                                     </Grid>
                                 </StackPanel>
                             </DataTemplate>
