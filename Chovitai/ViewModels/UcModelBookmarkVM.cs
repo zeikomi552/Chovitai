@@ -221,7 +221,8 @@ namespace Chovitai.ViewModels
                 vm!.DirPath = this.Config!.Item.ModelBookmarkDir;
 
                 // nullチェック
-                if (this.BookmarkList.Count > 0 && this.BookmarkList.SelectedItem != null && string.IsNullOrEmpty(this.BookmarkList.SelectedItem.BookmarkFile))
+                if (this.BookmarkList.Count > 0 && this.BookmarkList.SelectedItem != null 
+                    && !string.IsNullOrEmpty(this.BookmarkList.SelectedItem.BookmarkFile))
                 {
                     // リネーム前のファイル名をセット
                     vm!.RenameFilename = Path.GetFileNameWithoutExtension(this.BookmarkList.SelectedItem.BookmarkFile);
