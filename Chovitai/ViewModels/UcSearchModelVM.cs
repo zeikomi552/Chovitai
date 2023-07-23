@@ -586,11 +586,17 @@ namespace Chovitai.ViewModels
                 var wnd = new SearchTagV();
                 var vm = wnd.DataContext as SearchTagVM;
 
-                if (wnd.ShowDialog() == true)
+                // nullチェック
+                if (vm != null)
                 {
-                    this.GetCondition.Tag = vm!.SelectedTagItem.Name;
-                }
+                    vm.SelectedTagItem.Name = this.GetCondition.Tag!;
 
+                    // 画面を開く
+                    if (wnd.ShowDialog() == true)
+                    {
+                        this.GetCondition.Tag = vm!.SelectedTagItem.Name;
+                    }
+                }
             }
             catch (Exception ex)
             {

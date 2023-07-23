@@ -21,62 +21,88 @@
         </b:EventTrigger>
     </b:Interaction.Triggers>
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto"/>
-            <RowDefinition Height="*"/>
-            <RowDefinition Height="Auto"/>
-        </Grid.RowDefinitions>
-        <StackPanel Margin="5" Orientation="Horizontal">
-            <Button Margin="5,0" IsEnabled="{Binding ExecuteGetAPI, Converter={StaticResource ConvertBooleanConverter}}" Cursor="Hand">
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="Click">
-                        <b:CallMethodAction TargetObject="{Binding}" MethodName="MovePrev"/>
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-                <StackPanel Orientation="Vertical">
-                    <svgc:SvgViewbox Height="10" Source="/Common/Images/arrowleft-svgrepo-com.svg" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <GroupBox Header="Search">
+            <StackPanel VerticalAlignment="Top" Orientation="Horizontal">
+                <TextBlock Text="Query" VerticalAlignment="Center"/>
+                <TextBox Width="100" TextAlignment="Center" Text="{Binding Query}" VerticalAlignment="Center"/>
+                <Button Grid.Column="1" Margin="5" IsEnabled="{Binding ExecuteGetAPI, Converter={StaticResource ConvertBooleanConverter}}">
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="Click">
+                            <b:CallMethodAction TargetObject="{Binding}" MethodName="Search"/>
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
+                    <StackPanel Orientation="Vertical">
+                        <svgc:SvgViewbox Source="/Common/Images/search-file-svgrepo-com.svg" />
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Header="Tags">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <StackPanel Margin="5" Orientation="Horizontal">
+                    <Button Margin="5,0" IsEnabled="{Binding ExecuteGetAPI, Converter={StaticResource ConvertBooleanConverter}}" Cursor="Hand">
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="Click">
+                                <b:CallMethodAction TargetObject="{Binding}" MethodName="MovePrev"/>
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                        <StackPanel Orientation="Vertical">
+                            <svgc:SvgViewbox Height="10" Source="/Common/Images/arrowleft-svgrepo-com.svg" />
+                        </StackPanel>
+
+                    </Button>
+                    <TextBlock Text="{Binding CvsTag.Metadata.CurrentPage}" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="/" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <TextBlock Text="{Binding CvsTag.Metadata.TotalPages}" TextAlignment="Center" VerticalAlignment="Center"/>
+                    <Button Margin="5,0" IsEnabled="{Binding ExecuteGetAPI, Converter={StaticResource ConvertBooleanConverter}}" Cursor="Hand">
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="Click">
+                                <b:CallMethodAction TargetObject="{Binding}" MethodName="MoveNext"/>
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                        <StackPanel Orientation="Vertical">
+                            <svgc:SvgViewbox Height="10" Source="/Common/Images/arrowright-svgrepo-com.svg" />
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
 
-            </Button>
-            <TextBlock Text="{Binding CvsTag.Metadata.CurrentPage}" TextAlignment="Center" VerticalAlignment="Center"/>
-            <TextBlock Text="/" TextAlignment="Center" VerticalAlignment="Center"/>
-            <TextBlock Text="{Binding CvsTag.Metadata.TotalPages}" TextAlignment="Center" VerticalAlignment="Center"/>
-            <Button Margin="5,0" IsEnabled="{Binding ExecuteGetAPI, Converter={StaticResource ConvertBooleanConverter}}" Cursor="Hand">
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="Click">
-                        <b:CallMethodAction TargetObject="{Binding}" MethodName="MoveNext"/>
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-                <StackPanel Orientation="Vertical">
-                    <svgc:SvgViewbox Height="10" Source="/Common/Images/arrowright-svgrepo-com.svg" />
-                </StackPanel>
-            </Button>
-        </StackPanel>
-
-        <DataGrid Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding CvsTag.Items}"
+                <DataGrid Grid.Row="1" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding CvsTag.Items}"
                   SelectedItem="{Binding CvsTag.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Margin="5,5,5,5">
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="name" Width="auto" Binding="{Binding Name}"/>
-                <DataGridTextColumn Header="modelCount" Width="auto" Binding="{Binding ModelCount}"/>
-                <DataGridTextColumn Header="link" Width="*" Binding="{Binding Link}"/>
-            </DataGrid.Columns>
-            <b:Interaction.Triggers>
-                <b:EventTrigger EventName="MouseDoubleClick">
-                    <b:CallMethodAction TargetObject="{Binding}" MethodName="Close"/>
-                </b:EventTrigger>
-            </b:Interaction.Triggers>
-        </DataGrid>
-        <StackPanel Grid.Row="2" Orientation="Horizontal">
-            <Button Margin="5" Cursor="Hand">
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="Click">
-                        <b:CallMethodAction TargetObject="{Binding}" MethodName="Close"/>
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-                <StackPanel Orientation="Vertical">
-                    <svgc:SvgViewbox Height="10" Source="/Common/Images/select-svgrepo-com.svg" />
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="name" Width="auto" Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="modelCount" Width="auto" Binding="{Binding ModelCount}"/>
+                        <DataGridTextColumn Header="link" Width="*" Binding="{Binding Link}"/>
+                    </DataGrid.Columns>
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="MouseDoubleClick">
+                            <b:CallMethodAction TargetObject="{Binding}" MethodName="Close"/>
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
+                </DataGrid>
+
+                <StackPanel Grid.Row="2" Orientation="Horizontal">
+                    <Button Margin="5" Cursor="Hand">
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="Click">
+                                <b:CallMethodAction TargetObject="{Binding}" MethodName="Close"/>
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                        <StackPanel Orientation="Vertical">
+                            <svgc:SvgViewbox Height="10" Source="/Common/Images/select-svgrepo-com.svg" />
+                        </StackPanel>
+                    </Button>
                 </StackPanel>
-            </Button>
-        </StackPanel>
+            </Grid>
+        </GroupBox>
     </Grid>
 </UserControl>

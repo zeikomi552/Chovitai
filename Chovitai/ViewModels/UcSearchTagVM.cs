@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Chovitai.Models.CvsTag;
 using System.ComponentModel.Design;
+using System.Collections;
 
 namespace Chovitai.ViewModels
 {
@@ -116,12 +117,47 @@ namespace Chovitai.ViewModels
         {
             try
             {
-                // GET クエリの実行
-                GETQuery(sender, "?limit=100&page=1");
+                // クエリがセットされていない場合
+                if (string.IsNullOrWhiteSpace(this.Query))
+                {
+                    // GET クエリの実行
+                    GETQuery(sender, $"?limit=100&page=1");
+                }
+                // クエリがセットされている場合
+                else
+                {
+                    // GET クエリの実行
+                    GETQuery(sender, $"?limit=100&page=1&query={this.Query}");
+                }
             }
             catch (Exception e)
             {
                 ShowMessage.ShowErrorOK(e.Message, "Error");
+            }
+        }
+        #endregion
+
+        #region クエリ[Query]プロパティ
+        /// <summary>
+        /// クエリ[Query]プロパティ用変数
+        /// </summary>
+        string _Query = string.Empty;
+        /// <summary>
+        /// クエリ[Query]プロパティ
+        /// </summary>
+        public string Query
+        {
+            get
+            {
+                return _Query;
+            }
+            set
+            {
+                if (_Query == null || !_Query.Equals(value))
+                {
+                    _Query = value;
+                    NotifyPropertyChanged("Query");
+                }
             }
         }
         #endregion
@@ -132,7 +168,7 @@ namespace Chovitai.ViewModels
         /// </summary>
         /// <param name="query"></param>
         /// <param name="add_endpoint"></param>
-        private async void GETQuery(object sender, string query, bool add_endpoint = true)
+        private async void GETQuery(object? sender, string query, bool add_endpoint = true)
         {
             try
             {

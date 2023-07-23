@@ -53,8 +53,9 @@ namespace Chovitai.ViewModels
                 if (uc != null)
                 {
                     var vm = uc.ucSearchTagV.DataContext as UcSearchTagVM;
+                    vm.Query = this.SelectedTagItem.Name;
 
-                    if(vm != null)
+                    if (vm != null)
                     {
                         vm.ParentVM = uc.DataContext as SearchTagVM;
                     }

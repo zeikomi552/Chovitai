@@ -1,13 +1,7 @@
 ﻿using Chovitai.Models.CvsModel;
 using MVVMCore.BaseClass;
-using MVVMCore.Common.Utilities;
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace Chovitai.Models.CvsTag
 {
@@ -101,7 +95,6 @@ namespace Chovitai.Models.CvsTag
             #endregion
         }
 
-
         #region json result of items[Items]プロパティ
         /// <summary>
         /// json result of items[Items]プロパティ用変数
@@ -153,7 +146,6 @@ namespace Chovitai.Models.CvsTag
         }
         #endregion
 
-
         #region Metadata[Metadata]プロパティ
         /// <summary>
         /// Metadata[Metadata]プロパティ用変数
@@ -179,7 +171,6 @@ namespace Chovitai.Models.CvsTag
             }
         }
         #endregion
-
 
         #region json row data[Rowdata]プロパティ
         /// <summary>
