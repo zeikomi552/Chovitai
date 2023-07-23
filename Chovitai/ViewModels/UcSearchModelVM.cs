@@ -616,11 +616,14 @@ namespace Chovitai.ViewModels
                 var wnd = new SearchCreatorV();
                 var vm = wnd.DataContext as SearchCreatorVM;
 
-                vm.SelectedTagItem.Username = this.GetCondition.Username!;
-
-                if (wnd.ShowDialog() == true)
+                if (vm != null)
                 {
-                    this.GetCondition.Username = vm!.SelectedTagItem.Username;
+                    vm.SelectedTagItem.Username = this.GetCondition.Username!;
+
+                    if (wnd.ShowDialog() == true)
+                    {
+                        this.GetCondition.Username = vm!.SelectedTagItem.Username;
+                    }
                 }
 
             }
