@@ -7,6 +7,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
              xmlns:Actions="clr-namespace:Chovitai.Common.Actions"
+             xmlns:VMCmd="clr-namespace:Chovitai.ViewModels.Comands"
              xmlns:local="clr-namespace:Chovitai.Views.UserControls"
              xmlns:Converters="clr-namespace:Chovitai.Common.Converters"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
@@ -20,6 +21,7 @@
         <Converters:NullToBooleanFalseConverter x:Key="NullToBooleanFalseConverter"/>
         <Converters:ImageNsfwEnumToVisibilityConverter x:Key="ImageNsfwEnumToVisibilityConverter"/>
         <Converters:URLStringToImageSourceConverter x:Key="URLStringToImageSourceConverter"/>
+        <VMCmd:ClipboardCopyCommandM x:Key="cmd"/>
     </UserControl.Resources>
     <b:Interaction.Triggers>
         <b:EventTrigger EventName="Loaded">
@@ -110,7 +112,48 @@
                         <DataGrid.RowStyle>
                             <Style TargetType="DataGridRow" BasedOn="{StaticResource MaterialDesignDataGridRow}">
                                 <Setter Property="MaxHeight" Value="50" />
+                                <Setter Property="ContextMenu">
+                                    <Setter.Value>
+                                        <!--右クリックで表示されるメニュー-->
+                                        <ContextMenu>
+                                            <MenuItem Header="Clipboard">
+                                                <MenuItem Header="ModelId" IsEnabled="{Binding Id, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                    <b:Interaction.Triggers>
+                                                        <b:EventTrigger EventName="Click">
+                                                            <Actions:ClipboardCopyAction CopyText="{Binding Id}"/>
+                                                        </b:EventTrigger>
+                                                    </b:Interaction.Triggers>
+                                                </MenuItem>
+                                                <MenuItem Header="ModelName" IsEnabled="{Binding Name, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                    <b:Interaction.Triggers>
+                                                        <b:EventTrigger EventName="Click">
+                                                            <Actions:ClipboardCopyAction CopyText="{Binding Name}"/>
+                                                        </b:EventTrigger>
+                                                    </b:Interaction.Triggers>
+                                                </MenuItem>
+                                                <MenuItem Header="Username" IsEnabled="{Binding Creator.Username, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                    <b:Interaction.Triggers>
+                                                        <b:EventTrigger EventName="Click">
+                                                            <Actions:ClipboardCopyAction CopyText="{Binding Creator.Username}"/>
+                                                        </b:EventTrigger>
+                                                    </b:Interaction.Triggers>
+                                                </MenuItem>
+                                                <MenuItem Header="Tags" ItemsSource="{Binding Tags}">
+                                                    <MenuItem.ItemContainerStyle>
+                                                        <Style  TargetType="{x:Type MenuItem}" BasedOn="{StaticResource MaterialDesignMenuItem}">
+                                                            <Setter Property="Header" Value="{Binding}"/>
+                                                            <Setter Property="Command" Value="{Binding ClipboardCopy, Source={StaticResource cmd}}"/>
+                                                            <Setter Property="CommandParameter" Value="{Binding}"/>
+                                                        </Style>
+                                                    </MenuItem.ItemContainerStyle>
+                                                </MenuItem>
+                                            </MenuItem>
+                                        </ContextMenu>
+                                    </Setter.Value>
+                                </Setter>
+
                             </Style>
+                            
                         </DataGrid.RowStyle>
                         <DataGrid.Columns>
                             <DataGridTemplateColumn Header="☆">
