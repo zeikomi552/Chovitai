@@ -33,7 +33,7 @@ Civitai上にはNSFWな画像も多く存在するため年齢制限X指定の�
 以下の場所からzipファイルをダウンロードします。
 (最新のバージョンのものを取得してください)
 
-https://github.com/zeikomi552/CvSeachTool/releases
+https://github.com/zeikomi552/Chovitai/releases
 
 ![](README-IMG/cvseachtool-01-01.png)
 
