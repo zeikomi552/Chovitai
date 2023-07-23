@@ -1,22 +1,14 @@
 ﻿using Chovitai.Common;
 using Chovitai.Common.Commands;
-using Chovitai.Common.Enums;
 using Chovitai.Models.CvsModel;
 using Chovitai.ViewModels;
 using Chovitai.Views;
 using MVVMCore.BaseClass;
 using MVVMCore.Common.Utilities;
-using MVVMCore.Common.Wrapper;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace Chovitai.Models.CvsImage
 {
