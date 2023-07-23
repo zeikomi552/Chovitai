@@ -1,9 +1,12 @@
-﻿using Chovitai.Common.Utilities;
-using Chovitai.Common;
-using Chovitai.Models.Condition;
+﻿using Chovitai.Common;
+using Chovitai.Common.Utilities;
 using Chovitai.Models;
-using Chovitai.Views.UserControls;
+using Chovitai.Models.Bookmark;
+using Chovitai.Models.Condition;
+using Chovitai.Models.Config;
+using Chovitai.Models.CvsModel;
 using Chovitai.Views;
+using Chovitai.Views.UserControls;
 using Microsoft.Win32;
 using MVVMCore.BaseClass;
 using MVVMCore.Common.Utilities;
@@ -12,9 +15,6 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using Chovitai.Models.CvsModel;
-using Chovitai.Models.Config;
-using Chovitai.Models.Bookmark;
 
 namespace Chovitai.ViewModels
 {
