@@ -53,10 +53,16 @@ namespace Chovitai.ViewModels
                 {
                     var vm = uc.ucSearchCreatorV.DataContext as UcSearchCreatorVM;
 
+                    // nullチェック
                     if (vm != null)
                     {
-                        vm.ParentVM = uc.DataContext as SearchCreatorVM;
+                        vm.Query = this.SelectedTagItem.Username;
+                        if (vm != null)
+                        {
+                            vm.ParentVM = uc.DataContext as SearchCreatorVM;
+                        }
                     }
+
                 }
             }
             catch (Exception ex)
