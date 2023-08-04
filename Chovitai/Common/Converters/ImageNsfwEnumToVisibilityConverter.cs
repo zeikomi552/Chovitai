@@ -27,13 +27,13 @@ namespace Chovitai.Common.Converters
             {
                 return true;
             }
-            else if (target > ImageFilter)
+            else if (target == ImageFilter)
             {
-                return false;
+                return true;
             }
             else
             {
-                return true;
+                return false;
             }
         }
 
