@@ -757,15 +757,7 @@ namespace Chovitai.Models.CvsImage
             {
                 get
                 {
-                    // 画像サイズが4の倍数でない場合規格に沿ってないので表示しない
-                    if (Width % 4 == 0)
-                    {
-                        return _Url;
-                    }
-                    else
-                    {
-                        return string.Empty;
-                    }
+                    return _Url;
                 }
                 set
                 {
