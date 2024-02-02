@@ -22,6 +22,8 @@ namespace Chovitai.Common.Enums
         Most_Liked,
         [Description("Most Discussed")]
         Most_Discussed,
+        [Description("Most Collected")]
+        Most_Collected,
         [Description("Newest")]
         Newest
     }
@@ -38,6 +40,8 @@ namespace Chovitai.Common.Enums
         [Description("Most Comments")]
         Most_Comments,
         [Description("Newest")]
-        Newest
+        Newest,
+        //[Description("Random")]
+        //Random
     }
 }

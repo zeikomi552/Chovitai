@@ -21,16 +21,22 @@ namespace Chovitai.Common.Enums
         AestheticGradient,
         [Description("LORA")]
         LORA,
+        [Description("LoCon")]
+        LoCon,
         [Description("Controlnet")]
         Controlnet,
+        [Description("Upscaler")]
+        Upscaler,
+        [Description("MotionModule")]
+        MotionModule,
+        [Description("VAE")]
+        VAE,
         [Description("Poses")]
         Poses,
         [Description("Wildcards")]
         Wildcards,
-        [Description("VAE")]
-        VAE,
-        [Description("LoCon")]
-        LoCon,
+        [Description("Workflows")]
+        Workflows,
         [Description("Other")]
         Other
     }

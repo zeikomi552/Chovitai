@@ -169,16 +169,16 @@
                             <CheckBox Width="80" Margin="5" IsChecked="{Binding GetCondition.PrimaryFileOnly}" IsThreeState="True" VerticalAlignment="Center"/>
                         </StackPanel>
                         <!-- CIVITAI側が未対応？-->
-                        <!--<StackPanel Orientation="Horizontal">
-                                    <TextBlock Width="120" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="AllowNoCredit"/>
-                                    <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
-                                    <CheckBox Width="100" Margin="5" IsChecked="{Binding GetCondition.AllowNoCredit}" IsThreeState="True" VerticalAlignment="Center"/>
-                                </StackPanel>
-                                <StackPanel Orientation="Horizontal">
-                                    <TextBlock Width="120" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="AllowDerivatives"/>
-                                    <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
-                                    <CheckBox Width="100" Margin="5" IsChecked="{Binding GetCondition.AllowDerivatives}" IsThreeState="True" VerticalAlignment="Center"/>
-                                </StackPanel>-->
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Width="120" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="AllowNoCredit"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <CheckBox Width="100" Margin="5" IsChecked="{Binding GetCondition.AllowNoCredit}" IsThreeState="True" VerticalAlignment="Center"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Width="120" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="AllowDerivatives"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <CheckBox Width="100" Margin="5" IsChecked="{Binding GetCondition.AllowDerivatives}" IsThreeState="True" VerticalAlignment="Center"/>
+                        </StackPanel>
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
                             <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="AllowDifferentLicenses"/>
                             <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
