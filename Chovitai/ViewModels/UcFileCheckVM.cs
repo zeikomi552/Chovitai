@@ -339,7 +339,7 @@ namespace Chovitai.ViewModels
         {
             try
             {
-                this.FileList.Items.Remove(this.FileList.SelectedItem);
+                File.Delete(this.FileList.SelectedItem.FilePath);
             }
             catch (Exception e)
             {
@@ -356,39 +356,37 @@ namespace Chovitai.ViewModels
         /// <returns>ファイル情報</returns>
         private FileInfoM? GetFileInfo(string file)
         {
-            while (true)
+            try
             {
-                try
+                // バイナリで開く
+                using (var reader = new BinaryReader(File.Open(file, FileMode.Open, FileAccess.Read)))
                 {
-                    // バイナリで開く
-                    using (var reader = new BinaryReader(File.Open(file, FileMode.Open, FileAccess.Read)))
+                    // Pngファイルのシグニチャ読み込み
+                    if (PngReader.ReadPngSignature(reader))
                     {
-                        // Pngファイルのシグニチャ読み込み
-                        if (PngReader.ReadPngSignature(reader))
-                        {
-                            var ihdrchunk = PngReader.ReadChunk(reader);    // IHDチャンクの読み込み
-                            var itextchunk = PngReader.ReadChunk(reader);   // ITextチャンクの読み込み
+                        var ihdrchunk = PngReader.ReadChunk(reader);    // IHDチャンクの読み込み
+                        var itextchunk = PngReader.ReadChunk(reader);   // ITextチャンクの読み込み
 
-                            // データがutf - 8の場合
-                            var msg = System.Text.Encoding.UTF8.GetString(itextchunk.ChunkData).Replace("\0", ":");
+                        // データがutf - 8の場合
+                        var msg = System.Text.Encoding.UTF8.GetString(itextchunk.ChunkData).Replace("\0", ":");
 
-                            var msg_list = msg.Split("\n"); // 分割
-                            var prompt = msg_list.ElementAt(0).Replace("parameters:", "");  // Parameterの文字を消す
+                        var msg_list = msg.Split("\n"); // 分割
+                        var prompt = msg_list.ElementAt(0).Replace("parameters:", "");  // Parameterの文字を消す
 
-                            var file_info = new FileInfoM() { FilePath = file, ImageText = msg, Prompt = prompt, BasePrompt = prompt.Split(",").Last().Trim() };
+                        var file_info = new FileInfoM() { FilePath = file, ImageText = msg, Prompt = prompt, BasePrompt = prompt.Split(",").Last().Trim() };
 
-                            return file_info;
-                        }
-                        else
-                        {
-                            return null;
-                        }
+                        return file_info;
+                    }
+                    else
+                    {
+                        return null;
                     }
                 }
-                catch
-                {
-                    System.Threading.Thread.Sleep(100);
-                }
+            }
+            catch(Exception e)
+            {
+                ShowMessage.ShowErrorOK(e.Message, "Error");
+                return null;
             }
         }
         #endregion
