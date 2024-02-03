@@ -5,11 +5,14 @@ using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using MVVMCore.BaseClass;
 using MVVMCore.Common.Utilities;
+using MVVMCore.Common.Wrapper;
+using SharpVectors.Renderers.Wpf;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
@@ -46,7 +49,6 @@ namespace Chovitai.ViewModels
             }
         }
         #endregion
-
 
         #region 読み込んだディレクトリ[DirectoryPath]プロパティ
         /// <summary>
@@ -98,6 +100,137 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+
+        private System.IO.FileSystemWatcher? watcher = null;
+
+        public void StartDirectoryWatching(string dir, string filePattern)
+        {
+            if (watcher != null) return;
+
+            watcher = new System.IO.FileSystemWatcher();
+
+            //監視するディレクトリを指定
+            watcher.Path = dir;
+            //最終アクセス日時、最終更新日時、ファイル、フォルダ名の変更を監視する
+            watcher.NotifyFilter =
+                (System.IO.NotifyFilters.LastAccess
+                | System.IO.NotifyFilters.LastWrite
+                | System.IO.NotifyFilters.FileName
+                | System.IO.NotifyFilters.DirectoryName);
+            //すべてのファイルを監視
+            watcher.Filter = "*.png";
+            //UIのスレッドにマーシャリングする
+            //コンソールアプリケーションでの使用では必要ない
+            //watcher.SynchronizingObject = this;
+
+            //イベントハンドラの追加
+            watcher.Changed += new System.IO.FileSystemEventHandler(watcher_Changed);
+            watcher.Created += new System.IO.FileSystemEventHandler(watcher_Changed);
+            watcher.Deleted += new System.IO.FileSystemEventHandler(watcher_Changed);
+            watcher.Renamed += new System.IO.RenamedEventHandler(watcher_Renamed);
+
+            //監視を開始する
+            watcher.EnableRaisingEvents = true;
+            Console.WriteLine("監視を開始しました。");
+        }
+
+        #region ファイルウォッチャーの終了
+        /// <summary>
+        /// ファイルウォッチャーの終了
+        /// </summary>
+        private void FinishDirectoryWatching()
+        {
+            if (watcher != null)
+            {
+                //監視を終了
+                watcher.EnableRaisingEvents = false;
+                watcher.Dispose();
+                watcher = null;
+                Console.WriteLine("監視を終了しました。");
+            }
+        }
+        #endregion
+
+        //イベントハンドラ
+        private void watcher_Changed(System.Object source,
+            System.IO.FileSystemEventArgs e)
+        {
+
+            switch (e.ChangeType)
+            {
+                case System.IO.WatcherChangeTypes.Changed:
+                    Console.WriteLine(
+                        "ファイル 「" + e.FullPath + "」が変更されました。");
+                    break;
+                case System.IO.WatcherChangeTypes.Created:
+                    var file_info = GetFileInfo(e.FullPath);
+                    if (file_info != null)
+                    {
+                        // スレッドセーフの呼び出し
+                        Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                            new Action(() =>
+                            {
+                                this.FileList.Items.Add(file_info);
+                            }));
+                    }
+
+                    // memo : StableDiffusionで作成時は*.tmpファイルが作られてそのあと*.pngになるためリネーム扱いとなる
+                    //        したがって、この処理には入らない。本処理はコピペなどで追加した場合用
+                    
+                    break;
+                case System.IO.WatcherChangeTypes.Deleted:
+                    // スレッドセーフの呼び出し
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                        new Action(() =>
+                        {
+                            var tmp = (from x in this.FileList.Items
+                                       where x.FilePath.Equals(e.FullPath)
+                                       select x).FirstOrDefault();
+
+                            if (tmp != null)
+                            {
+                                this.FileList.Items.Remove(tmp);
+                            }
+
+                        }));
+
+                    //Console.WriteLine(
+                    //    "ファイル 「" + e.FullPath + "」が削除されました。");
+                    break;
+            }
+        }
+
+        #region ファイル名が変更された際の処理
+        /// <summary>
+        /// ファイル名が変更された際の処理
+        /// StabledDiffusionで生成する場合は*.tmp → *.pngに変更されるためこの処理に入る
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="ev"></param>
+        private void watcher_Renamed(System.Object source,
+            System.IO.RenamedEventArgs ev)
+        {
+            try
+            {
+                var file_info = GetFileInfo(ev.FullPath);
+                if (file_info != null)
+                {
+                    // スレッドセーフの呼び出し
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                        new Action(() =>
+                        {
+                            this.FileList.Items.Add(file_info); // ファイルの追加処理
+                            this.FileList.SelectedLast();       // 追加されたファイルを選択
+                        }));
+                }
+            }
+            catch (Exception e)
+            {
+                ShowMessage.ShowErrorOK(e.Message, "Error");
+            }
+        }
+        #endregion
+
         public override void Init(object sender, EventArgs ev)
         {
             try
@@ -114,6 +247,8 @@ namespace Chovitai.ViewModels
         {
             try
             {
+                // ウィンドウを取得
+                var wnd = VisualTreeHelperWrapper.GetWindow<MainWindow>(sender) as MainWindow;
 
             }
             catch (Exception e)
@@ -196,6 +331,68 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        #region ファイルの削除処理
+        /// <summary>
+        /// ファイルの削除処理
+        /// </summary>
+        public void DeleteFile()
+        {
+            try
+            {
+                this.FileList.Items.Remove(this.FileList.SelectedItem);
+            }
+            catch (Exception e)
+            {
+                ShowMessage.ShowErrorOK(e.Message, "Error");
+            }
+        }
+        #endregion
+
+        #region ファイル情報の読み取り処理
+        /// <summary>
+        /// ファイル情報の読み取り処理
+        /// </summary>
+        /// <param name="file">ファイルパス</param>
+        /// <returns>ファイル情報</returns>
+        private FileInfoM? GetFileInfo(string file)
+        {
+            while (true)
+            {
+                try
+                {
+                    // バイナリで開く
+                    using (var reader = new BinaryReader(File.Open(file, FileMode.Open, FileAccess.Read)))
+                    {
+                        // Pngファイルのシグニチャ読み込み
+                        if (PngReader.ReadPngSignature(reader))
+                        {
+                            var ihdrchunk = PngReader.ReadChunk(reader);    // IHDチャンクの読み込み
+                            var itextchunk = PngReader.ReadChunk(reader);   // ITextチャンクの読み込み
+
+                            // データがutf - 8の場合
+                            var msg = System.Text.Encoding.UTF8.GetString(itextchunk.ChunkData).Replace("\0", ":");
+
+                            var msg_list = msg.Split("\n"); // 分割
+                            var prompt = msg_list.ElementAt(0).Replace("parameters:", "");  // Parameterの文字を消す
+
+                            var file_info = new FileInfoM() { FilePath = file, ImageText = msg, Prompt = prompt, BasePrompt = prompt.Split(",").Last().Trim() };
+
+                            return file_info;
+                        }
+                        else
+                        {
+                            return null;
+                        }
+                    }
+                }
+                catch
+                {
+                    System.Threading.Thread.Sleep(100);
+                }
+            }
+        }
+        #endregion
+
         #region ディレクトリのファイル全て読み込み
         /// <summary>
         /// ディレクトリのファイル全て読み込み
@@ -223,32 +420,19 @@ namespace Chovitai.ViewModels
 
                     // フォルダ内のファイル一覧を取得
                     var fileArray = Directory.GetFiles(dir, "*.png");
+
                     foreach (string file in fileArray)
                     {
-                        // バイナリで開く
-                        using (var reader = new BinaryReader(File.Open(file, FileMode.Open, FileAccess.Read)))
+                        var file_info = GetFileInfo(file);
+
+                        if (file_info != null)
                         {
-                            // Pngファイルのシグニチャ読み込み
-                            if (PngReader.ReadPngSignature(reader))
-                            {
-                                var ihdrchunk = PngReader.ReadChunk(reader);    // IHDチャンクの読み込み
-                                var itextchunk = PngReader.ReadChunk(reader);   // ITextチャンクの読み込み
-
-                                // データがutf - 8の場合
-                                var msg = System.Text.Encoding.UTF8.GetString(itextchunk.ChunkData).Replace("\0", ":");
-
-                                var msg_list = msg.Split("\n"); // 分割
-                                var prompt = msg_list.ElementAt(0).Replace("parameters:", "");  // Parameterの文字を消す
-
-                                var file_info = new FileInfoM() { FilePath = file, ImageText = msg, Prompt = prompt, BasePrompt = prompt.Split(",").Last().Trim() };
-
-                                // スレッドセーフの呼び出し
-                                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                                    new Action(() =>
-                                    {
-                                        this.FileList.Items.Add(file_info);
-                                    }));
-                            }
+                            // スレッドセーフの呼び出し
+                            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                                new Action(() =>
+                                {
+                                    this.FileList.Items.Add(file_info);
+                                }));
                         }
                     }
                     // スレッドセーフの呼び出し
@@ -256,6 +440,12 @@ namespace Chovitai.ViewModels
                         new Action(() =>
                         {
                             this.FileList.SelectedLast();
+
+                            // ファイルウォッチャーをいったん終了
+                            FinishDirectoryWatching();
+
+                            // ファイルウォッチャーの開始
+                            StartDirectoryWatching(dir, "*.png");
                         }));
 
                     // スレッドセーフの呼び出し

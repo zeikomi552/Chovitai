@@ -14,10 +14,12 @@
     <UserControl.Resources>
         <Converters:ConvertBooleanConverter x:Key="ConvertBooleanConverter"/>
         <Converters:URLStringToImageSourceConverter x:Key="URLStringToImageSourceConverter"/>
+        <ViewModels:UcFileCheckVM x:Key="vm"/>
     </UserControl.Resources>
     <UserControl.DataContext>
-        <ViewModels:UcFileCheckVM/>
+        <Binding Source="{StaticResource vm}"/>
     </UserControl.DataContext>
+
     <b:Interaction.Triggers>
         <b:EventTrigger EventName="PreviewKeyDown">
             <b:CallMethodAction TargetObject="{Binding}" MethodName="PreviewKeyDown"/>
@@ -38,16 +40,6 @@
                 </b:Interaction.Triggers>
                 <StackPanel Orientation="Vertical">
                     <svgc:SvgViewbox Source="/Common/Images/directory-search-1623-svgrepo-com.svg" />
-                </StackPanel>
-            </Button>
-            <Button IsEnabled="{Binding ExecuteReadDirF, Converter={StaticResource ConvertBooleanConverter}}" Margin="5" Cursor="Hand" ToolTip="Renew Files    F5">
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="Click">
-                        <b:CallMethodAction TargetObject="{Binding}" MethodName="RenewDirectory"/>
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-                <StackPanel Orientation="Vertical">
-                    <svgc:SvgViewbox Source="/Common/Images/auto-renewal-2-svgrepo-com.svg"/>
                 </StackPanel>
             </Button>
             <Button Cursor="Hand">
@@ -94,6 +86,13 @@
                                                 <b:Interaction.Triggers>
                                                     <b:EventTrigger EventName="Click">
                                                         <b:CallMethodAction TargetObject="{Binding}" MethodName="RevealInFileExplore"/>
+                                                    </b:EventTrigger>
+                                                </b:Interaction.Triggers>
+                                            </MenuItem>
+                                            <MenuItem Header="Delete File">
+                                                <b:Interaction.Triggers>
+                                                    <b:EventTrigger EventName="Click">
+                                                        <b:CallMethodAction TargetObject="{Binding Mode=OneWay, Source={StaticResource vm}}" MethodName="DeleteFile"/>
                                                     </b:EventTrigger>
                                                 </b:Interaction.Triggers>
                                             </MenuItem>
