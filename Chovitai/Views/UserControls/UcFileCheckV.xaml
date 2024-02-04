@@ -52,6 +52,7 @@
                     <svgc:SvgViewbox Source="/Common/Images/markdown-svgrepo-com.svg" />
                 </StackPanel>
             </Button>
+            <CheckBox Margin="5" Content="Select new file" IsChecked="{Binding SelectNewFolderF}"/>
         </StackPanel>
 
         <Grid Grid.Row="1">

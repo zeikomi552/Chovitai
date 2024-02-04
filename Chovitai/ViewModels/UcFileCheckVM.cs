@@ -25,6 +25,31 @@ namespace Chovitai.ViewModels
 {
     public class UcFileCheckVM : ViewModelBase
     {
+        #region 新しいファイルができたらそのファイルを選択するフラグ[SelectNewFolderF]プロパティ
+        /// <summary>
+        /// 新しいファイルができたらそのファイルを選択するフラグ[SelectNewFolderF]プロパティ用変数
+        /// </summary>
+        bool _SelectNewFolderF = false;
+        /// <summary>
+        /// 新しいファイルができたらそのファイルを選択するフラグ[SelectNewFolderF]プロパティ
+        /// </summary>
+        public bool SelectNewFolderF
+        {
+            get
+            {
+                return _SelectNewFolderF;
+            }
+            set
+            {
+                if (!_SelectNewFolderF.Equals(value))
+                {
+                    _SelectNewFolderF = value;
+                    NotifyPropertyChanged("SelectNewFolderF");
+                }
+            }
+        }
+        #endregion
+
         #region ディレクトリ読み込み処理実行中[ExecuteReadDirF]プロパティ
         /// <summary>
         /// ディレクトリ読み込み処理実行中[ExecuteReadDirF]プロパティ用変数
@@ -245,8 +270,12 @@ namespace Chovitai.ViewModels
                         new Action(() =>
                         {
                             this.FileList.Items.Add(file_info); // ファイルの追加処理
-                            Debug.WriteLine(file_info.FilePath);
-                            //this.FileList.SelectedLast();       // 追加されたファイルを選択
+
+                            // 新しいファイルを選択するフラグ
+                            if(this.SelectNewFolderF)
+                            {
+                                this.FileList.SelectedLast();       // 追加されたファイルを選択
+                            }
                         }));
                 }
             }
