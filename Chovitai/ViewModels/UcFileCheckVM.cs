@@ -100,39 +100,56 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        #region ファイルウォッチャー
+        /// <summary>
+        /// ファイルウォッチャー
+        /// </summary>
+        private System.IO.FileSystemWatcher? _Watcher = null;
+        #endregion
 
-        private System.IO.FileSystemWatcher? watcher = null;
-
+        #region ファイルディレクトリの監視処理開始
+        /// <summary>
+        /// ファイルディレクトリの監視処理開始
+        /// </summary>
+        /// <param name="dir">ディレクトリパス</param>
+        /// <param name="filePattern">監視対象のファイルパターン</param>
         public void StartDirectoryWatching(string dir, string filePattern)
         {
-            if (watcher != null) return;
+            if (_Watcher != null) return;
 
-            watcher = new System.IO.FileSystemWatcher();
+            _Watcher = new System.IO.FileSystemWatcher();
 
             //監視するディレクトリを指定
-            watcher.Path = dir;
+            _Watcher.Path = dir;
             //最終アクセス日時、最終更新日時、ファイル、フォルダ名の変更を監視する
-            watcher.NotifyFilter =
-                (System.IO.NotifyFilters.LastAccess
-                | System.IO.NotifyFilters.LastWrite
-                | System.IO.NotifyFilters.FileName
-                | System.IO.NotifyFilters.DirectoryName);
+            // 監視パラメータの設定
+            _Watcher.NotifyFilter = (NotifyFilters.LastWrite
+                | NotifyFilters.FileName
+                | NotifyFilters.DirectoryName
+                | NotifyFilters.Attributes
+                | NotifyFilters.CreationTime
+                | NotifyFilters.Size
+                | NotifyFilters.LastAccess
+                | NotifyFilters.Security);
+
             //すべてのファイルを監視
-            watcher.Filter = "*.png";
+            _Watcher.Filter = filePattern;
             //UIのスレッドにマーシャリングする
             //コンソールアプリケーションでの使用では必要ない
             //watcher.SynchronizingObject = this;
 
             //イベントハンドラの追加
-            watcher.Changed += new System.IO.FileSystemEventHandler(watcher_Changed);
-            watcher.Created += new System.IO.FileSystemEventHandler(watcher_Changed);
-            watcher.Deleted += new System.IO.FileSystemEventHandler(watcher_Changed);
-            watcher.Renamed += new System.IO.RenamedEventHandler(watcher_Renamed);
+            _Watcher.Created += new FileSystemEventHandler(watcher_Changed);
+            _Watcher.Changed += new FileSystemEventHandler(watcher_Changed);
+            _Watcher.Error += new ErrorEventHandler(watcher_Error);
+            _Watcher.Deleted += new FileSystemEventHandler(watcher_Changed);
+            _Watcher.Renamed += new RenamedEventHandler(watcher_Renamed);
 
             //監視を開始する
-            watcher.EnableRaisingEvents = true;
+            _Watcher.EnableRaisingEvents = true;
             Console.WriteLine("監視を開始しました。");
         }
+        #endregion
 
         #region ファイルウォッチャーの終了
         /// <summary>
@@ -140,21 +157,27 @@ namespace Chovitai.ViewModels
         /// </summary>
         private void FinishDirectoryWatching()
         {
-            if (watcher != null)
+            if (_Watcher != null)
             {
                 //監視を終了
-                watcher.EnableRaisingEvents = false;
-                watcher.Dispose();
-                watcher = null;
+                _Watcher.EnableRaisingEvents = false;
+                _Watcher.Dispose();
+                _Watcher = null;
                 Console.WriteLine("監視を終了しました。");
             }
         }
         #endregion
 
-        //イベントハンドラ
+        #region ファイルウォッチャーの変更イベント
+        /// <summary>
+        /// ファイルウォッチャーの変更イベント
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="e"></param>
         private void watcher_Changed(System.Object source,
             System.IO.FileSystemEventArgs e)
         {
+            Debug.WriteLine("test-changed");
 
             switch (e.ChangeType)
             {
@@ -199,6 +222,7 @@ namespace Chovitai.ViewModels
                     break;
             }
         }
+        #endregion
 
         #region ファイル名が変更された際の処理
         /// <summary>
@@ -212,6 +236,7 @@ namespace Chovitai.ViewModels
         {
             try
             {
+                //Debug.WriteLine("test-rename");
                 var file_info = GetFileInfo(ev.FullPath);
                 if (file_info != null)
                 {
@@ -220,7 +245,8 @@ namespace Chovitai.ViewModels
                         new Action(() =>
                         {
                             this.FileList.Items.Add(file_info); // ファイルの追加処理
-                            this.FileList.SelectedLast();       // 追加されたファイルを選択
+                            Debug.WriteLine(file_info.FilePath);
+                            //this.FileList.SelectedLast();       // 追加されたファイルを選択
                         }));
                 }
             }
@@ -231,6 +257,24 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        #region ファイルウォッチャーでエラーが発生した場合のイベント
+        /// <summary>
+        /// ファイルウォッチャーでエラーが発生した場合のイベント
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void watcher_Error(object sender, ErrorEventArgs e)
+        {
+            //tbMessage.Text += "Error" + e.GetException().Message + Environment.NewLine;
+        }
+        #endregion
+
+        #region 初期化処理
+        /// <summary>
+        /// 初期化処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="ev"></param>
         public override void Init(object sender, EventArgs ev)
         {
             try
@@ -242,7 +286,14 @@ namespace Chovitai.ViewModels
                 ShowMessage.ShowErrorOK(e.Message, "Error");
             }
         }
+        #endregion
 
+        #region クローズ処理
+        /// <summary>
+        /// クローズ処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="ev"></param>
         public override void Close(object sender, EventArgs ev)
         {
             try
@@ -256,6 +307,7 @@ namespace Chovitai.ViewModels
                 ShowMessage.ShowErrorOK(e.Message, "Error");
             }
         }
+        #endregion
 
         #region ディレクトリ内のpngファイルを全て読み込む
         /// <summary>
@@ -356,38 +408,46 @@ namespace Chovitai.ViewModels
         /// <returns>ファイル情報</returns>
         private FileInfoM? GetFileInfo(string file)
         {
-            try
+            int count = 0;
+            int max_count = 5;
+
+            // 5回以内にファイルが解放されなければループを抜ける
+            while (count < max_count)
             {
-                // バイナリで開く
-                using (var reader = new BinaryReader(File.Open(file, FileMode.Open, FileAccess.Read)))
+                try
                 {
-                    // Pngファイルのシグニチャ読み込み
-                    if (PngReader.ReadPngSignature(reader))
+                    // バイナリで開く
+                    using (var reader = new BinaryReader(File.Open(file, FileMode.Open, FileAccess.Read)))
                     {
-                        var ihdrchunk = PngReader.ReadChunk(reader);    // IHDチャンクの読み込み
-                        var itextchunk = PngReader.ReadChunk(reader);   // ITextチャンクの読み込み
+                        // Pngファイルのシグニチャ読み込み
+                        if (PngReader.ReadPngSignature(reader))
+                        {
+                            var ihdrchunk = PngReader.ReadChunk(reader);    // IHDチャンクの読み込み
+                            var itextchunk = PngReader.ReadChunk(reader);   // ITextチャンクの読み込み
 
-                        // データがutf - 8の場合
-                        var msg = System.Text.Encoding.UTF8.GetString(itextchunk.ChunkData).Replace("\0", ":");
+                            // データがutf - 8の場合
+                            var msg = System.Text.Encoding.UTF8.GetString(itextchunk.ChunkData).Replace("\0", ":");
 
-                        var msg_list = msg.Split("\n"); // 分割
-                        var prompt = msg_list.ElementAt(0).Replace("parameters:", "");  // Parameterの文字を消す
+                            var msg_list = msg.Split("\n"); // 分割
+                            var prompt = msg_list.ElementAt(0).Replace("parameters:", "");  // Parameterの文字を消す
 
-                        var file_info = new FileInfoM() { FilePath = file, ImageText = msg, Prompt = prompt, BasePrompt = prompt.Split(",").Last().Trim() };
+                            var file_info = new FileInfoM() { FilePath = file, ImageText = msg, Prompt = prompt, BasePrompt = prompt.Split(",").Last().Trim() };
 
-                        return file_info;
-                    }
-                    else
-                    {
-                        return null;
+                            return file_info;
+                        }
+                        else
+                        {
+                            return null;
+                        }
                     }
                 }
+                catch
+                {
+                    count++;
+                    System.Threading.Thread.Sleep(100); // 100ミリ秒待たせる
+                }
             }
-            catch(Exception e)
-            {
-                ShowMessage.ShowErrorOK(e.Message, "Error");
-                return null;
-            }
+            return null;
         }
         #endregion
 
