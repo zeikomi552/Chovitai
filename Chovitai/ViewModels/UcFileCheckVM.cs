@@ -125,6 +125,31 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        #region スライドショーフラグ[IsSlideshow]プロパティ
+        /// <summary>
+        /// スライドショーフラグ[IsSlideshow]プロパティ用変数
+        /// </summary>
+        bool _IsSlideshow = false;
+        /// <summary>
+        /// スライドショーフラグ[IsSlideshow]プロパティ
+        /// </summary>
+        public bool IsSlideshow
+        {
+            get
+            {
+                return _IsSlideshow;
+            }
+            set
+            {
+                if (!_IsSlideshow.Equals(value))
+                {
+                    _IsSlideshow = value;
+                    NotifyPropertyChanged("IsSlideshow");
+                }
+            }
+        }
+        #endregion
+
         #region ファイルウォッチャー
         /// <summary>
         /// ファイルウォッチャー
@@ -164,7 +189,6 @@ namespace Chovitai.ViewModels
             //watcher.SynchronizingObject = this;
 
             //イベントハンドラの追加
-            _Watcher.Created += new FileSystemEventHandler(watcher_Changed);
             _Watcher.Changed += new FileSystemEventHandler(watcher_Changed);
             _Watcher.Error += new ErrorEventHandler(watcher_Error);
             _Watcher.Deleted += new FileSystemEventHandler(watcher_Changed);
@@ -271,7 +295,6 @@ namespace Chovitai.ViewModels
                         {
                             this.FileList.Items.Add(file_info); // ファイルの追加処理
 
-                            // 新しいファイルを選択するフラグ
                             if(this.SelectNewFolderF)
                             {
                                 this.FileList.SelectedLast();       // 追加されたファイルを選択
@@ -283,6 +306,94 @@ namespace Chovitai.ViewModels
             {
                 ShowMessage.ShowErrorOK(e.Message, "Error");
             }
+        }
+        #endregion
+        public void CreateMovie()
+        {
+            try
+            {
+                //// ダイアログのインスタンスを生成
+                //var dialog = new SaveFileDialog();
+
+                //// ファイルの種類を設定
+                //dialog.Filter = "動画ファイル (*.mp4)|*.mp4";
+
+                //// ダイアログを表示する
+                //if (dialog.ShowDialog() == true)
+                //{
+                //    var outdir = Path.Combine(this.Parameter.Outdir, "Sample");
+                //    var Converter = new ImageConverter();
+                //    //H264を使う場合、openh264-*.dllが必要。このdllをソフトウェアと同一のフォルダに入れる。
+                //    using (var Writer = new OpenCvSharp.VideoWriter(dialog.FileName, OpenCvSharp.FourCC.H264, 20, new OpenCvSharp.Size(this.Parameter.Width, this.Parameter.Height)))
+                //    {
+                //        // ディレクトリパス
+                //        string path = this.Parameter.Outdir;
+
+                //        // サンプルフォルダ配下
+                //        path = Path.Combine(path, "samples");
+
+                //        PathManager.CreateDirectory(path);
+
+                //        // DirectoryInfoのインスタンスを生成する
+                //        DirectoryInfo di = new DirectoryInfo(path);
+
+                //        // ディレクトリ直下のすべてのファイル一覧を取得する
+                //        FileInfo[] fiAlls = di.GetFiles("*.png");
+
+                //        foreach (var file in fiAlls)
+                //        {
+                //            var image = OpenCvSharp.Mat.FromImageData((byte[])Converter.ConvertTo(Image.FromFile(file.FullName), typeof(byte[]))!);
+                //            Writer.Write(image);
+                //        }
+                //    }
+                //}
+
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
+        }
+
+        #region スライドショーの切替
+        /// <summary>
+        /// スライドショーの切替
+        /// </summary>
+        public void Slideshow()
+        {
+            Task.Run(() =>
+            {
+                // nullチェック
+                if (this.FileList.SelectedItem == null)
+                {
+                    this.FileList.SelectedItem = this.FileList.First();
+                }
+
+                // 音声再生インデックス取得
+                int index = this.FileList.IndexOf(this.FileList.SelectedItem);
+
+                while (this.IsSlideshow)
+                {
+                    if (this.FileList.Count <= 0)
+                    {
+                        this.IsSlideshow = false;
+                        return;
+                    }
+
+                    if (index < this.FileList.Count)
+                    {
+                        var tmp = this.FileList.ElementAt(index);
+
+                        this.FileList.SelectedItem = tmp;
+                        System.Threading.Thread.Sleep(3000);
+                        index++;
+                    }
+                    else
+                    {
+                        index = 0;
+                    }
+                }
+            });
         }
         #endregion
 
@@ -506,7 +617,7 @@ namespace Chovitai.ViewModels
                         }));
 
                     // フォルダ内のファイル一覧を取得
-                    var fileArray = Directory.GetFiles(dir, "*.png");
+                    var fileArray = Directory.GetFiles(dir, "*.png", SearchOption.AllDirectories);
 
                     foreach (string file in fileArray)
                     {
