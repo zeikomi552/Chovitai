@@ -217,6 +217,32 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        #region 選択行が変化した際の処理
+        /// <summary>
+        /// 選択行が変化した際の処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void SelectedItemChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // ウィンドウを取得
+                var wnd = VisualTreeHelperWrapper.GetWindow<UcFileCheckV>(sender) as UcFileCheckV;
+
+                // ウィンドウが取得できた場合
+                if (wnd != null && FileList.SelectedItem != null)
+                {
+                    ScrollbarUtility.TopRow(wnd.lvImages);
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
+        }
+        #endregion
+
         #region ファイルウォッチャーの変更イベント
         /// <summary>
         /// ファイルウォッチャーの変更イベント
