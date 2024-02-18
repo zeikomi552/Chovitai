@@ -75,14 +75,9 @@
                 </StackPanel>
             </Button>
             <CheckBox Margin="5" Content="Select new file" IsChecked="{Binding SelectNewFolderF}"/>
-            <ToggleButton Margin="5" Style="{StaticResource MaterialDesignActionToggleButton}" IsChecked="{Binding IsSlideshow}" Width="80" Height="80" Cursor="Hand">
+            <ToggleButton Margin="5" Style="{StaticResource MaterialDesignActionDarkToggleButton}" IsChecked="{Binding IsSlideshow}" Width="30" Height="30" Cursor="Hand">
                 <Grid>
-                    <Grid.RowDefinitions>
-                        <RowDefinition/>
-                        <RowDefinition Height="23.94"/>
-                    </Grid.RowDefinitions>
-                    <svgc:SvgViewbox Height="30" Width="30" Source="/Common/Images/markdown-svgrepo-com.svg"/>
-                    <TextBlock Grid.Row="1" Text="One" HorizontalAlignment="Center"/>
+                    <svgc:SvgViewbox Height="20" Width="20" Source="/Common/Images/repeat-alt-svgrepo-com.svg"/>
                 </Grid>
                 <b:Interaction.Triggers>
                     <b:EventTrigger EventName="Checked">

@@ -389,6 +389,13 @@ namespace Chovitai.ViewModels
         {
             Task.Run(() =>
             {
+                // 画像が1つ以上あるかを確認
+                if (this.FileList.Count <= 0)
+                {
+                    this.IsSlideshow = false;
+                    return;
+                }
+
                 // nullチェック
                 if (this.FileList.SelectedItem == null)
                 {

@@ -119,6 +119,9 @@
     <None Update="Common\Images\pencil-svgrepo-com.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Common\Images\repeat-alt-svgrepo-com.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Common\Images\save-alt-svgrepo-com.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
