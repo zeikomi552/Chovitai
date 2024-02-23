@@ -47,6 +47,10 @@
                     </b:Interaction.Triggers>
                 </Button>
             </StackPanel>
+            <StackPanel Margin="5" Orientation="Horizontal">
+                <TextBlock Margin="5" VerticalAlignment="Center" Text="WebUI URL :"/>
+                <TextBox Margin="5" Width="500" Text="{Binding A1111Config.URL}"/>
+            </StackPanel>
         </StackPanel>
         <Grid Grid.Row="1" Background="{DynamicResource MahApps.Brushes.Gray2}">
             <Grid.ColumnDefinitions>
