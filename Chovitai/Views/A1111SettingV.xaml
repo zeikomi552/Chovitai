@@ -9,7 +9,8 @@
         xmlns:local="clr-namespace:Chovitai.Views"
         xmlns:ViewModels="clr-namespace:Chovitai.ViewModels" x:Class="Chovitai.Views.A1111SettingV"
         mc:Ignorable="d"
-        Title="Setting" Height="450" Width="800" WindowStartupLocation="CenterScreen" hlp:DialogResultHelper.DialogResult="{Binding DialogResult}" Background="{DynamicResource MahApps.Brushes.Control.Background}">
+        Title="Setting" Height="450" Width="800" WindowStartupLocation="CenterScreen" hlp:DialogResultHelper.DialogResult="{Binding DialogResult}" Background="{DynamicResource MahApps.Brushes.Control.Background}" 
+        TitleCharacterCasing="Normal">
     <mah:MetroWindow.DataContext>
         <ViewModels:A1111SettingVM/>
     </mah:MetroWindow.DataContext>
