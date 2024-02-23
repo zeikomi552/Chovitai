@@ -11,6 +11,31 @@ namespace Chovitai.ViewModels
 {
     public class UcA1111VM : ViewModelBase
     {
+        #region URL[URL]プロパティ
+        /// <summary>
+        /// URL[URL]プロパティ用変数
+        /// </summary>
+        string _URL = "http://127.0.0.1:7860";
+        /// <summary>
+        /// URL[URL]プロパティ
+        /// </summary>
+        public string URL
+        {
+            get
+            {
+                return _URL;
+            }
+            set
+            {
+                if (_URL == null || !_URL.Equals(value))
+                {
+                    _URL = value;
+                    NotifyPropertyChanged("URL");
+                }
+            }
+        }
+        #endregion
+
         #region A1111 Request[Request]プロパティ
         /// <summary>
         /// A1111 Request[Request]プロパティ用変数

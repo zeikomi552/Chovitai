@@ -27,7 +27,8 @@
             </Grid.RowDefinitions>
             <StackPanel Margin="5">
                 <StackPanel Orientation="Horizontal">
-                    <Button Content="Setting"/>
+                    <Button Margin="5" Content="Setting"/>
+                    <Button Margin="5" Content="bat"/>
                 </StackPanel>
             </StackPanel>
             <Grid Grid.Row="1">
