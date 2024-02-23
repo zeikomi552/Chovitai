@@ -27,7 +27,7 @@
         <StackPanel Grid.RowSpan="2">
             <StackPanel Margin="5" Orientation="Horizontal">
                 <TextBlock Margin="5" VerticalAlignment="Center" Text="WebUI A1111 directory :"/>
-                <TextBox Margin="5" Width="500"/>
+                <TextBox Margin="5" Width="500" Text="{Binding A1111Config.CurrentDirectory}"/>
                 <Button Content="Folder">
                     <b:Interaction.Triggers>
                         <b:EventTrigger EventName="Click">
@@ -38,7 +38,7 @@
             </StackPanel>
             <StackPanel Margin="5" Orientation="Horizontal">
                 <TextBlock Margin="5" VerticalAlignment="Center" Text="Image output directory :"/>
-                <TextBox Margin="5" Width="500"/>
+                <TextBox Margin="5" Width="500" Text="{Binding A1111Config.ImageOutDirectory}"/>
                 <Button Content="Folder">
                     <b:Interaction.Triggers>
                         <b:EventTrigger EventName="Click">
