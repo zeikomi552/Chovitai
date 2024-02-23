@@ -1,4 +1,5 @@
 ﻿using Chovitai.Models.A1111;
+using Chovitai.Views;
 using MVVMCore.BaseClass;
 using MVVMCore.Common.Utilities;
 using System;
@@ -87,6 +88,29 @@ namespace Chovitai.ViewModels
         public override void Close(object sender, EventArgs e)
         {
 
+        }
+        #endregion
+
+        #region 設定画面を開く処理
+        /// <summary>
+        /// 設定画面を開く処理
+        /// </summary>
+        public void OpenSetting()
+        {
+            try
+            {
+                A1111SettingV wnd = new A1111SettingV();
+                var vm = wnd.DataContext as A1111SettingVM;
+
+                if (wnd.ShowDialog() == true)
+                {
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
         }
         #endregion
     }
