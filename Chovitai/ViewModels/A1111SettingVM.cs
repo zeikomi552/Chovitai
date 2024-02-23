@@ -38,6 +38,7 @@ namespace Chovitai.ViewModels
         {
             try
             {
+                
             }
             catch (Exception ex)
             {
@@ -54,6 +55,7 @@ namespace Chovitai.ViewModels
         {
             try
             {
+                this.DialogResult = true;
             }
             catch (Exception ex)
             {
@@ -70,6 +72,7 @@ namespace Chovitai.ViewModels
         {
             try
             {
+                this.DialogResult = false;
             }
             catch (Exception ex)
             {
