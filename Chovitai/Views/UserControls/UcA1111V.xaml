@@ -35,7 +35,13 @@
                             </b:EventTrigger>
                         </b:Interaction.Triggers>
                     </Button>
-                    <Button Margin="5" Content="bat"/>
+                    <Button Margin="5" Content="A1111 Execute">
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="Click">
+                                <b:CallMethodAction TargetObject="{Binding}" MethodName="WebUIExecute"/>
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                    </Button>
                 </StackPanel>
             </StackPanel>
             <Grid Grid.Row="1">

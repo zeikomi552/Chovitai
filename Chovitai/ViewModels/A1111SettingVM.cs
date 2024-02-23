@@ -2,6 +2,7 @@
 using Chovitai.Models.Config;
 using Chovitai.Views;
 using Chovitai.Views.UserControls;
+using Microsoft.Win32;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using MVVMCore.BaseClass;
 using MVVMCore.Common.Utilities;
@@ -11,6 +12,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace Chovitai.ViewModels
 {
@@ -171,6 +173,33 @@ namespace Chovitai.ViewModels
                         return;
                     }
                     this.A1111Config.ImageOutDirectory = cofd.FileName;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
+        }
+        #endregion
+
+        #region バッチファイルパスを選択する
+        /// <summary>
+        /// バッチファイルパスを選択する
+        /// </summary>
+        public void SelectWebUIBatFilePath()
+        {
+            try
+            {
+                // ダイアログのインスタンスを生成
+                var dialog = new OpenFileDialog();
+
+                // ファイルの種類を設定
+                dialog.Filter = "webui.batファイルパス (*.bat)|*.bat";
+
+                // ダイアログを表示する
+                if (dialog.ShowDialog() == true)
+                {
+                    this.A1111Config.BatPath = dialog.FileName;
                 }
             }
             catch (Exception ex)

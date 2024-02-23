@@ -1,9 +1,11 @@
-﻿using Chovitai.Models.A1111;
+﻿using Chovitai.Common;
+using Chovitai.Models.A1111;
 using Chovitai.Views;
 using MVVMCore.BaseClass;
 using MVVMCore.Common.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -80,8 +82,32 @@ namespace Chovitai.ViewModels
 
                 if (wnd.ShowDialog() == true)
                 {
-
+                    GblValues.Instance.A1111Setting!.LoadXML();
                 }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
+        }
+        #endregion
+
+        #region WebUI A1111の実行
+        /// <summary>
+        /// WebUI A1111の実行
+        /// </summary>
+        public void WebUIExecute()
+        {
+            try
+            {
+                var batpath = GblValues.Instance.A1111Setting?.Item.BatPath;
+
+                Process p = new Process();
+                p.StartInfo.WorkingDirectory = PathManager.GetCurrentDirectory(batpath);
+                p.StartInfo.FileName = batpath;
+                p.StartInfo.Verb = "RunAs"; //管理者として実行する場合
+
+                p.Start();
             }
             catch (Exception ex)
             {

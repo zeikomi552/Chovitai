@@ -93,5 +93,30 @@ namespace Chovitai.Models.Config
             }
         }
         #endregion
+
+        #region バッチファイルパス(webui.bat)[BatPath]プロパティ
+        /// <summary>
+        /// バッチファイルパス(webui.bat)[BatPath]プロパティ用変数
+        /// </summary>
+        string _BatPath = string.Empty;
+        /// <summary>
+        /// バッチファイルパス(webui.bat)[BatPath]プロパティ
+        /// </summary>
+        public string BatPath
+        {
+            get
+            {
+                return _BatPath;
+            }
+            set
+            {
+                if (_BatPath == null || !_BatPath.Equals(value))
+                {
+                    _BatPath = value;
+                    NotifyPropertyChanged("BatPath");
+                }
+            }
+        }
+        #endregion
     }
 }
