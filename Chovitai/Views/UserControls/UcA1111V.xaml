@@ -25,6 +25,7 @@
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="auto"/>
+                <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <StackPanel Margin="5">
                 <StackPanel Orientation="Horizontal">
@@ -81,6 +82,15 @@
                     <TextBlock VerticalAlignment="Center" Margin="5" Text="Sampler:"/>
                     <TextBox Width="150" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.SamplerIndex}"/>
                 </StackPanel>
+            </Grid>
+            <Grid Grid.Row="6">
+                <Button Margin="5" Content="Prompt">
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="Click">
+                            <b:CallMethodAction TargetObject="{Binding}" MethodName="ClickPromptStart"/>
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
+                </Button>
             </Grid>
         </Grid>
 
