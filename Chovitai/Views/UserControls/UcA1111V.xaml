@@ -103,8 +103,12 @@
                 </Button>
             </Grid>
         </Grid>
-        
+
         <Grid Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
             <ListView Margin="5,5,5,5" x:Name="lvImages" ItemsSource="{Binding FileList.Items}"
                               SelectedItem="{Binding FileList.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
                 <b:Interaction.Triggers>
@@ -152,6 +156,18 @@
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
+            <Grid Grid.Column="1">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                </Grid.RowDefinitions>
+                <Image Margin="5" Source="{Binding FileList.SelectedItem.FilePath,
+                    Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
+                    Converter={StaticResource URLStringToImageSourceConverter}}"/>
+                <Grid Grid.Row="1">
+                    <TextBlock Margin="5" Text="{Binding FileList.SelectedItem.ImageText}"/>
+                </Grid>
+            </Grid>
 
         </Grid>
     </Grid>
