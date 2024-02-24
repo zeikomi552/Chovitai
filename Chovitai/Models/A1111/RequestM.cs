@@ -95,7 +95,13 @@ namespace Chovitai.Models.A1111
         /// <param name="base64String">Base64文字列</param>
         private void SaveByteArrayAsImage(string fullOutputPath, string base64String)
         {
+            // ディレクトリがない場合は作成する
+            PathManager.CreateCurrentDirectory(fullOutputPath);
+
+            // Base64文字列をbyteに分解
             byte[] bytes = Convert.FromBase64String(base64String);
+
+            // ファイルに保存する
             File.WriteAllBytes(fullOutputPath, bytes);
         }
         #endregion
