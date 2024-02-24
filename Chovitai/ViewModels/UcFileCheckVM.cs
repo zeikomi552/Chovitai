@@ -266,22 +266,6 @@ namespace Chovitai.ViewModels
         #endregion
 
 
-        #region ファイルの削除処理
-        /// <summary>
-        /// ファイルの削除処理
-        /// </summary>
-        public void DeleteFile()
-        {
-            try
-            {
-                File.Delete(this.FileList.SelectedItem.FilePath);
-            }
-            catch (Exception e)
-            {
-                ShowMessage.ShowErrorOK(e.Message, "Error");
-            }
-        }
-        #endregion
 
 
         #region マークダウンの出力処理

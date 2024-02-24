@@ -15,6 +15,8 @@ using Chovitai.Common.Utilities;
 using System.Drawing;
 using Chovitai.Models;
 using System.Windows.Threading;
+using Chovitai.Views.UserControls;
+using MVVMCore.Common.Wrapper;
 
 namespace Chovitai.ViewModels
 {
@@ -55,6 +57,44 @@ namespace Chovitai.ViewModels
         {
             try
             {
+                string dir = this.A1111Config.ImageOutDirectory;
+                if (Directory.Exists(dir))
+                {
+                    ReadDirectory(dir);
+
+                    // ファイルウォッチャーをいったん終了
+                    FinishDirectoryWatching();
+
+                    // ファイルウォッチャーの開始
+                    StartDirectoryWatching(dir, "*.png");
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
+        }
+        #endregion
+
+        #region 選択行が変化した際の処理
+        /// <summary>
+        /// 選択行が変化した際の処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        public void SelectedItemChanged(object sender, EventArgs e)
+        {
+            try
+            {
+                // ウィンドウを取得
+                var wnd = VisualTreeHelperWrapper.GetWindow<UcA1111V>(sender) as UcA1111V;
+
+                // ウィンドウが取得できた場合
+                if (wnd != null && FileList.SelectedItem != null)
+                {
+                    ScrollbarUtility.TopRow(wnd.lvImages);
+                }
             }
             catch (Exception ex)
             {

@@ -8,12 +8,13 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace Chovitai.Views
+namespace Chovitai.ViewModels
 {
     public class FileBaseVM : ViewModelBase
     {
@@ -165,25 +166,47 @@ namespace Chovitai.Views
             switch (e.ChangeType)
             {
                 case System.IO.WatcherChangeTypes.Changed:
-                    Console.WriteLine(
-                        "ファイル 「" + e.FullPath + "」が変更されました。");
-                    break;
-                case System.IO.WatcherChangeTypes.Created:
-                    var file_info = GetFileInfo(e.FullPath);
-                    if (file_info != null)
                     {
-                        // スレッドセーフの呼び出し
-                        Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                            new Action(() =>
-                            {
-                                this.FileList.Items.Add(file_info);
-                            }));
+                        Console.WriteLine(
+                            "ファイル 「" + e.FullPath + "」が変更されました。");
+
+                        var file_info = GetFileInfo(e.FullPath);
+                        if (file_info != null)
+                        {
+                            // スレッドセーフの呼び出し
+                            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                                new Action(() =>
+                                {
+                                    var bfind = (from x in this.FileList.Items
+                                                where x.FilePath == file_info.FilePath
+                                                select x).Any();
+
+                                    if (!bfind)
+                                    {
+                                        this.FileList.Items.Add(file_info);
+                                    }
+                                }));
+                        }
+                        break;
                     }
+                case System.IO.WatcherChangeTypes.Created:
+                    {
+                        var file_info = GetFileInfo(e.FullPath);
+                        if (file_info != null)
+                        {
+                            // スレッドセーフの呼び出し
+                            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                                new Action(() =>
+                                {
+                                    this.FileList.Items.Add(file_info);
+                                }));
+                        }
 
-                    // memo : StableDiffusionで作成時は*.tmpファイルが作られてそのあと*.pngになるためリネーム扱いとなる
-                    //        したがって、この処理には入らない。本処理はコピペなどで追加した場合用
+                        // memo : StableDiffusionで作成時は*.tmpファイルが作られてそのあと*.pngになるためリネーム扱いとなる
+                        //        したがって、この処理には入らない。本処理はコピペなどで追加した場合用
 
-                    break;
+                        break;
+                    }
                 case System.IO.WatcherChangeTypes.Deleted:
                     // スレッドセーフの呼び出し
                     Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
@@ -227,12 +250,17 @@ namespace Chovitai.Views
                     Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
                         new Action(() =>
                         {
+                            var old_file = (from x in this.FileList.Items
+                                           where x.FilePath.Equals(ev.OldFullPath)
+                                           select x).FirstOrDefault();
+
+                            if (old_file != null)
+                            {
+                                this.FileList.Items.Remove(old_file); // 名称変更前のファイルをリストから削除
+                            }
+
                             this.FileList.Items.Add(file_info); // ファイルの追加処理
 
-                            //if (this.SelectNewFolderF)
-                            //{
-                            //    this.FileList.SelectedLast();       // 追加されたファイルを選択
-                            //}
                         }));
                 }
             }
@@ -421,5 +449,23 @@ namespace Chovitai.Views
             }
         }
         #endregion
+
+        #region ファイルの削除処理
+        /// <summary>
+        /// ファイルの削除処理
+        /// </summary>
+        public void DeleteFile()
+        {
+            try
+            {
+                File.Delete(this.FileList.SelectedItem.FilePath);
+            }
+            catch (Exception e)
+            {
+                ShowMessage.ShowErrorOK(e.Message, "Error");
+            }
+        }
+        #endregion
+
     }
 }
