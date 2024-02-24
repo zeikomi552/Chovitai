@@ -128,6 +128,7 @@ namespace Chovitai.ViewModels
             }
         }
         #endregion
+
         #region クローズ処理
         /// <summary>
         /// クローズ処理
@@ -151,9 +152,21 @@ namespace Chovitai.ViewModels
                 A1111SettingV wnd = new A1111SettingV();
                 var vm = wnd.DataContext as A1111SettingVM;
 
+                string dir = this.A1111Config.ImageOutDirectory;
                 if (wnd.ShowDialog() == true)
                 {
                     GblValues.Instance.A1111Setting!.LoadXML();
+
+                    if (!dir.Equals(this.A1111Config.ImageOutDirectory))
+                    {
+                        ReadDirectory(this.A1111Config.ImageOutDirectory);
+
+                        // ファイルウォッチャーをいったん終了
+                        FinishDirectoryWatching();
+
+                        // ファイルウォッチャーの開始
+                        StartDirectoryWatching(dir, "*.png");
+                    }
                 }
             }
             catch (Exception ex)
