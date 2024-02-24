@@ -13,12 +13,13 @@ using System.Text;
 using System.Threading.Tasks;
 using Chovitai.Common.Utilities;
 using System.Drawing;
+using Chovitai.Models;
+using System.Windows.Threading;
 
 namespace Chovitai.ViewModels
 {
-    public class UcA1111VM : ViewModelBase
+    public class UcA1111VM : FileBaseVM
     {
-        
         #region A1111 Request[Request]プロパティ
         /// <summary>
         /// A1111 Request[Request]プロパティ用変数
@@ -110,7 +111,6 @@ namespace Chovitai.ViewModels
                 p.StartInfo.WorkingDirectory = PathManager.GetCurrentDirectory(batpath);
                 p.StartInfo.FileName = batpath;
                 p.StartInfo.Verb = "RunAs"; //管理者として実行する場合
-
                 p.Start();
             }
             catch (Exception ex)
@@ -141,79 +141,12 @@ namespace Chovitai.ViewModels
         {
             try
             {
-                GETQuery();
+                this.Request.PostRequest(this.A1111Config.URL, this.A1111Config.ImageOutDirectory);
             }
             catch (Exception ex)
             {
                 ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
-        }
-        #endregion
-
-        #region GETクエリの実行処理
-        /// <summary>
-        /// GETクエリの実行処理
-        /// </summary>
-        /// <param name="query"></param>
-        /// <param name="add_endpoint"></param>
-        private async void GETQuery()
-        {
-            try
-            {
-                //this.ExecuteGetAPI = true;
-                PostResponseM tmp = new PostResponseM();
-                string request = string.Empty;
-
-                // エンドポイント + パラメータ
-                string url = this.A1111Config.URL + "/sdapi/v1/txt2img";
-                var data = new
-                {
-                    prompt = this.Request.Prompt,
-                    negative_prompt = this.Request.NegativePrompt,
-                    width = this.Request.Width,
-                    height = this.Request.Height,
-                    sapler_index = this.Request.SamplerIndex
-                };
-
-                // 実行してJSON形式をデシリアライズ
-                var request_model = JSONUtil.DeserializeFromText<PostResponseM>(request = await tmp.Request(url, data.AsJson()));
-
-                int count = 0;
-                foreach (var base64string in request_model.Images)
-                {
-                    string path = Path.Combine(this.A1111Config.ImageOutDirectory, $"{DateTime.Now.ToString("yyyyMMddHHmmss-") + count.ToString()}.png");
-                    SaveByteArrayAsImage(path, base64string);
-                }
-            }
-            catch (JSONDeserializeException e)
-            {
-                string msg = e.Message + "\r\n" + e.JSON;
-                ShowMessage.ShowErrorOK(msg, "Error");
-            }
-            finally
-            {
-
-            }
-        }
-        #endregion
-
-        #region Base64文字列をファイルに保存する処理
-        /// <summary>
-        /// Base64文字列をファイルに保存する処理
-        /// </summary>
-        /// <param name="fullOutputPath">出力先ファイルパス</param>
-        /// <param name="base64String">Base64文字列</param>
-        private void SaveByteArrayAsImage(string fullOutputPath, string base64String)
-        {
-            byte[] bytes = Convert.FromBase64String(base64String);
-
-            Image image;
-            using (MemoryStream ms = new MemoryStream(bytes))
-            {
-                image = Image.FromStream(ms);
-            }
-
-            image.Save(fullOutputPath, System.Drawing.Imaging.ImageFormat.Png);
         }
         #endregion
     }

@@ -1,6 +1,10 @@
-﻿using MVVMCore.BaseClass;
+﻿using Chovitai.Common.Utilities;
+using MVVMCore.BaseClass;
+using MVVMCore.Common.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
@@ -26,6 +30,73 @@ namespace Chovitai.Models.A1111
                 // レスポンスを返却
                 return await response.Content.ReadAsStringAsync();
             }
+        }
+        #endregion
+
+        #region POSTのリクエスト実行処理
+        /// <summary>
+        /// POSTのリクエスト実行処理
+        /// </summary>
+        /// <param name="uri">URI</param>
+        /// <param name="outdir">出力先ディレクトリ</param>
+        public async void PostRequest(string uri, string outdir)
+        {
+            try
+            {
+                PostResponseM tmp = new PostResponseM();
+                string request = string.Empty;
+
+                // エンドポイント + パラメータ
+                string url = uri + "/sdapi/v1/txt2img";
+                var data = new
+                {
+                    prompt = this.Prompt,
+                    negative_prompt = this.NegativePrompt,
+                    width = this.Width,
+                    height = this.Height,
+                    sapler_index = this.SamplerIndex
+                };
+
+                // 実行してJSON形式をデシリアライズ
+                var request_model = JSONUtil.DeserializeFromText<PostResponseM>(request = await tmp.Request(url, data.AsJson()));
+
+                int count = 0;
+                foreach (var base64string in request_model.Images)
+                {
+                    string path = Path.Combine(outdir, $"{DateTime.Now.ToString("yyyyMMddHHmmss-") + count.ToString()}.png");
+                    SaveByteArrayAsImage(path, base64string);
+                }
+            }
+            catch (JSONDeserializeException e)
+            {
+                string msg = e.Message + "\r\n" + e.JSON;
+                ShowMessage.ShowErrorOK(msg, "Error");
+            }
+            finally
+            {
+
+            }
+        }
+        #endregion
+
+
+        #region Base64文字列をファイルに保存する処理
+        /// <summary>
+        /// Base64文字列をファイルに保存する処理
+        /// </summary>
+        /// <param name="fullOutputPath">出力先ファイルパス</param>
+        /// <param name="base64String">Base64文字列</param>
+        private void SaveByteArrayAsImage(string fullOutputPath, string base64String)
+        {
+            byte[] bytes = Convert.FromBase64String(base64String);
+
+            Image image;
+            using (MemoryStream ms = new MemoryStream(bytes))
+            {
+                image = Image.FromStream(ms);
+            }
+
+            image.Save(fullOutputPath, System.Drawing.Imaging.ImageFormat.Png);
         }
         #endregion
 
