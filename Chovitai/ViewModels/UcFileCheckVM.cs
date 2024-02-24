@@ -265,7 +265,41 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        #region ファイル名が変更された際の処理
+        /// <summary>
+        /// ファイル名が変更された際の処理
+        /// StabledDiffusionで生成する場合は*.tmp → *.pngに変更されるためこの処理に入る
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="ev"></param>
+        public override void watcher_Renamed(System.Object source,
+            System.IO.RenamedEventArgs ev)
+        {
+            try
+            {
+                base.watcher_Renamed(source, ev);
 
+                ////Debug.WriteLine("test-rename");
+                var file_info = GetFileInfo(ev.FullPath);
+                if (file_info != null)
+                {
+                    // スレッドセーフの呼び出し
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                        new Action(() =>
+                        {
+                            if (this.SelectNewFolderF)
+                            {
+                                this.FileList.SelectedLast();       // 追加されたファイルを選択
+                            }
+                        }));
+                }
+            }
+            catch (Exception e)
+            {
+                ShowMessage.ShowErrorOK(e.Message, "Error");
+            }
+        }
+        #endregion
 
 
         #region マークダウンの出力処理

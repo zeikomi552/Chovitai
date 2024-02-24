@@ -54,6 +54,7 @@ namespace Chovitai.Models.A1111
                     negative_prompt = this.NegativePrompt,
                     width = this.Width,
                     height = this.Height,
+                    steps = this.Steps,
                     sapler_index = this.SamplerIndex
                 };
 

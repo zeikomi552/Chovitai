@@ -149,9 +149,6 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
-
-
-
         #region ファイルウォッチャーの変更イベント
         /// <summary>
         /// ファイルウォッチャーの変更イベント
@@ -237,7 +234,7 @@ namespace Chovitai.ViewModels
         /// </summary>
         /// <param name="source"></param>
         /// <param name="ev"></param>
-        public void watcher_Renamed(System.Object source,
+        public virtual void watcher_Renamed(System.Object source,
             System.IO.RenamedEventArgs ev)
         {
             try
