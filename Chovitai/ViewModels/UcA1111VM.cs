@@ -17,6 +17,7 @@ using Chovitai.Models;
 using System.Windows.Threading;
 using Chovitai.Views.UserControls;
 using MVVMCore.Common.Wrapper;
+using System.Windows;
 
 namespace Chovitai.ViewModels
 {
@@ -209,6 +210,54 @@ namespace Chovitai.ViewModels
                 while (this.ExecutePrompt)
                 {
                     var ret = await this.Request.PostRequest(this.A1111Config.URL, this.A1111Config.ImageOutDirectory);
+
+                    // スレッドセーフの呼び出し
+                    await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                        new Action(() =>
+                        {
+                            this.FileList.SelectedLast();       // 追加されたファイルを選択
+                        }));
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
+        }
+        #endregion
+
+        #region ファイル名が変更された際の処理
+        /// <summary>
+        /// ファイル名が変更された際の処理
+        /// StabledDiffusionで生成する場合は*.tmp → *.pngに変更されるためこの処理に入る
+        /// </summary>
+        /// <param name="source"></param>
+        /// <param name="ev"></param>
+        public override void watcher_Changed(System.Object source,
+            System.IO.FileSystemEventArgs e)
+        {
+            try
+            {
+                base.watcher_Changed(source, e);
+                switch (e.ChangeType)
+                {
+                    case System.IO.WatcherChangeTypes.Changed:
+                        {
+                            base.watcher_Changed(source, e);
+
+                            ////Debug.WriteLine("test-rename");
+                            var file_info = GetFileInfo(e.FullPath);
+                            if (file_info != null)
+                            {
+                                // スレッドセーフの呼び出し
+                                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                                    new Action(() =>
+                                    {
+                                        this.FileList.SelectedLast();       // 追加されたファイルを選択
+                                    }));
+                            }
+                            break;
+                        }
                 }
             }
             catch (Exception ex)

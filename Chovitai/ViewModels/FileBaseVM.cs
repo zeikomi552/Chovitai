@@ -155,7 +155,7 @@ namespace Chovitai.ViewModels
         /// </summary>
         /// <param name="source"></param>
         /// <param name="e"></param>
-        public void watcher_Changed(System.Object source,
+        public virtual void watcher_Changed(System.Object source,
             System.IO.FileSystemEventArgs e)
         {
             Debug.WriteLine("test-changed");
