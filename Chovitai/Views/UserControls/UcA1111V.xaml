@@ -3,13 +3,14 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Converters="clr-namespace:Chovitai.Common.Converters"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:Actions="clr-namespace:Chovitai.Common.Actions"
              xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Chovitai.Views.UserControls"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:ViewModels="clr-namespace:Chovitai.ViewModels" x:Class="Chovitai.Views.UserControls.UcA1111V"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Background="{DynamicResource MahApps.Brushes.Control.Background}">
+             d:DesignHeight="450" d:DesignWidth="800" Background="{DynamicResource MahApps.Brushes.Control.Background}" Cursor="">
     <UserControl.Resources>
         <ViewModels:UcA1111VM x:Key="vm"/>
         <Converters:URLStringToImageSourceConverter x:Key="URLStringToImageSourceConverter"/>
@@ -167,7 +168,23 @@
                     Mode=TwoWay, UpdateSourceTrigger=PropertyChanged,
                     Converter={StaticResource URLStringToImageSourceConverter}}"/>
                 <Grid Grid.Row="1">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="auto"/>
+                    </Grid.ColumnDefinitions>
                     <TextBlock Margin="5" Text="{Binding FileList.SelectedItem.ImageText}"/>
+                    <Button Grid.Column="2" Margin="5" Cursor="Hand">
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="Click">
+                                <Actions:ClipboardCopyAction CopyText="{Binding FileList.SelectedItem.ImageText}"/>
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+
+                        <StackPanel Orientation="Vertical">
+                            <svgc:SvgViewbox Source="/Common/Images/copy-1-svgrepo-com.svg" />
+                        </StackPanel>
+
+                    </Button>
                 </Grid>
             </Grid>
 
