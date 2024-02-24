@@ -7,6 +7,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
+using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -39,7 +40,7 @@ namespace Chovitai.Models.A1111
         /// </summary>
         /// <param name="uri">URI</param>
         /// <param name="outdir">出力先ディレクトリ</param>
-        public async void PostRequest(string uri, string outdir)
+        public async Task<bool> PostRequest(string uri, string outdir)
         {
             try
             {
@@ -58,20 +59,26 @@ namespace Chovitai.Models.A1111
                     sapler_index = this.SamplerIndex
                 };
 
+                request = await tmp.Request(url, data.AsJson());
+
                 // 実行してJSON形式をデシリアライズ
-                var request_model = JSONUtil.DeserializeFromText<PostResponseM>(request = await tmp.Request(url, data.AsJson()));
+                var request_model = JSONUtil.DeserializeFromText<PostResponseM>(request);
 
                 int count = 0;
                 foreach (var base64string in request_model.Images)
                 {
                     string path = Path.Combine(outdir, $"{DateTime.Now.ToString("yyyyMMddHHmmss-") + count.ToString()}.png");
                     SaveByteArrayAsImage(path, base64string);
+                    count++;
                 }
+
+                return true;
             }
             catch (JSONDeserializeException e)
             {
                 string msg = e.Message + "\r\n" + e.JSON;
                 ShowMessage.ShowErrorOK(msg, "Error");
+                return false;
             }
             finally
             {
@@ -79,7 +86,6 @@ namespace Chovitai.Models.A1111
             }
         }
         #endregion
-
 
         #region Base64文字列をファイルに保存する処理
         /// <summary>
@@ -90,14 +96,7 @@ namespace Chovitai.Models.A1111
         private void SaveByteArrayAsImage(string fullOutputPath, string base64String)
         {
             byte[] bytes = Convert.FromBase64String(base64String);
-
-            Image image;
-            using (MemoryStream ms = new MemoryStream(bytes))
-            {
-                image = Image.FromStream(ms);
-            }
-
-            image.Save(fullOutputPath, System.Drawing.Imaging.ImageFormat.Png);
+            File.WriteAllBytes(fullOutputPath, bytes);
         }
         #endregion
 

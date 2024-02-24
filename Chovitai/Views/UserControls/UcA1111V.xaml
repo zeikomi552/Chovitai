@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Converters="clr-namespace:Chovitai.Common.Converters"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Chovitai.Views.UserControls"
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
@@ -38,7 +39,7 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <StackPanel Margin="5">
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" Cursor="">
                     <Button Margin="5" Content="Setting">
                         <b:Interaction.Triggers>
                             <b:EventTrigger EventName="Click">
@@ -53,6 +54,16 @@
                             </b:EventTrigger>
                         </b:Interaction.Triggers>
                     </Button>
+                    <ToggleButton Margin="5" Style="{StaticResource MaterialDesignActionDarkToggleButton}" IsChecked="{Binding ExecutePrompt}" Width="30" Height="30" Cursor="Hand">
+                        <Grid>
+                            <svgc:SvgViewbox Height="20" Width="20" Source="/Common/Images/repeat-alt-svgrepo-com.svg"/>
+                        </Grid>
+                        <b:Interaction.Triggers>
+                            <b:EventTrigger EventName="Checked">
+                                <b:CallMethodAction TargetObject="{Binding}" MethodName="ClickPromptStart"/>
+                            </b:EventTrigger>
+                        </b:Interaction.Triggers>
+                    </ToggleButton>
                 </StackPanel>
             </StackPanel>
             <Grid Grid.Row="1">
@@ -92,15 +103,6 @@
                     <TextBlock VerticalAlignment="Center" Margin="5" Text="Sampler:"/>
                     <TextBox Width="150" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.SamplerIndex}"/>
                 </StackPanel>
-            </Grid>
-            <Grid Grid.Row="6">
-                <Button Margin="5" Content="Prompt">
-                    <b:Interaction.Triggers>
-                        <b:EventTrigger EventName="Click">
-                            <b:CallMethodAction TargetObject="{Binding}" MethodName="ClickPromptStart"/>
-                        </b:EventTrigger>
-                    </b:Interaction.Triggers>
-                </Button>
             </Grid>
         </Grid>
 

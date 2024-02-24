@@ -47,6 +47,31 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        #region プロンプトの実行処理[ExecutePrompt]プロパティ
+        /// <summary>
+        /// プロンプトの実行処理[ExecutePrompt]プロパティ用変数
+        /// </summary>
+        bool _ExecutePrompt = false;
+        /// <summary>
+        /// プロンプトの実行処理[ExecutePrompt]プロパティ
+        /// </summary>
+        public bool ExecutePrompt
+        {
+            get
+            {
+                return _ExecutePrompt;
+            }
+            set
+            {
+                if (!_ExecutePrompt.Equals(value))
+                {
+                    _ExecutePrompt = value;
+                    NotifyPropertyChanged("ExecutePrompt");
+                }
+            }
+        }
+        #endregion
+
         #region 画面初期化処理
         /// <summary>
         /// 画面初期化処理
@@ -177,11 +202,14 @@ namespace Chovitai.ViewModels
         /// <summary>
         /// Promptの実行処理
         /// </summary>
-        public void ClickPromptStart()
+        public async void ClickPromptStart()
         {
             try
             {
-                this.Request.PostRequest(this.A1111Config.URL, this.A1111Config.ImageOutDirectory);
+                while (this.ExecutePrompt)
+                {
+                    var ret = await this.Request.PostRequest(this.A1111Config.URL, this.A1111Config.ImageOutDirectory);
+                }
             }
             catch (Exception ex)
             {
