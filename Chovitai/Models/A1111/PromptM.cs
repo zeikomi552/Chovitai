@@ -202,34 +202,4 @@ namespace Chovitai.Models.A1111
         }
         #endregion
     }
-
-    //public class PromptEx : PromptM
-    //{
-    //    #region 作成開始時間[CreateAt]プロパティ
-    //    /// <summary>
-    //    /// 作成開始時間[CreateAt]プロパティ用変数
-    //    /// </summary>
-    //    DateTime _CreateAt = DateTime.MinValue;
-    //    /// <summary>
-    //    /// 作成開始時間[CreateAt]プロパティ
-    //    /// </summary>
-    //    public DateTime CreateAt
-    //    {
-    //        get
-    //        {
-    //            return _CreateAt;
-    //        }
-    //        set
-    //        {
-    //            if (!_CreateAt.Equals(value))
-    //            {
-    //                _CreateAt = value;
-    //                NotifyPropertyChanged("CreateAt");
-    //            }
-    //        }
-    //    }
-    //    #endregion
-
-
-    //}
 }

@@ -29,84 +29,85 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Grid Margin="5">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-                <RowDefinition Height="auto"/>
-            </Grid.RowDefinitions>
-            <StackPanel Margin="5">
-                <StackPanel Orientation="Horizontal" Cursor="">
-                    <Button Margin="5" Content="Setting">
-                        <b:Interaction.Triggers>
-                            <b:EventTrigger EventName="Click">
-                                <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenSetting"/>
-                            </b:EventTrigger>
-                        </b:Interaction.Triggers>
-                    </Button>
-                    <Button Margin="5" Content="A1111 Execute">
-                        <b:Interaction.Triggers>
-                            <b:EventTrigger EventName="Click">
-                                <b:CallMethodAction TargetObject="{Binding}" MethodName="WebUIExecute"/>
-                            </b:EventTrigger>
-                        </b:Interaction.Triggers>
-                    </Button>
-                    <ToggleButton Margin="5" Style="{StaticResource MaterialDesignActionDarkToggleButton}" IsChecked="{Binding ExecutePrompt}" Width="30" Height="30" Cursor="Hand">
-                        <Grid>
-                            <svgc:SvgViewbox Height="20" Width="20" Source="/Common/Images/repeat-alt-svgrepo-com.svg"/>
-                        </Grid>
-                        <b:Interaction.Triggers>
-                            <b:EventTrigger EventName="Checked">
-                                <b:CallMethodAction TargetObject="{Binding}" MethodName="ClickPromptStart"/>
-                            </b:EventTrigger>
-                        </b:Interaction.Triggers>
-                    </ToggleButton>
-                </StackPanel>
-            </StackPanel>
-            <Grid Grid.Row="1">
+        <GroupBox Header="Command">
+            <Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
-                </Grid.RowDefinitions>
-                <TextBlock VerticalAlignment="Center" Margin="5" Text="Prompt"/>
-                <TextBox TextWrapping="Wrap" AcceptsReturn="True" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Prompt}"/>
-            </Grid>
-            <Grid Grid.Row="2">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                 </Grid.RowDefinitions>
-                <TextBlock VerticalAlignment="Center" Margin="5" Text="Negative Prompt"/>
-                <TextBox TextWrapping="Wrap" AcceptsReturn="True" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.NegativePrompt}"/>
-            </Grid>
-            <Grid Grid.Row="3">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center" Margin="5" Text="W:"/>
-                    <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Width}"/>
-                    <TextBlock VerticalAlignment="Center" Margin="5" Text="H:"/>
-                    <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Height}"/>
+                <StackPanel Margin="5">
+                    <StackPanel Orientation="Horizontal" Cursor="">
+                        <Button Margin="5" Content="Setting">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Click">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenSetting"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </Button>
+                        <Button Margin="5" Content="A1111 Execute">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Click">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="WebUIExecute"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </Button>
+                        <ToggleButton Margin="5" Style="{StaticResource MaterialDesignActionDarkToggleButton}" IsChecked="{Binding ExecutePrompt}" Width="30" Height="30" Cursor="Hand">
+                            <Grid>
+                                <svgc:SvgViewbox Height="20" Width="20" Source="/Common/Images/repeat-alt-svgrepo-com.svg"/>
+                            </Grid>
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Checked">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="ClickPromptStart"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </ToggleButton>
+                    </StackPanel>
                 </StackPanel>
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock VerticalAlignment="Center" Margin="5" Text="Prompt"/>
+                    <TextBox TextWrapping="Wrap" AcceptsReturn="True" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Prompt}"/>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <TextBlock VerticalAlignment="Center" Margin="5" Text="Negative Prompt"/>
+                    <TextBox TextWrapping="Wrap" AcceptsReturn="True" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.NegativePrompt}"/>
+                </Grid>
+                <Grid Grid.Row="3">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Margin="5" Text="W:"/>
+                        <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Width}"/>
+                        <TextBlock VerticalAlignment="Center" Margin="5" Text="H:"/>
+                        <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Height}"/>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="4">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Margin="5" Text="Seed:"/>
+                        <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Seed}"/>
+                        <TextBlock VerticalAlignment="Center" Margin="5" Text="Steps:"/>
+                        <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Steps}"/>
+                    </StackPanel>
+                </Grid>
+                <Grid Grid.Row="5">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock VerticalAlignment="Center" Margin="5" Text="Sampler:"/>
+                        <TextBox Width="150" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.SamplerIndex}"/>
+                    </StackPanel>
+                </Grid>
             </Grid>
-            <Grid Grid.Row="4">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center" Margin="5" Text="Seed:"/>
-                    <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Seed}"/>
-                    <TextBlock VerticalAlignment="Center" Margin="5" Text="Steps:"/>
-                    <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Steps}"/>
-                </StackPanel>
-            </Grid>
-            <Grid Grid.Row="5">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center" Margin="5" Text="Sampler:"/>
-                    <TextBox Width="150" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.SamplerIndex}"/>
-                </StackPanel>
-            </Grid>
-        </Grid>
-
+        </GroupBox>
         <Grid Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
@@ -149,6 +150,13 @@
                                         <b:Interaction.Triggers>
                                             <b:EventTrigger EventName="Click">
                                                 <b:CallMethodAction TargetObject="{Binding Mode=OneWay, Source={StaticResource vm}}" MethodName="DeleteFile"/>
+                                            </b:EventTrigger>
+                                        </b:Interaction.Triggers>
+                                    </MenuItem>
+                                    <MenuItem Header="Set Command">
+                                        <b:Interaction.Triggers>
+                                            <b:EventTrigger EventName="Click">
+                                                <b:CallMethodAction TargetObject="{Binding Mode=OneWay, Source={StaticResource vm}}" MethodName="SetCommand"/>
                                             </b:EventTrigger>
                                         </b:Interaction.Triggers>
                                     </MenuItem>

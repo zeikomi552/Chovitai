@@ -254,7 +254,7 @@ namespace Chovitai.ViewModels
                         {
                             this.FileList.SelectedLast();       // 追加されたファイルを選択
                                                                 // プロンプト実行履歴
-                            // 最終実行プロンプトのセット
+                                                                // 最終実行プロンプトのセット
                             this.LastPromptConfig.LastPrompt = prompt;
                             GblValues.Instance.LastPrompt!.SaveXML();   // 最終プロンプトの保存
                         }));
@@ -307,5 +307,82 @@ namespace Chovitai.ViewModels
             }
         }
         #endregion
+
+        #region Commandへセット
+        /// <summary>
+        /// Commandへセット
+        /// </summary>
+        public void SetCommand()
+        {
+            try
+            {
+                string[] text = this.FileList.SelectedItem.ImageText.Split("\n");
+
+                foreach (var tmp in text)
+                {
+                    string div_text = string.Empty;
+                    if (CheckAndDiv(tmp, "parameters:", out div_text) )
+                    {
+                        this.Request.PromptItem.Prompt = div_text;
+                    }
+                    else if (CheckAndDiv(tmp, "Negative prompt:", out div_text))
+                    {
+                        this.Request.PromptItem.NegativePrompt = div_text;
+                    }
+                    else
+                    {
+                        string[] tmp2 = tmp.Split(",");
+
+                        foreach (var item in tmp2)
+                        {
+                            if (CheckAndDiv(item, "Steps:", out div_text))
+                            {
+                                this.Request.PromptItem.Steps = int.TryParse(div_text, out int steps) ? steps : 20;
+                            }
+                            else if (CheckAndDiv(item, "Sampler:", out div_text))
+                            {
+                                this.Request.PromptItem.SamplerIndex = div_text;
+                            }
+                            else if (CheckAndDiv(item, "Seed:", out div_text))
+                            {
+                                this.Request.PromptItem.Seed = int.TryParse(div_text, out int seed) ? seed : 20;
+
+                            }
+                            else if (CheckAndDiv(item, "Size:", out div_text))
+                            {
+                                string[] wh = div_text.Split("x");
+
+                                if (wh.Length >= 2)
+                                {
+                                    this.Request.PromptItem.Width = int.TryParse(wh[0], out int width) ? width : 512;
+                                    this.Request.PromptItem.Height = int.TryParse(wh[1], out int height) ? height : 512;
+                                }
+                            }
+                        }
+
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
+        }
+        #endregion
+
+        private bool CheckAndDiv(string text, string check_text, out string div_text)
+        {
+            if (text.Contains(check_text))
+            {
+                div_text = text.Replace(check_text, "").Trim();
+                return true;
+            }
+            else
+            {
+                div_text = string.Empty;
+                return false;
+            }
+        }
     }
 }
