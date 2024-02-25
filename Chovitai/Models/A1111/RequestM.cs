@@ -56,7 +56,7 @@ namespace Chovitai.Models.A1111
                     width = prompt.Width,
                     height = prompt.Height,
                     steps = prompt.Steps,
-                    sapler_index = prompt.SamplerIndex
+                    sampler_index = prompt.SamplerIndex
                 };
 
                 request = await tmp.Request(url, data.AsJson());
