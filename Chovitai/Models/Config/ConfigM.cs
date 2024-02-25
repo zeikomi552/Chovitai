@@ -15,15 +15,19 @@ namespace Chovitai.Models.Config
 {
     public class ConfigM : ModelBase
     {
+        #region 現在のフォルダ
         /// <summary>
         /// 現在のフォルダ
         /// </summary>
         public static string CurrDir { get; set; } = "conf";
+        #endregion
 
+        #region デフォルトのファイル名
         /// <summary>
         /// デフォルトのファイル名
         /// </summary>
         public static string DefaultFile { get; set; } = "CvSearchTool.conf";
+        #endregion
 
         #region モデル用ブックマークのフォルダパス[ModelBookmarkDir]プロパティ
         /// <summary>

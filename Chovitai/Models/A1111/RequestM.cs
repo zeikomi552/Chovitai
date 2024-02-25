@@ -40,7 +40,7 @@ namespace Chovitai.Models.A1111
         /// </summary>
         /// <param name="uri">URI</param>
         /// <param name="outdir">出力先ディレクトリ</param>
-        public async Task<bool> PostRequest(string uri, string outdir)
+        public async Task<bool> PostRequest(string uri, string outdir, PromptM prompt)
         {
             try
             {
@@ -51,12 +51,12 @@ namespace Chovitai.Models.A1111
                 string url = uri + "/sdapi/v1/txt2img";
                 var data = new
                 {
-                    prompt = this.Prompt,
-                    negative_prompt = this.NegativePrompt,
-                    width = this.Width,
-                    height = this.Height,
-                    steps = this.Steps,
-                    sapler_index = this.SamplerIndex
+                    prompt = prompt.Prompt,
+                    negative_prompt = prompt.NegativePrompt,
+                    width = prompt.Width,
+                    height = prompt.Height,
+                    steps = prompt.Steps,
+                    sapler_index = prompt.SamplerIndex
                 };
 
                 request = await tmp.Request(url, data.AsJson());
@@ -106,181 +106,29 @@ namespace Chovitai.Models.A1111
         }
         #endregion
 
-        #region Prompt for Webui A1111 api[Prompt]プロパティ
+        #region プロンプト要素[PromptItem]プロパティ
         /// <summary>
-        /// Prompt for Webui A1111 api[Prompt]プロパティ用変数
+        /// プロンプト要素[PromptItem]プロパティ用変数
         /// </summary>
-        string _Prompt = string.Empty;
+        PromptM _PromptItem = new PromptM();
         /// <summary>
-        /// Prompt for Webui A1111 api[Prompt]プロパティ
+        /// プロンプト要素[PromptItem]プロパティ
         /// </summary>
-        public string Prompt
+        public PromptM PromptItem
         {
             get
             {
-                return _Prompt;
+                return _PromptItem;
             }
             set
             {
-                if (_Prompt == null || !_Prompt.Equals(value))
+                if (_PromptItem == null || !_PromptItem.Equals(value))
                 {
-                    _Prompt = value;
-                    NotifyPropertyChanged("Prompt");
+                    _PromptItem = value;
+                    NotifyPropertyChanged("PromptItem");
                 }
             }
         }
         #endregion
-
-        #region Negative Prompt for Webui A1111 api[NegativePrompt]プロパティ
-        /// <summary>
-        /// Negative Prompt for Webui A1111 api[NegativePrompt]プロパティ用変数
-        /// </summary>
-        string _NegativePrompt = string.Empty;
-        /// <summary>
-        /// Negative Prompt for Webui A1111 api[NegativePrompt]プロパティ
-        /// </summary>
-        public string NegativePrompt
-        {
-            get
-            {
-                return _NegativePrompt;
-            }
-            set
-            {
-                if (_NegativePrompt == null || !_NegativePrompt.Equals(value))
-                {
-                    _NegativePrompt = value;
-                    NotifyPropertyChanged("NegativePrompt");
-                }
-            }
-        }
-        #endregion
-
-        #region Picture width[Width]プロパティ
-        /// <summary>
-        /// Picture width[Width]プロパティ用変数
-        /// </summary>
-        int _Width = 512;
-        /// <summary>
-        /// Picture width[Width]プロパティ
-        /// </summary>
-        public int Width
-        {
-            get
-            {
-                return _Width;
-            }
-            set
-            {
-                if (!_Width.Equals(value))
-                {
-                    _Width = value;
-                    NotifyPropertyChanged("Width");
-                }
-            }
-        }
-        #endregion
-
-        #region Picture height[Height]プロパティ
-        /// <summary>
-        /// Picture height[Height]プロパティ用変数
-        /// </summary>
-        int _Height = 768;
-        /// <summary>
-        /// Picture height[Height]プロパティ
-        /// </summary>
-        public int Height
-        {
-            get
-            {
-                return _Height;
-            }
-            set
-            {
-                if (!_Height.Equals(value))
-                {
-                    _Height = value;
-                    NotifyPropertyChanged("Height");
-                }
-            }
-        }
-        #endregion
-
-        #region Picture Sampler[SamplerIndex]プロパティ
-        /// <summary>
-        /// Picture Sampler[SamplerIndex]プロパティ用変数
-        /// </summary>
-        string _SamplerIndex = "DPM++ 2M Karras";
-        /// <summary>
-        /// Picture Sampler[SamplerIndex]プロパティ
-        /// </summary>
-        public string SamplerIndex
-        {
-            get
-            {
-                return _SamplerIndex;
-            }
-            set
-            {
-                if (_SamplerIndex == null || !_SamplerIndex.Equals(value))
-                {
-                    _SamplerIndex = value;
-                    NotifyPropertyChanged("SamplerIndex");
-                }
-            }
-        }
-        #endregion
-
-        #region Steps[Steps]プロパティ
-        /// <summary>
-        /// Steps[Steps]プロパティ用変数
-        /// </summary>
-        int _Steps = 40;
-        /// <summary>
-        /// Steps[Steps]プロパティ
-        /// </summary>
-        public int Steps
-        {
-            get
-            {
-                return _Steps;
-            }
-            set
-            {
-                if (!_Steps.Equals(value))
-                {
-                    _Steps = value;
-                    NotifyPropertyChanged("Steps");
-                }
-            }
-        }
-        #endregion
-
-        #region Random seed[Seed]プロパティ
-        /// <summary>
-        /// Random seed[Seed]プロパティ用変数
-        /// </summary>
-        int _Seed = -1;
-        /// <summary>
-        /// Random seed[Seed]プロパティ
-        /// </summary>
-        public int Seed
-        {
-            get
-            {
-                return _Seed;
-            }
-            set
-            {
-                if (!_Seed.Equals(value))
-                {
-                    _Seed = value;
-                    NotifyPropertyChanged("Seed");
-                }
-            }
-        }
-        #endregion
-
-
     }
 }

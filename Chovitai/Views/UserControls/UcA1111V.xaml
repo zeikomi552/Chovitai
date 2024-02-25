@@ -73,7 +73,7 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock VerticalAlignment="Center" Margin="5" Text="Prompt"/>
-                <TextBox TextWrapping="Wrap" AcceptsReturn="True" Margin="5" Grid.Row="1" Text="{Binding Request.Prompt}"/>
+                <TextBox TextWrapping="Wrap" AcceptsReturn="True" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Prompt}"/>
             </Grid>
             <Grid Grid.Row="2">
                 <Grid.RowDefinitions>
@@ -81,28 +81,28 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <TextBlock VerticalAlignment="Center" Margin="5" Text="Negative Prompt"/>
-                <TextBox TextWrapping="Wrap" AcceptsReturn="True" Margin="5" Grid.Row="1" Text="{Binding Request.NegativePrompt}"/>
+                <TextBox TextWrapping="Wrap" AcceptsReturn="True" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.NegativePrompt}"/>
             </Grid>
             <Grid Grid.Row="3">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" Margin="5" Text="W:"/>
-                    <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.Width}"/>
+                    <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Width}"/>
                     <TextBlock VerticalAlignment="Center" Margin="5" Text="H:"/>
-                    <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.Height}"/>
+                    <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Height}"/>
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="4">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" Margin="5" Text="Seed:"/>
-                    <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.Seed}"/>
+                    <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Seed}"/>
                     <TextBlock VerticalAlignment="Center" Margin="5" Text="Steps:"/>
-                    <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.Steps}"/>
+                    <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Steps}"/>
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="5">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" Margin="5" Text="Sampler:"/>
-                    <TextBox Width="150" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.SamplerIndex}"/>
+                    <TextBox Width="150" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.SamplerIndex}"/>
                 </StackPanel>
             </Grid>
         </Grid>

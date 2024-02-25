@@ -95,6 +95,7 @@ namespace Chovitai.ViewModels
                     StartDirectoryWatching(dir, "*.png");
                 }
 
+                this.Request.PromptItem = this.LastPromptConfig.LastPrompt;
             }
             catch (Exception ex)
             {
@@ -212,6 +213,21 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        #region 最終プロンプト
+        /// <summary>
+        /// 最終プロンプト
+        /// </summary>
+        public LastPromptConfigM LastPromptConfig
+        {
+            get
+            {
+                return GblValues.Instance.LastPrompt!.Item;
+            }
+        }
+        #endregion
+
+        Random _Rand = new Random();
+
         #region Promptの実行処理
         /// <summary>
         /// Promptの実行処理
@@ -222,13 +238,25 @@ namespace Chovitai.ViewModels
             {
                 while (this.ExecutePrompt)
                 {
-                    var ret = await this.Request.PostRequest(this.A1111Config.URL, this.A1111Config.ImageOutDirectory);
+                    var prompt = this.Request.PromptItem.ShallowCopy<PromptM>();
+
+                    // Pormptが-1以下の設定であればランダムの値にすり替える
+                    if (prompt.Seed <= -1)
+                    {
+                        prompt.Seed = _Rand.Next(); // Seed値の作成
+                    }
+
+                    var ret = await this.Request.PostRequest(this.A1111Config.URL, this.A1111Config.ImageOutDirectory, prompt);
 
                     // スレッドセーフの呼び出し
                     await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
                         new Action(() =>
                         {
                             this.FileList.SelectedLast();       // 追加されたファイルを選択
+                                                                // プロンプト実行履歴
+                            // 最終実行プロンプトのセット
+                            this.LastPromptConfig.LastPrompt = prompt;
+                            GblValues.Instance.LastPrompt!.SaveXML();   // 最終プロンプトの保存
                         }));
                 }
             }
