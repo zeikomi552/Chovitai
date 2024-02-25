@@ -3,6 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:Converters="clr-namespace:Chovitai.Common.Converters"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:my="clr-namespace:Chovitai.Common.Utilities"
+             xmlns:enum="clr-namespace:Chovitai.Common.Enums"
              xmlns:Actions="clr-namespace:Chovitai.Common.Actions"
              xmlns:svgc="http://sharpvectors.codeplex.com/svgc/"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
@@ -101,9 +103,19 @@
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="5">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Margin="5" Text="Sampler:"/>
-                        <TextBox Width="150" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.SamplerIndex}"/>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text="Sampler:"/>
+                            <TextBox Width="150" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.SamplerIndex}"/>
+                        </StackPanel>
+                        <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="AllowCommercialUse"/>
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
+                            <ComboBox Margin="5" Width="80" ItemsSource="{Binding Mode=OneWay, Source={my:Enumeration {x:Type enum:SamplerIndexEnum}}}"
+                                              SelectedValue="{Binding Request.PromptItem.SamplerIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                              DisplayMemberPath="Description" SelectedValuePath="Value"/>
+
+                        </StackPanel>-->
                     </StackPanel>
                 </Grid>
             </Grid>
