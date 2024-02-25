@@ -1,6 +1,8 @@
 ﻿using MVVMCore.BaseClass;
+using MVVMCore.Common.Utilities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -199,6 +201,96 @@ namespace Chovitai.Models.A1111
                 && req.Steps.Equals(this.Steps))
                 return true;
             else return false;
+        }
+        #endregion
+
+
+        #region Commandへセット
+        /// <summary>
+        /// Commandへセット
+        /// </summary>
+        public static PromptM CreateCommandFromImageText(string image_text)
+        {
+            try
+            {
+                string[] text = image_text.Split("\n");
+                PromptM ret = new PromptM();
+
+                foreach (var tmp in text)
+                {
+                    string div_text = string.Empty;
+                    if (CheckAndDiv(tmp, "parameters:", out div_text))
+                    {
+                        ret.Prompt = div_text;
+                    }
+                    else if (CheckAndDiv(tmp, "Negative prompt:", out div_text))
+                    {
+                        ret.NegativePrompt = div_text;
+                    }
+                    else
+                    {
+                        string[] tmp2 = tmp.Split(",");
+
+                        foreach (var item in tmp2)
+                        {
+                            if (CheckAndDiv(item, "Steps:", out div_text))
+                            {
+                                ret.Steps = int.TryParse(div_text, out int steps) ? steps : 20;
+                            }
+                            else if (CheckAndDiv(item, "Sampler:", out div_text))
+                            {
+                                ret.SamplerIndex = div_text;
+                            }
+                            else if (CheckAndDiv(item, "Seed:", out div_text))
+                            {
+                                ret.Seed = int.TryParse(div_text, out int seed) ? seed : 20;
+
+                            }
+                            else if (CheckAndDiv(item, "Size:", out div_text))
+                            {
+                                string[] wh = div_text.Split("x");
+
+                                if (wh.Length >= 2)
+                                {
+                                    ret.Width = int.TryParse(wh[0], out int width) ? width : 512;
+                                    ret.Height = int.TryParse(wh[1], out int height) ? height : 512;
+                                }
+                            }
+                        }
+
+                    }
+                }
+                return ret;
+
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+                return new PromptM();
+            }
+        }
+        #endregion
+
+        #region Imageに含まれるテキストの prameter:などを確認し後続の文字列のみ取り出す関数
+        /// <summary>
+        /// Imageに含まれるテキストの prameter:などを確認し後続の文字列のみ取り出す関数
+        /// </summary>
+        /// <param name="image_text">Imageに含まれるテキスト</param>
+        /// <param name="check_text">parameter:など</param>
+        /// <param name="div_text">戻り値：後続の文字列</param>
+        /// <returns>true:チェックする文字列が存在した false:チェックする文字列が存在しなかった</returns>
+        private static bool CheckAndDiv(string image_text, string check_text, out string div_text)
+        {
+            if (image_text.Contains(check_text))
+            {
+                div_text = image_text.Replace(check_text, "").Trim();
+                return true;
+            }
+            else
+            {
+                div_text = string.Empty;
+                return false;
+            }
         }
         #endregion
     }
