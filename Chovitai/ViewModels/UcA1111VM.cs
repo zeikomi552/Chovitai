@@ -73,6 +73,7 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        static bool bInit = false;
         #region 画面初期化処理
         /// <summary>
         /// 画面初期化処理
@@ -83,19 +84,23 @@ namespace Chovitai.ViewModels
         {
             try
             {
-                string dir = this.A1111Config.ImageOutDirectory;
-                if (Directory.Exists(dir))
+                if (!bInit)
                 {
-                    ReadDirectory(dir);
+                    string dir = this.A1111Config.ImageOutDirectory;
+                    if (Directory.Exists(dir))
+                    {
+                        ReadDirectory(dir);
 
-                    // ファイルウォッチャーをいったん終了
-                    FinishDirectoryWatching();
+                        // ファイルウォッチャーをいったん終了
+                        FinishDirectoryWatching();
 
-                    // ファイルウォッチャーの開始
-                    StartDirectoryWatching(dir, "*.png");
+                        // ファイルウォッチャーの開始
+                        StartDirectoryWatching(dir, "*.png");
+                    }
+
+                    this.Request.PromptItem = this.LastPromptConfig.LastPrompt;
+                    bInit = true;
                 }
-
-                this.Request.PromptItem = this.LastPromptConfig.LastPrompt;
             }
             catch (Exception ex)
             {

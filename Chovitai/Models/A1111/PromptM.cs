@@ -217,11 +217,11 @@ namespace Chovitai.Models.A1111
         /// <summary>
         /// Random seed[Seed]プロパティ用変数
         /// </summary>
-        int _Seed = -1;
+        Int64 _Seed = -1;
         /// <summary>
         /// Random seed[Seed]プロパティ
         /// </summary>
-        public int Seed
+        public Int64 Seed
         {
             get
             {
@@ -295,8 +295,7 @@ namespace Chovitai.Models.A1111
                             }
                             else if (CheckAndDiv(item, "Seed:", out div_text))
                             {
-                                ret.Seed = int.TryParse(div_text, out int seed) ? seed : 20;
-
+                                ret.Seed = Int64.TryParse(div_text, out Int64 seed) ? seed : 20;
                             }
                             else if (CheckAndDiv(item, "Size:", out div_text))
                             {

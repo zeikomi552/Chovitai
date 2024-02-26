@@ -56,6 +56,7 @@ namespace Chovitai.Models.A1111
                     width = prompt.Width,
                     height = prompt.Height,
                     steps = prompt.Steps,
+                    seed = prompt.Seed,
                     sampler_index = prompt.SamplerIndex
                 };
 
