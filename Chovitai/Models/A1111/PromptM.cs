@@ -1,11 +1,15 @@
-﻿using MVVMCore.BaseClass;
+﻿using Chovitai.Common.Enums;
+using MVVMCore.BaseClass;
 using MVVMCore.Common.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using Chovitai.Common.Utilities;
+using System.ComponentModel;
 
 namespace Chovitai.Models.A1111
 {
@@ -131,6 +135,54 @@ namespace Chovitai.Models.A1111
                 {
                     _SamplerIndex = value;
                     NotifyPropertyChanged("SamplerIndex");
+                    NotifyPropertyChanged("Sampler");
+                }
+            }
+        }
+        #endregion
+
+        #region Picture Sampler[SamplerIndex]プロパティ
+        /// <summary>
+        /// Picture Sampler[SamplerIndex]プロパティ
+        /// </summary>
+        public SamplerIndexEnum? Sampler
+        {
+            get
+            {
+                // 値を列挙してコンソールに出力する
+                var samplers = Enum.GetValues(typeof(SamplerIndexEnum));
+
+                // SamplerIndexの列挙を確認
+                foreach (SamplerIndexEnum sampler in samplers)
+                {
+                    DescriptionAttribute? t = new DescriptionAttribute();   // Description属性を取得する
+                    sampler.TryGetAttribute<DescriptionAttribute>(out t);
+
+                    // SamplerIndexとの一致確認
+                    if (t != null && t.Description.Equals(this.SamplerIndex))
+                    {
+                        return sampler;
+                    }
+                }
+                return null;
+                
+            }
+            set
+            {
+                if (_SamplerIndex == null || !_SamplerIndex.Equals(value))
+                {
+                    DescriptionAttribute? t = new DescriptionAttribute();   // Description属性を取得する
+
+                    if (value != null && value.TryGetAttribute<DescriptionAttribute>(out t))
+                    {
+                        _SamplerIndex = t!.Description;
+                        NotifyPropertyChanged("Sampler");
+                    }
+                    else
+                    {
+                        _SamplerIndex = string.Empty;
+                        NotifyPropertyChanged("Sampler");
+                    }
                 }
             }
         }

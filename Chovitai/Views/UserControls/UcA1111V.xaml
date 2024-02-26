@@ -105,17 +105,13 @@
                 <Grid Grid.Row="5">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock VerticalAlignment="Center" Margin="5" Text="Sampler:"/>
-                            <TextBox Width="150" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.SamplerIndex}"/>
-                        </StackPanel>
-                        <!--<StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
-                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="AllowCommercialUse"/>
+                            <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="Sampler"/>
                             <TextBlock VerticalAlignment="Center" Margin="5" Text=":"/>
-                            <ComboBox Margin="5" Width="80" ItemsSource="{Binding Mode=OneWay, Source={my:Enumeration {x:Type enum:SamplerIndexEnum}}}"
-                                              SelectedValue="{Binding Request.PromptItem.SamplerIndex, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                            <ComboBox Margin="5" Width="auto" ItemsSource="{Binding Mode=OneWay, Source={my:Enumeration {x:Type enum:SamplerIndexEnum}}}"
+                                              SelectedValue="{Binding Request.PromptItem.Sampler, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                               DisplayMemberPath="Description" SelectedValuePath="Value"/>
 
-                        </StackPanel>-->
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
             </Grid>
