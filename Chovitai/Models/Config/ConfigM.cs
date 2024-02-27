@@ -121,5 +121,31 @@ namespace Chovitai.Models.Config
         }
         #endregion
 
+        #region デバッグフラグ[DebugF]プロパティ
+        /// <summary>
+        /// デバッグフラグ[DebugF]プロパティ用変数
+        /// </summary>
+        bool _DebugF = false;
+        /// <summary>
+        /// デバッグフラグ[DebugF]プロパティ
+        /// </summary>
+        public bool DebugF
+        {
+            get
+            {
+                return _DebugF;
+            }
+            set
+            {
+                if (!_DebugF.Equals(value))
+                {
+                    _DebugF = value;
+                    NotifyPropertyChanged("DebugF");
+                }
+            }
+        }
+        #endregion
+
+
     }
 }

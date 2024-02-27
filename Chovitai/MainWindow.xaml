@@ -13,6 +13,12 @@
         xmlns:b="http://schemas.microsoft.com/xaml/behaviors" xmlns:ViewModels="clr-namespace:Chovitai.ViewModels" xmlns:UserControls="clr-namespace:Chovitai.Views.UserControls" x:Class="Chovitai.MainWindow"
         mc:Ignorable="d"
         Title="Chovitai" Height="800" Width="1200" WindowStartupLocation="CenterScreen" TitleCharacterCasing="Normal" Style="{StaticResource MaterialDesignWindow}">
+    <mah:MetroWindow.Resources>
+        <Converters:BoolToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+    </mah:MetroWindow.Resources>
+    <mah:MetroWindow.DataContext>
+        <ViewModels:MainWindowVM/>
+    </mah:MetroWindow.DataContext>
     <TabControl>
         <TabItem>
             <TabItem.Header>
@@ -76,7 +82,7 @@
             </TabItem.Header>
             <UserControls:UcFileCheckV />
         </TabItem>
-        <TabItem>
+        <TabItem Visibility="{Binding DebugF, Converter={StaticResource BoolToVisibilityConverter}}">
             <TabItem.Header>
                 <StackPanel Orientation="Horizontal">
                     <svgc:SvgViewbox Source="/Common/Images/ai-svgrepo-com.svg" Width="50" />
