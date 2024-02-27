@@ -95,11 +95,22 @@
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="4">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock VerticalAlignment="Center" Margin="5" Text="Seed:"/>
-                        <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Seed}"/>
-                        <TextBlock VerticalAlignment="Center" Margin="5" Text="Steps:"/>
-                        <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Steps}"/>
+                    <StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text="Seed:"/>
+                            <TextBox VerticalAlignment="Center" Width="100" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Seed}"/>
+                            <Button Margin="5" Content="-1">
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Click">
+                                        <b:CallMethodAction TargetObject="{Binding}" MethodName="RandomSet"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                            </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" Margin="5" Text="Steps:"/>
+                            <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Steps}"/>
+                        </StackPanel>
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="5">

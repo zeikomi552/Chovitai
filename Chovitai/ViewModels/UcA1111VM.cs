@@ -330,5 +330,22 @@ namespace Chovitai.ViewModels
             }
         }
         #endregion
+
+        #region -1をセットする
+        /// <summary>
+        /// -1をセットする
+        /// </summary>
+        public void RandomSet()
+        {
+            try
+            {
+                this.Request.PromptItem.Seed = -1;
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
+        }
+        #endregion
     }
 }
