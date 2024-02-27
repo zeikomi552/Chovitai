@@ -228,72 +228,73 @@
                                             <RowDefinition Height="*"/>
                                             <RowDefinition Height="auto"/>
                                         </Grid.RowDefinitions>
-                                        <Image Width="100" Source="{Binding Url, Converter={StaticResource URLStringToImageSourceConverter}}">
-                                            <Image.ContextMenu>
-                                                <ContextMenu Name="cm" StaysOpen="true">
-                                                    <MenuItem Header="Clipboard">
-                                                        <MenuItem Header="PostId" IsEnabled="{Binding PostId, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
-                                                            <b:Interaction.Triggers>
-                                                                <b:EventTrigger EventName="Click">
-                                                                    <Actions:ClipboardCopyAction CopyText="{Binding PostId}"/>
-                                                                </b:EventTrigger>
-                                                            </b:Interaction.Triggers>
-                                                        </MenuItem>
-                                                        <MenuItem Header="Username" IsEnabled="{Binding Username, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
-                                                            <b:Interaction.Triggers>
-                                                                <b:EventTrigger EventName="Click">
-                                                                    <Actions:ClipboardCopyAction CopyText="{Binding Username}"/>
-                                                                </b:EventTrigger>
-                                                            </b:Interaction.Triggers>
-                                                        </MenuItem>
-                                                        <MenuItem Header="ModelName" IsEnabled="{Binding Meta.Model, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
-                                                            <b:Interaction.Triggers>
-                                                                <b:EventTrigger EventName="Click">
-                                                                    <Actions:ClipboardCopyAction CopyText="{Binding Meta.Model}"/>
-                                                                </b:EventTrigger>
-                                                            </b:Interaction.Triggers>
-                                                        </MenuItem>
-                                                        <MenuItem Header="Prompt" IsEnabled="{Binding Meta.Prompt, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
-                                                            <b:Interaction.Triggers>
-                                                                <b:EventTrigger EventName="Click">
-                                                                    <Actions:ClipboardCopyAction CopyText="{Binding Meta.Prompt}"/>
-                                                                </b:EventTrigger>
-                                                            </b:Interaction.Triggers>
-                                                        </MenuItem>
-                                                        <MenuItem Header="NegativePrompt" IsEnabled="{Binding Meta.NegativePrompt, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
-                                                            <b:Interaction.Triggers>
-                                                                <b:EventTrigger EventName="Click">
-                                                                    <Actions:ClipboardCopyAction CopyText="{Binding Meta.NegativePrompt}"/>
-                                                                </b:EventTrigger>
-                                                            </b:Interaction.Triggers>
-                                                        </MenuItem>
-                                                        <MenuItem Header="URL"  IsEnabled="{Binding ImageURL, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
-                                                            <b:Interaction.Triggers>
-                                                                <b:EventTrigger EventName="Click">
-                                                                    <Actions:ClipboardCopyAction CopyText="{Binding ImageURL}"/>
-                                                                </b:EventTrigger>
-                                                            </b:Interaction.Triggers>
-                                                        </MenuItem>
 
-
-                                                    </MenuItem>
-                                                    <MenuItem Header="Open URL">
-                                                        <b:Interaction.Triggers>
-                                                            <b:EventTrigger EventName="Click">
-                                                                <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenURL"/>
-                                                            </b:EventTrigger>
-                                                        </b:Interaction.Triggers>
-                                                    </MenuItem>
-                                                    <MenuItem Header="Open PromptTool">
-                                                        <b:Interaction.Triggers>
-                                                            <b:EventTrigger EventName="Click">
-                                                                <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenPromptTool"/>
-                                                            </b:EventTrigger>
-                                                        </b:Interaction.Triggers>
-                                                    </MenuItem>
-                                                </ContextMenu>
-                                            </Image.ContextMenu>
-                                        </Image>
+                                        <Grid>
+                                            <MediaElement Width="100" MinHeight="100" Source="{Binding Url}" Volume="0">
+                                                <MediaElement.ContextMenu>
+                                                    <ContextMenu Name="cm" StaysOpen="true">
+                                                        <MenuItem Header="Clipboard">
+                                                            <MenuItem Header="PostId" IsEnabled="{Binding PostId, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                                <b:Interaction.Triggers>
+                                                                    <b:EventTrigger EventName="Click">
+                                                                        <Actions:ClipboardCopyAction CopyText="{Binding PostId}"/>
+                                                                    </b:EventTrigger>
+                                                                </b:Interaction.Triggers>
+                                                            </MenuItem>
+                                                            <MenuItem Header="Username" IsEnabled="{Binding Username, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                                <b:Interaction.Triggers>
+                                                                    <b:EventTrigger EventName="Click">
+                                                                        <Actions:ClipboardCopyAction CopyText="{Binding Username}"/>
+                                                                    </b:EventTrigger>
+                                                                </b:Interaction.Triggers>
+                                                            </MenuItem>
+                                                            <MenuItem Header="ModelName" IsEnabled="{Binding Meta.Model, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                                <b:Interaction.Triggers>
+                                                                    <b:EventTrigger EventName="Click">
+                                                                        <Actions:ClipboardCopyAction CopyText="{Binding Meta.Model}"/>
+                                                                    </b:EventTrigger>
+                                                                </b:Interaction.Triggers>
+                                                            </MenuItem>
+                                                            <MenuItem Header="Prompt" IsEnabled="{Binding Meta.Prompt, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                                <b:Interaction.Triggers>
+                                                                    <b:EventTrigger EventName="Click">
+                                                                        <Actions:ClipboardCopyAction CopyText="{Binding Meta.Prompt}"/>
+                                                                    </b:EventTrigger>
+                                                                </b:Interaction.Triggers>
+                                                            </MenuItem>
+                                                            <MenuItem Header="NegativePrompt" IsEnabled="{Binding Meta.NegativePrompt, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                                <b:Interaction.Triggers>
+                                                                    <b:EventTrigger EventName="Click">
+                                                                        <Actions:ClipboardCopyAction CopyText="{Binding Meta.NegativePrompt}"/>
+                                                                    </b:EventTrigger>
+                                                                </b:Interaction.Triggers>
+                                                            </MenuItem>
+                                                            <MenuItem Header="URL"  IsEnabled="{Binding ImageURL, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                                <b:Interaction.Triggers>
+                                                                    <b:EventTrigger EventName="Click">
+                                                                        <Actions:ClipboardCopyAction CopyText="{Binding ImageURL}"/>
+                                                                    </b:EventTrigger>
+                                                                </b:Interaction.Triggers>
+                                                            </MenuItem>
+                                                        </MenuItem>
+                                                        <MenuItem Header="Open URL">
+                                                            <b:Interaction.Triggers>
+                                                                <b:EventTrigger EventName="Click">
+                                                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenURL"/>
+                                                                </b:EventTrigger>
+                                                            </b:Interaction.Triggers>
+                                                        </MenuItem>
+                                                        <MenuItem Header="Open PromptTool">
+                                                            <b:Interaction.Triggers>
+                                                                <b:EventTrigger EventName="Click">
+                                                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenPromptTool"/>
+                                                                </b:EventTrigger>
+                                                            </b:Interaction.Triggers>
+                                                        </MenuItem>
+                                                    </ContextMenu>
+                                                </MediaElement.ContextMenu>
+                                            </MediaElement>
+                                        </Grid>
                                         <ToggleButton VerticalAlignment="Top" HorizontalAlignment="Left"
                                                       Style="{StaticResource MaterialDesignActionToggleButton}"
                                                       IsChecked="{Binding IsBookmark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -362,8 +363,8 @@
                         <TextBlock VerticalAlignment="Center" Text="{Binding ImageList.SelectedImage.Meta.Model_hash}"/>
                     </StackPanel>
                 </WrapPanel>
-                <Image Margin="5" Grid.Row="1" Source="{Binding ImageList.SelectedImage.Url, Converter={StaticResource URLStringToImageSourceConverter}}">
-                    <Image.ContextMenu>
+                <MediaElement Margin="5" Grid.Row="1" Source="{Binding ImageList.SelectedImage.Url}" Volume="0">
+                    <MediaElement.ContextMenu>
                         <ContextMenu x:Name="cm2" StaysOpen="true">
                             <MenuItem Header="Clipboard">
                                 <MenuItem Header="Model" IsEnabled="{Binding ImageList.SelectedImage.Meta.Model, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
@@ -445,8 +446,8 @@
                                 </b:Interaction.Triggers>
                             </MenuItem>
                         </ContextMenu>
-                    </Image.ContextMenu>
-                </Image>
+                    </MediaElement.ContextMenu>
+                </MediaElement>
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*"/>

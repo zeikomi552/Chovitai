@@ -136,8 +136,8 @@
                             <StackPanel>
                                 <TextBlock Text="{Binding Username}"/>
                                 <Grid>
-                                    <Image Width="100" Source="{Binding Url, Converter={StaticResource URLStringToImageSourceConverter}}">
-                                        <Image.ContextMenu>
+                                    <MediaElement Width="100" Source="{Binding Url}" Volume="0">
+                                        <MediaElement.ContextMenu>
                                             <ContextMenu Name="cm" StaysOpen="true">
                                                 <MenuItem Header="Clipboard">
                                                     <MenuItem Header="Username" IsEnabled="{Binding Username, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
@@ -191,8 +191,8 @@
                                                     </b:Interaction.Triggers>
                                                 </MenuItem>
                                             </ContextMenu>
-                                        </Image.ContextMenu>
-                                    </Image>
+                                        </MediaElement.ContextMenu>
+                                    </MediaElement>
                                     <ToggleButton VerticalAlignment="Top" HorizontalAlignment="Left"
                                                       Style="{StaticResource MaterialDesignActionToggleButton}"
                                                       IsChecked="{Binding IsBookmark, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
@@ -247,8 +247,8 @@
                     </StackPanel>
                 </WrapPanel>
 
-                <Image Grid.Row="1" Source="{Binding ImageList.SelectedImage.Url, Converter={StaticResource URLStringToImageSourceConverter}}">
-                    <Image.ContextMenu>
+                <MediaElement Grid.Row="1" Source="{Binding ImageList.SelectedImage.Url}" Volume="0">
+                    <MediaElement.ContextMenu>
                         <ContextMenu x:Name="cm2" StaysOpen="true">
                             <MenuItem Header="Clipboard">
                                 <MenuItem Header="Model" IsEnabled="{Binding ImageList.SelectedImage.Meta.Model, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
@@ -324,8 +324,8 @@
                             </MenuItem>
 
                         </ContextMenu>
-                    </Image.ContextMenu>
-                </Image>
+                    </MediaElement.ContextMenu>
+                </MediaElement>
 
                 <Grid Grid.Row="2">
                     <Grid.ColumnDefinitions>
