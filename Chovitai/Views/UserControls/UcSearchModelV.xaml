@@ -536,8 +536,8 @@
                                             <TextBlock Text="{Binding Meta.ModelHash}"/>
                                         </StackPanel>
                                     </WrapPanel>
-                                    <Image Width="400" Source="{Binding Url, Converter={StaticResource URLStringToImageSourceConverter}}">
-                                        <Image.ContextMenu>
+                                    <MediaElement Width="400" Source="{Binding Url}" Volume="0">
+                                        <MediaElement.ContextMenu>
                                             <ContextMenu x:Name="cm2" StaysOpen="true">
                                                 <MenuItem Header="Clipboard">
                                                     <MenuItem Header="Model" IsEnabled="{Binding Meta.Model, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
@@ -605,8 +605,8 @@
                                                     </b:Interaction.Triggers>
                                                 </MenuItem>
                                             </ContextMenu>
-                                        </Image.ContextMenu>
-                                    </Image>
+                                        </MediaElement.ContextMenu>
+                                    </MediaElement>
                                 </StackPanel>
                             </DataTemplate>
                         </ListView.ItemTemplate>

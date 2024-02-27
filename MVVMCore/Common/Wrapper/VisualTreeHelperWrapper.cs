@@ -38,6 +38,12 @@ namespace MVVMCore.Common.Wrapper
         public static DependencyObject GetWindow<T>(object sender)
         {
             DependencyObject depobj = (DependencyObject)sender;
+
+            if (depobj is T)
+            {
+                return depobj;
+            }
+
             while (true)
             {
                 depobj = VisualTreeHelper.GetParent(depobj);

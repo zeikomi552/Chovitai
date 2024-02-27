@@ -229,7 +229,9 @@ namespace Chovitai.ViewModels
                 }
 
                 // 実行してJSON形式をデシリアライズ
-                var request_model = JSONUtil.DeserializeFromText<CvsImageM>(request = await tmp.Request(url));
+                //var request_model = JSONUtil.DeserializeFromText<CvsImageM>(request = await tmp.Request(url));
+                var request_tmp = await tmp.Request(url);
+                var request_model = JSONUtil.DeserializeFromText<CvsImageM>(request_tmp);
 
                 // Nullチェック
                 if (request_model != null)

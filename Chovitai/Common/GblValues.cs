@@ -1,4 +1,5 @@
 ﻿using Chovitai.Common.Enums;
+using Chovitai.Models.A1111;
 using Chovitai.Models.Bookmark;
 using Chovitai.Models.Config;
 using MVVMCore.Common.Utilities;
@@ -113,6 +114,53 @@ namespace Chovitai.Common
         }
         #endregion
 
+        #region Prompt画面の設定コンフィグ[A1111Setting]プロパティ
+        /// <summary>
+        /// Prompt画面の設定コンフィグ[A1111Setting]プロパティ用変数
+        /// </summary>
+        ConfigManager<A1111SettingConfigM>? _A1111Setting;
+        /// <summary>
+        /// Prompt画面の設定コンフィグ[A1111Setting]プロパティ
+        /// </summary>
+        public ConfigManager<A1111SettingConfigM>? A1111Setting
+        {
+            get
+            {
+                return _A1111Setting;
+            }
+            set
+            {
+                if (_A1111Setting == null || !_A1111Setting.Equals(value))
+                {
+                    _A1111Setting = value;
+                }
+            }
+        }
+        #endregion
+
+        #region WebUI画面のPrompt最終プロンプト[_LastPrompt]プロパティ
+        /// <summary>
+        /// Prompt画面の設定コンフィグ[_LastPrompt]プロパティ用変数
+        /// </summary>
+        ConfigManager<LastPromptConfigM>? _LastPrompt;
+        /// <summary>
+        /// Prompt画面の設定コンフィグ[_LastPrompt]プロパティ
+        /// </summary>
+        public ConfigManager<LastPromptConfigM>? LastPrompt
+        {
+            get
+            {
+                return _LastPrompt;
+            }
+            set
+            {
+                if (_LastPrompt == null || !_LastPrompt.Equals(value))
+                {
+                    _LastPrompt = value;
+                }
+            }
+        }
+        #endregion
         #region Model用ブックマークリスト[ModelBookmarkList]プロパティ
         /// <summary>
         /// Model用ブックマークリスト[ModelBookmarkList]プロパティ用変数
@@ -172,6 +220,18 @@ namespace Chovitai.Common
 
             // コンフィグファイルの読み込み
             this.Config.LoadXML();
+
+            // WebUI画面用の設定ファイル
+            this.A1111Setting = new ConfigManager<A1111SettingConfigM>(A1111SettingConfigM.CurrDir, A1111SettingConfigM.DefaultFile, new A1111SettingConfigM());
+
+            // コンフィグファイルの読み込み
+            this.A1111Setting.LoadXML();
+
+            // WebUI画面用の設定ファイル
+            this.LastPrompt = new ConfigManager<LastPromptConfigM>(LastPromptConfigM.CurrDir, LastPromptConfigM.DefaultFile, new LastPromptConfigM());
+
+            // コンフィグファイルの読み込み
+            this.LastPrompt.LoadXML();
 
             // モデル用ブックマークの初期化処理
             this.ModelBookmark.InitBookmark();

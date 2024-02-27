@@ -7,6 +7,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="Views\A1111SettingV.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="Views\BookmarkRenameV.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -17,6 +20,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\SearchTagV.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\UserControls\UcA1111V.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\UserControls\UcImageBookmarkV.xaml.cs">
@@ -45,6 +51,9 @@
     <Page Update="MainWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="Views\A1111SettingV.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="Views\BookmarkRenameV.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -55,6 +64,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\SearchTagV.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\UserControls\UcA1111V.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\UserControls\UcImageBookmarkV.xaml">
