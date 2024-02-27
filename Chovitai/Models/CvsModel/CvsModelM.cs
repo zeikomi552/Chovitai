@@ -15,6 +15,10 @@ using MVVMCore.Common.Utilities;
 using Chovitai.Common;
 using System.IO;
 using Chovitai.Views;
+using Chovitai.Common.Converters;
+using Newtonsoft.Json.Serialization;
+using System.Runtime.Serialization;
+using System.CodeDom;
 
 namespace Chovitai.Models.CvsModel
 {
@@ -1747,6 +1751,7 @@ namespace Chovitai.Models.CvsModel
             /// Filter to models based on their commercial permissions[AllowCommercialUse]プロパティ
             /// </summary>
             [JsonPropertyName("allowCommercialUse")]
+            [JsonConverter(typeof(EmptyArrayToObjectConverter<string>))]
             public string AllowCommercialUse
             {
                 get

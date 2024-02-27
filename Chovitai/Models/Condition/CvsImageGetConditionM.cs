@@ -140,11 +140,11 @@ namespace Chovitai.Models.Condition
         /// <summary>
         /// カーソルリスト[CursorList]プロパティ用変数
         /// </summary>
-        Dictionary<int, string> _CursorList = new Dictionary<int, string>();
+        Dictionary<string, string> _CursorList = new Dictionary<string, string>();
         /// <summary>
         /// カーソルリスト[CursorList]プロパティ
         /// </summary>
-        public Dictionary<int, string> CursorList
+        public Dictionary<string, string> CursorList
         {
             get
             {
@@ -310,7 +310,7 @@ namespace Chovitai.Models.Condition
             if (img != null && img.Metadata != null && img.Metadata.NextCursor != null)
             {
                 // 次のカーソルのセット
-                this.CursorList.Add(img.Metadata.NextCursor.Value, img.Metadata.NextPage);
+                this.CursorList.Add(img.Metadata.NextCursor, img.Metadata.NextPage);
             }
         }
         public void RemoveLastCursor()

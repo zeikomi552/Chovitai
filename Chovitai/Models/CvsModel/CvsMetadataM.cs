@@ -1,4 +1,5 @@
-﻿using MVVMCore.BaseClass;
+﻿using Chovitai.Common.Converters;
+using MVVMCore.BaseClass;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -170,12 +171,12 @@ namespace Chovitai.Models.CvsModel
         /// <summary>
         /// 次のカーソル[NextCursor]プロパティ用変数
         /// </summary>
-        int? _NextCursor = null;
+        string _NextCursor = string.Empty;
         /// <summary>
         /// 次のカーソル[NextCursor]プロパティ
         /// </summary>
         [JsonPropertyName("nextCursor")]
-        public int? NextCursor
+        public string NextCursor
         {
             get
             {
