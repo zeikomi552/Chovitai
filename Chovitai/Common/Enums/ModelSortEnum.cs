@@ -20,12 +20,20 @@ namespace Chovitai.Common.Enums
         Most_Downloaded,
         [Description("Most Liked")]
         Most_Liked,
+        [Description("Most Buzz")]
+        Most_Buzz,
         [Description("Most Discussed")]
         Most_Discussed,
         [Description("Most Collected")]
         Most_Collected,
+
+        [Description("Most Images")]
+        Most_Images,
         [Description("Newest")]
-        Newest
+        Newest,
+        [Description("Oldest")]
+        Oldest
+
     }
 
     /// <summary>
@@ -37,8 +45,15 @@ namespace Chovitai.Common.Enums
         Empty,
         [Description("Most Reactions")]
         Most_Reactions,
+        Most_Buzz,
         [Description("Most Comments")]
         Most_Comments,
+        [Description("Most Collected")]
+        Most_Collected,
+        [Description("Oldest")]
+        Oldest,
+        [Description("Random")]
+        Random,
         [Description("Newest")]
         Newest,
         //[Description("Random")]
