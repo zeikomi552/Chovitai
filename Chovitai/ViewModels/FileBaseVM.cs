@@ -455,18 +455,25 @@ namespace Chovitai.ViewModels
         {
             try
             {
+                // インデックスの確認
                 int index = this.FileList.IndexOf(this.FileList.SelectedItem);
+
+                // 存在する場合
                 if (index >= 0)
                 {
-                    this.FileList.SelectedItemDelete();
+                    string path = this.FileList.SelectedItem.FilePath;  // 選択しているファイルパスの取得
+                    this.FileList.SelectedItemDelete();                 // リストからファイルを削除
+                    File.Delete(path);                                  // ファイルの実態を削除
 
+                    // 選択位置を確認（リスト上にそのインデックスがあるのかの確認）
                     if (this.FileList.Count > index)
                     {
+                        // フォーカスをあてる
                         this.FileList.SelectedItem = this.FileList.ElementAt(index);
                     }
                     else
                     {
-                        
+                        // 最後の要素にフォーカスをあてる
                         this.FileList.SelectedLast();
                     }
                 }

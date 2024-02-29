@@ -9,10 +9,6 @@ namespace Chovitai.ViewModels
     {
         #region デバッグフラグ[DebugF]プロパティ
         /// <summary>
-        /// デバッグフラグ[DebugF]プロパティ用変数
-        /// </summary>
-        bool _DebugF = false;
-        /// <summary>
         /// デバッグフラグ[DebugF]プロパティ
         /// </summary>
         public bool DebugF
