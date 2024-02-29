@@ -455,7 +455,21 @@ namespace Chovitai.ViewModels
         {
             try
             {
-                File.Delete(this.FileList.SelectedItem.FilePath);
+                int index = this.FileList.IndexOf(this.FileList.SelectedItem);
+                if (index >= 0)
+                {
+                    this.FileList.SelectedItemDelete();
+
+                    if (this.FileList.Count > index)
+                    {
+                        this.FileList.SelectedItem = this.FileList.ElementAt(index);
+                    }
+                    else
+                    {
+                        
+                        this.FileList.SelectedLast();
+                    }
+                }
             }
             catch (Exception e)
             {
