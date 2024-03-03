@@ -20,7 +20,6 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
-
         #region 画面初期化処理
         /// <summary>
         /// 画面初期化処理
@@ -38,6 +37,7 @@ namespace Chovitai.ViewModels
             }
         }
         #endregion
+
         #region クローズ処理
         /// <summary>
         /// クローズ処理

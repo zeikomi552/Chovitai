@@ -89,6 +89,7 @@ namespace Chovitai.ViewModels
                     string dir = this.A1111Config.ImageOutDirectory;
                     if (Directory.Exists(dir))
                     {
+                        // ディレクトリの読み込み処理
                         ReadDirectory(dir);
 
                         // ファイルウォッチャーをいったん終了
