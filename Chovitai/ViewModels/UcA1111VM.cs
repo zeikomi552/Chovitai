@@ -73,7 +73,13 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        #region 初期化完了フラグ
+        /// <summary>
+        /// 初期化完了フラグ
+        /// </summary>
         static bool bInit = false;
+        #endregion
+
         #region 画面初期化処理
         /// <summary>
         /// 画面初期化処理
