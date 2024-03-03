@@ -197,13 +197,25 @@ namespace Chovitai.ViewModels
         {
             try
             {
-                var batpath = GblValues.Instance.A1111Setting?.Item.BatPath;
+                var curr_dir_path = GblValues.Instance.A1111Setting?.Item.CurrentDirectory;
+                //string command = string.Format(@"/C python launch.py -–nowebui --xformers");
 
                 Process p = new Process();
-                p.StartInfo.WorkingDirectory = PathManager.GetCurrentDirectory(batpath);
-                p.StartInfo.FileName = batpath;
-                p.StartInfo.Verb = "RunAs"; //管理者として実行する場合
+                ProcessStartInfo info = new ProcessStartInfo();
+                info.FileName = "cmd.exe";
+                info.RedirectStandardInput = true;
+                info.UseShellExecute = false;
+                p.StartInfo = info;
                 p.Start();
+
+                using (StreamWriter sw = p.StandardInput)
+                {
+                    if (sw.BaseStream.CanWrite)
+                    {
+                        sw.WriteLine("cd {0}", curr_dir_path);
+                        sw.WriteLine("python launch.py --nowebui --xformers");
+                    }
+                }
             }
             catch (Exception ex)
             {
