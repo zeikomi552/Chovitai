@@ -977,6 +977,7 @@ namespace Chovitai.Models.CvsImage
                 }
             }
             #endregion
+
             #region Stats data[Stats]プロパティ
             /// <summary>
             /// Stats data[Stats]プロパティ用変数
@@ -1002,8 +1003,6 @@ namespace Chovitai.Models.CvsImage
                 }
             }
             #endregion
-
-
 
             #region The username of the creator[Username]プロパティ
             /// <summary>
@@ -1031,9 +1030,9 @@ namespace Chovitai.Models.CvsImage
             }
             #endregion
 
-            #region ImageのCivitaiURLL
+            #region ImageのCivitaiURL
             /// <summary>
-            /// ImageのCivitaiURLL
+            /// ImageのCivitaiURL
             /// </summary>
             public string ImageURL
             {

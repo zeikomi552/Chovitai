@@ -13,16 +13,17 @@
              xmlns:ViewModels="clr-namespace:Chovitai.ViewModels" x:Name="userControl" x:Class="Chovitai.Views.UserControls.UcSearchImageV"
              mc:Ignorable="d" 
              d:DesignHeight="800" d:DesignWidth="1200">
-    <UserControl.DataContext>
-        <ViewModels:UcSearchImageVM x:Name="vm"/>
-    </UserControl.DataContext>
     <UserControl.Resources>
+        <ViewModels:UcSearchImageVM x:Key="vm"/>
         <Converters:NullToBooleanFalseConverter x:Key="NullToBooleanFalseConverter"/>
         <Converters:ConvertBooleanConverter x:Key="ConvertBooleanConverter"/>
         <Converters:URLStringToImageSourceConverter x:Key="URLStringToImageSourceConverter"/>
         <Converters:ImageNsfwEnumToVisibilityConverter x:Key="ImageNsfwEnumToVisibilityConverter"/>
         <Converters:EmptyStringConverter x:Key="EmptyStringConverter"/>
     </UserControl.Resources>
+    <UserControl.DataContext>
+        <Binding Source="{StaticResource vm}"/>
+    </UserControl.DataContext>
     <b:Interaction.Triggers>
         <b:EventTrigger>
             <b:CallMethodAction TargetObject="{Binding}" MethodName="Init"/>
@@ -288,6 +289,13 @@
                                                             <b:Interaction.Triggers>
                                                                 <b:EventTrigger EventName="Click">
                                                                     <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenPromptTool"/>
+                                                                </b:EventTrigger>
+                                                            </b:Interaction.Triggers>
+                                                        </MenuItem>
+                                                        <MenuItem Header="Set Command for Prompt Window">
+                                                            <b:Interaction.Triggers>
+                                                                <b:EventTrigger EventName="Click">
+                                                                    <b:CallMethodAction TargetObject="{Binding Mode=OneWay, Source={StaticResource vm}}" MethodName="SetCommand"/>
                                                                 </b:EventTrigger>
                                                             </b:Interaction.Triggers>
                                                         </MenuItem>

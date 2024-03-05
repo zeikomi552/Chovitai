@@ -482,6 +482,29 @@ namespace Chovitai.ViewModels
                 ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
         }
-            
+
+        #region コマンドのセット処理
+        /// <summary>
+        /// コマンドのセット処理
+        /// </summary>
+        public void SetCommand()
+        {
+            try
+            {
+                if (this.ImageList != null && this.ImageList.SelectedImage != null && this.ImageList.SelectedImage.Meta != null)
+                {
+                    GblValues.Instance.Request.PromptItem.Prompt = this.ImageList.SelectedImage.Meta.Prompt;
+                    GblValues.Instance.Request.PromptItem.NegativePrompt = ImageList.SelectedImage.Meta.NegativePrompt;
+                    //GblValues.Instance.Request.PromptItem.Width = ImageList.SelectedImage.Width;
+                    //GblValues.Instance.Request.PromptItem.Height = ImageList.SelectedImage.Height;
+                    //GblValues.Instance.Request.PromptItem.Sampler = ImageList.SelectedImage.Meta.Sampler;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
+        }
+        #endregion
     }
 }
