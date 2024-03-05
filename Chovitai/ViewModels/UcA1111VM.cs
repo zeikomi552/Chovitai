@@ -350,6 +350,30 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        #region お気に入りフォルダへ移動
+        /// <summary>
+        /// お気に入りフォルダへ移動
+        /// </summary>
+        public void MoveFavorite()
+        {
+            try
+            {
+                string dir = Path.Combine(this.A1111Config.CurrentDirectory, "outputs", "Favorite");     // ファイルディレクトリ
+                string filename = System.IO.Path.GetFileName(this.FileList.SelectedItem.FilePath);      // ファイル名
+
+                // フォルダの作成
+                PathManager.CreateDirectory(dir);
+
+                // ファイルの移動処理
+                File.Move(this.FileList.SelectedItem.FilePath, Path.Combine(dir, filename));
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
+        }
+        #endregion
+
         #region -1をセットする
         /// <summary>
         /// -1をセットする
