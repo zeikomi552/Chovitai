@@ -358,11 +358,11 @@ namespace Chovitai.ViewModels
         {
             try
             {
-                string dir = Path.Combine(this.A1111Config.CurrentDirectory, "outputs", "Favorite");     // ファイルディレクトリ
+                string dir = this.A1111Config.FavoriteDirectory;     // ファイルディレクトリ
                 string filename = System.IO.Path.GetFileName(this.FileList.SelectedItem.FilePath);      // ファイル名
 
                 // フォルダの作成
-                PathManager.CreateDirectory(dir);
+                PathManager.CreateDirectory(this.A1111Config.FavoriteDirectory);
 
                 // ファイルの移動処理
                 File.Move(this.FileList.SelectedItem.FilePath, Path.Combine(dir, filename));

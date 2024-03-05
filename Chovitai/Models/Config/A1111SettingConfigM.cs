@@ -69,6 +69,31 @@ namespace Chovitai.Models.Config
         }
         #endregion
 
+        #region お気に入りフォルダパス[FavoriteDirectory]プロパティ
+        /// <summary>
+        /// お気に入りフォルダパス[FavoriteDirectory]プロパティ用変数
+        /// </summary>
+        string _FavoriteDirectory = string.Empty;
+        /// <summary>
+        /// お気に入りフォルダパス[FavoriteDirectory]プロパティ
+        /// </summary>
+        public string FavoriteDirectory
+        {
+            get
+            {
+                return _FavoriteDirectory;
+            }
+            set
+            {
+                if (_FavoriteDirectory == null || !_FavoriteDirectory.Equals(value))
+                {
+                    _FavoriteDirectory = value;
+                    NotifyPropertyChanged("FavoriteDirectory");
+                }
+            }
+        }
+        #endregion
+
         #region URL[URL]プロパティ
         /// <summary>
         /// URL[URL]プロパティ用変数

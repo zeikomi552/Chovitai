@@ -181,5 +181,35 @@ namespace Chovitai.ViewModels
             }
         }
         #endregion
+
+        #region イメージフォルダ設定処理
+        /// <summary>
+        /// イメージフォルダ設定処理
+        /// </summary>
+        public void FavoriteDirectoryOpen()
+        {
+            try
+            {
+                using (var cofd = new CommonOpenFileDialog()
+                {
+                    Title = "フォルダを選択してください",
+                    // フォルダ選択モードにする
+                    IsFolderPicker = true,
+                    InitialDirectory = this.A1111Config.FavoriteDirectory
+                })
+                {
+                    if (cofd.ShowDialog(this._Wnd) != CommonFileDialogResult.Ok)
+                    {
+                        return;
+                    }
+                    this.A1111Config.FavoriteDirectory = cofd.FileName;
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
+        }
+        #endregion
     }
 }
