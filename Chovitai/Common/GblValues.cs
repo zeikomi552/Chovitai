@@ -161,6 +161,7 @@ namespace Chovitai.Common
             }
         }
         #endregion
+
         #region Model用ブックマークリスト[ModelBookmarkList]プロパティ
         /// <summary>
         /// Model用ブックマークリスト[ModelBookmarkList]プロパティ用変数
@@ -238,6 +239,30 @@ namespace Chovitai.Common
 
             // イメージ用ブックマークの初期化処理
             this.ImageBookmark.InitBookmark();
+        }
+        #endregion
+
+        #region A1111 Request[Request]プロパティ
+        /// <summary>
+        /// A1111 Request[Request]プロパティ用変数
+        /// </summary>
+        RequestM _Request = new RequestM();
+        /// <summary>
+        /// A1111 Request[Request]プロパティ
+        /// </summary>
+        public RequestM Request
+        {
+            get
+            {
+                return _Request;
+            }
+            set
+            {
+                if (_Request == null || !_Request.Equals(value))
+                {
+                    _Request = value;
+                }
+            }
         }
         #endregion
     }

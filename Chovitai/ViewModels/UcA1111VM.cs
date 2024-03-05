@@ -35,13 +35,13 @@ namespace Chovitai.ViewModels
         {
             get
             {
-                return _Request;
+                return GblValues.Instance.Request;
             }
             set
             {
-                if (_Request == null || !_Request.Equals(value))
+                if (GblValues.Instance.Request == null || !GblValues.Instance.Request.Equals(value))
                 {
-                    _Request = value;
+                    GblValues.Instance.Request = value;
                     NotifyPropertyChanged("Request");
                 }
             }
