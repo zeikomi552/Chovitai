@@ -27,23 +27,19 @@ namespace Chovitai.ViewModels
 
         #region 検索条件[SearchCondition]プロパティ
         /// <summary>
-        /// 検索条件[SearchCondition]プロパティ用変数
-        /// </summary>
-        CvsImageGetConditionM _SearchCondition = new CvsImageGetConditionM();
-        /// <summary>
         /// 検索条件[SearchCondition]プロパティ
         /// </summary>
         public CvsImageGetConditionM SearchCondition
         {
             get
             {
-                return _SearchCondition;
+                return GblValues.Instance.ImageSearchCondition;
             }
             set
             {
-                if (_SearchCondition == null || !_SearchCondition.Equals(value))
+                if (GblValues.Instance.ImageSearchCondition == null || !GblValues.Instance.ImageSearchCondition.Equals(value))
                 {
-                    _SearchCondition = value;
+                    GblValues.Instance.ImageSearchCondition = value;
                     NotifyPropertyChanged("SearchCondition");
                 }
             }
@@ -184,7 +180,7 @@ namespace Chovitai.ViewModels
                 this.SearchCondition.CursorClear();
 
                 // GET クエリの実行
-                GETQuery(sender, this.SearchCondition.GetConditionQuery);
+                GETQuery(this.SearchCondition.GetConditionQuery);
 
                 // nullチェック
                 if (this.CvsImage != null)
@@ -207,7 +203,7 @@ namespace Chovitai.ViewModels
         /// </summary>
         /// <param name="query"></param>
         /// <param name="add_endpoint"></param>
-        private async void GETQuery(object sender, string query, bool add_endpoint = true)
+        private async void GETQuery(string query, bool add_endpoint = true)
         {
             try
             {
@@ -280,7 +276,7 @@ namespace Chovitai.ViewModels
                     if (!string.IsNullOrEmpty(this.CvsImage.Metadata.NextPage))
                     {
                         // Execute GET Query
-                        GETQuery(sender, this.CvsImage.Metadata.NextPage, false);
+                        GETQuery(this.CvsImage.Metadata.NextPage, false);
 
                         // nullチェック
                         if (this.CvsImage != null)
@@ -314,7 +310,7 @@ namespace Chovitai.ViewModels
                     {
                         this.SearchCondition.RemoveLastCursor();
                         // Execute GET Query
-                        GETQuery(sender, this.SearchCondition.CursorList.LastOrDefault().Value, false);
+                        GETQuery(this.SearchCondition.CursorList.LastOrDefault().Value, false);
                     }
                 }
             }

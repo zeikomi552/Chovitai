@@ -1,6 +1,7 @@
 ﻿using Chovitai.Common.Enums;
 using Chovitai.Models.A1111;
 using Chovitai.Models.Bookmark;
+using Chovitai.Models.Condition;
 using Chovitai.Models.Config;
 using MVVMCore.Common.Utilities;
 using System;
@@ -261,6 +262,30 @@ namespace Chovitai.Common
                 if (_Request == null || !_Request.Equals(value))
                 {
                     _Request = value;
+                }
+            }
+        }
+        #endregion
+
+        #region 検索条件[ImageSearchCondition]プロパティ
+        /// <summary>
+        /// 検索条件[ImageSearchCondition]プロパティ用変数
+        /// </summary>
+        CvsImageGetConditionM _ImageSearchCondition = new CvsImageGetConditionM();
+        /// <summary>
+        /// 検索条件[ImageSearchCondition]プロパティ
+        /// </summary>
+        public CvsImageGetConditionM ImageSearchCondition
+        {
+            get
+            {
+                return _ImageSearchCondition;
+            }
+            set
+            {
+                if (_ImageSearchCondition == null || !_ImageSearchCondition.Equals(value))
+                {
+                    _ImageSearchCondition = value;
                 }
             }
         }
