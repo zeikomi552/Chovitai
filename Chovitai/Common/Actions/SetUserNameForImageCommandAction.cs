@@ -1,5 +1,4 @@
 ﻿using Chovitai.ViewModels;
-using Chovitai.Views.UserControls;
 using Microsoft.Xaml.Behaviors;
 using MVVMCore.Common.Utilities;
 using System;
@@ -8,24 +7,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Interop;
+using System.Windows.Media.Media3D;
 
 namespace Chovitai.Common.Actions
 {
-    #region ModelIdをセットするアクション 
+    #region UserNameセットしImage検索を行うアクション 
     /// <summary> 
-    /// ModelIdをセットするアクション 
+    /// UserNameセットしImage検索を行うアクション 
     /// </summary> 
-    public class SetModelIdForImageCommandAction : TriggerAction<FrameworkElement>
+    public class SetUserNameForImageCommandAction : TriggerAction<FrameworkElement>
     {
 
-        public static readonly DependencyProperty ModelIdProperty =
-        DependencyProperty.Register("ModelId", typeof(int), typeof(SetModelIdForImageCommandAction), new UIPropertyMetadata());
+        public static readonly DependencyProperty UserNameProperty =
+        DependencyProperty.Register("UserName", typeof(string), typeof(SetUserNameForImageCommandAction), new UIPropertyMetadata());
 
-        public int ModelId
+        public string UserName
         {
-            get { return (int)GetValue(ModelIdProperty); }
-            set { SetValue(ModelIdProperty, value); }
+            get { return (string)GetValue(UserNameProperty); }
+            set { SetValue(UserNameProperty, value); }
         }
 
         protected override void Invoke(object obj)
@@ -33,8 +32,9 @@ namespace Chovitai.Common.Actions
             try
             {
                 // ModelIdのセット
-                GblValues.Instance.ImageSearchCondition.Username = null;
-                GblValues.Instance.ImageSearchCondition.ModelId = (int)ModelId;
+                GblValues.Instance.ImageSearchCondition.Username = (string)UserName;
+                GblValues.Instance.ImageSearchCondition.ModelId = null;     // ModelIdのクリア
+
                 var tmp = App.Current.MainWindow as MainWindow; // Mainwindowを取得
 
                 // ViewModelを取得
