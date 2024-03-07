@@ -19,8 +19,8 @@
     <mah:MetroWindow.DataContext>
         <ViewModels:MainWindowVM/>
     </mah:MetroWindow.DataContext>
-    <TabControl>
-        <TabItem>
+    <TabControl x:Name="Maintab">
+        <TabItem x:Name="TabModel">
             <TabItem.Header>
                 <StackPanel Orientation="Horizontal">
                     <svgc:SvgViewbox Source="/Common/Images/ai-artificial-intelligence-computer-ai-svgrepo-com.svg" Width="50" />
@@ -46,7 +46,7 @@
                 </TabItem>
             </TabControl>
         </TabItem>
-        <TabItem>
+        <TabItem x:Name="TabImage">
             <TabItem.Header>
                 <StackPanel Orientation="Horizontal">
                     <svgc:SvgViewbox Source="/Common/Images/image-svgrepo-com.svg" Width="50" />
@@ -60,7 +60,7 @@
                             <svgc:SvgViewbox Source="/Common/Images/lens2-svgrepo-com.svg" Width="50" ToolTip="Search"/>
                         </StackPanel>
                     </TabItem.Header>
-                    <UserControls:UcSearchImageV/>
+                    <UserControls:UcSearchImageV x:Name="ucSearchImage"/>
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>
@@ -73,7 +73,7 @@
 
             </TabControl>
         </TabItem>
-        <TabItem>
+        <TabItem x:Name="TabFileCheck">
             <TabItem.Header>
                 <StackPanel Orientation="Horizontal">
                     <svgc:SvgViewbox Source="/Common/Images/folder-1793-svgrepo-com.svg" Width="50" />
@@ -82,7 +82,7 @@
             </TabItem.Header>
             <UserControls:UcFileCheckV />
         </TabItem>
-        <TabItem Visibility="{Binding DebugF, Converter={StaticResource BoolToVisibilityConverter}}">
+        <TabItem  x:Name="TabPrompt" Visibility="{Binding DebugF, Converter={StaticResource BoolToVisibilityConverter}}">
             <TabItem.Header>
                 <StackPanel Orientation="Horizontal">
                     <svgc:SvgViewbox Source="/Common/Images/ai-svgrepo-com.svg" Width="50" />

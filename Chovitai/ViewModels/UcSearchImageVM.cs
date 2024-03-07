@@ -156,23 +156,12 @@ namespace Chovitai.ViewModels
             }
         }
 
-        public void Search()
-        {
-            try
-            {
-
-            }
-            catch (Exception ex)
-            {
-                ShowMessage.ShowErrorOK(ex.Message, "Error");
-            }
-        }
 
         #region Execute GET REST API
         /// <summary>
         /// Execute GET REST API
         /// </summary>
-        public void Search(object sender, EventArgs ev)
+        public void Search()
         {
             try
             {
