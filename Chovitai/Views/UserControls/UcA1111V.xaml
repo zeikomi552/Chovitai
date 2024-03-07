@@ -99,12 +99,15 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center" Margin="5" Text="Seed:"/>
                             <TextBox VerticalAlignment="Center" Width="100" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Seed}"/>
-                            <Button Margin="5" Content="-1">
+                            <Button Margin="5" ToolTip="-1">
                                 <b:Interaction.Triggers>
                                     <b:EventTrigger EventName="Click">
                                         <b:CallMethodAction TargetObject="{Binding}" MethodName="RandomSet"/>
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
+                                <StackPanel Orientation="Vertical">
+                                    <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/dice-1-svgrepo-com.svg" />
+                                </StackPanel>
                             </Button>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
