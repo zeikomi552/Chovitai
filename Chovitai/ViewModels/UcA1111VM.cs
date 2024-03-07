@@ -390,5 +390,24 @@ namespace Chovitai.ViewModels
             }
         }
         #endregion
+
+        #region プロンプトの高さと幅を入れ替える
+        /// <summary>
+        /// プロンプトの高さと幅を入れ替える
+        /// </summary>
+        public void ChangeWH()
+        {
+            try
+            {
+                var tmp = this.Request.PromptItem.Width;
+                this.Request.PromptItem.Width = this.Request.PromptItem.Height;
+                Request.PromptItem.Height = tmp;
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
+        }
+        #endregion
     }
 }

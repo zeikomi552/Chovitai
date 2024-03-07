@@ -71,6 +71,9 @@
     <None Update="Common\Images\bookmark-svgrepo-com.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Common\Images\change-record-type-svgrepo-com.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Common\Images\copy-1-svgrepo-com.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

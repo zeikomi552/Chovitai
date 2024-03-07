@@ -54,7 +54,7 @@
                                 <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/setting-2-svgrepo-com.svg" />
                             </StackPanel>
                         </Button>
-                        <Button Margin="5" ToolTip="A1111 Execute">
+                        <Button Margin="5" ToolTip="A1111 Execute" Cursor="Hand">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="Click">
                                     <b:CallMethodAction TargetObject="{Binding}" MethodName="WebUIExecute"/>
@@ -95,9 +95,19 @@
                 <Grid Grid.Row="3">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Margin="5" Text="W:"/>
-                        <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Width}"/>
+                        <TextBox Width="50" TextAlignment="Center" VerticalAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Width}"/>
                         <TextBlock VerticalAlignment="Center" Margin="5" Text="H:"/>
-                        <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Height}"/>
+                        <TextBox Width="50" TextAlignment="Center" VerticalAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Height}"/>
+                        <Button Margin="5" ToolTip="-1">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Click">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="ChangeWH"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                            <StackPanel Orientation="Vertical">
+                                <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/change-record-type-svgrepo-com.svg" />
+                            </StackPanel>
+                        </Button>
                     </StackPanel>
                 </Grid>
                 <Grid Grid.Row="4">
