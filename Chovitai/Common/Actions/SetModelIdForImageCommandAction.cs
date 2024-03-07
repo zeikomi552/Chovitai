@@ -32,13 +32,18 @@ namespace Chovitai.Common.Actions
         {
             try
             {
+                // ModelIdのセット
                 GblValues.Instance.ImageSearchCondition.ModelId = (int)ModelId;
-                var tmp = App.Current.MainWindow as MainWindow;
+                var tmp = App.Current.MainWindow as MainWindow; // Mainwindowを取得
 
+                // ViewModelを取得
                 var vm = tmp!.ucSearchImage.DataContext as UcSearchImageVM;
-                vm!.Search();
+                vm!.Search();   // 検索の実行
 
-                System.Threading.Thread.Sleep(100);
+                // 一瞬待たせる
+                System.Threading.Thread.Sleep(200);
+
+                // タブの切替(Image検索画面へ遷移)
                 tmp!.Maintab.SelectedIndex = 1;
             }
             catch (Exception ex)
