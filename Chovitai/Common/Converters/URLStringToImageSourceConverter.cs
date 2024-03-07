@@ -17,13 +17,23 @@ namespace Chovitai.Common.Converters
 
         public object? Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!(value is string valueString))
+            if (!(value is string))
             {
                 return null;
             }
+            return Convert(value.ToString()!);
+        }
+        #region Converterのコア部分
+        /// <summary>
+        /// Converterのコア部分
+        /// URIからBitmapImageを生成する
+        /// </summary>
+        /// <param name="url">URL</param>
+        /// <returns>BitmapImage</returns>
+        public static BitmapImage? Convert(string url)
+        {
             try
             {
-                string url = value!.ToString()!;
                 BitmapImage bitmap = new BitmapImage();
                 bitmap.BeginInit();
                 bitmap.CacheOption = BitmapCacheOption.OnLoad;      // プロセスを占有しないため
@@ -33,7 +43,7 @@ namespace Chovitai.Common.Converters
             }
             catch { return null; }
         }
-
+        #endregion
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
             throw new NotImplementedException();
