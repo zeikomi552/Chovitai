@@ -261,8 +261,6 @@ namespace Chovitai.Models.Condition
         }
         #endregion
 
-
-
         #region GET Condition[GetConditionQuery]プロパティ
         /// <summary>
         /// GET Condition[GetConditionQuery]プロパティ用変数
@@ -289,6 +287,22 @@ namespace Chovitai.Models.Condition
 
                 return "?" + query;
             }
+        }
+        #endregion
+
+        #region 条件のクリア
+        /// <summary>
+        /// 条件のクリア
+        /// </summary>
+        public void ConditionClear()
+        {
+            this.PostId = null;
+            this.ModelId = null;
+            this.Username = null;
+            this.ModelVersionId = null;
+            this.Period = null;
+            this.Nsfw = null;
+            this.Sort = null;
         }
         #endregion
 

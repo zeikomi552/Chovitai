@@ -352,14 +352,14 @@
                                                     <MenuItem Header="ModelId" IsEnabled="{Binding Id, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
                                                         <b:Interaction.Triggers>
                                                             <b:EventTrigger EventName="Click">
-                                                                <Actions:SetModelIdForImageCommandAction ModelId="{Binding Id}"/>
+                                                                <Actions:SetImageCommandAction Parameter="ModelId" Value="{Binding Id}"/>
                                                             </b:EventTrigger>
                                                         </b:Interaction.Triggers>
                                                     </MenuItem>
                                                     <MenuItem Header="UserName" IsEnabled="{Binding Creator.Username, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
                                                         <b:Interaction.Triggers>
                                                             <b:EventTrigger EventName="Click">
-                                                                <Actions:SetUserNameForImageCommandAction UserName="{Binding Creator.Username}"/>
+                                                                <Actions:SetImageCommandAction Parameter="UserName" Value="{Binding Creator.Username}"/>
                                                             </b:EventTrigger>
                                                         </b:Interaction.Triggers>
                                                     </MenuItem>
@@ -441,6 +441,15 @@
                                                         <b:Interaction.Triggers>
                                                             <b:EventTrigger EventName="Click">
                                                                 <Actions:ClipboardCopyAction CopyText="{Binding DownloadUrl}"/>
+                                                            </b:EventTrigger>
+                                                        </b:Interaction.Triggers>
+                                                    </MenuItem>
+                                                </MenuItem>
+                                                <MenuItem Header="SearchImage">
+                                                    <MenuItem Header="ModelVersionId" IsEnabled="{Binding Id, Converter={StaticResource NullToBooleanFalseConverter}, FallbackValue=False}">
+                                                        <b:Interaction.Triggers>
+                                                            <b:EventTrigger EventName="Click">
+                                                                <Actions:SetImageCommandAction Parameter="ModelVersionId" Value="{Binding Id}"/>
                                                             </b:EventTrigger>
                                                         </b:Interaction.Triggers>
                                                     </MenuItem>
