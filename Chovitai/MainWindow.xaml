@@ -34,7 +34,7 @@
                             <svgc:SvgViewbox Source="/Common/Images/lens2-svgrepo-com.svg" ToolTip="Search" Width="50" />
                         </StackPanel>
                     </TabItem.Header>
-                    <UserControls:UcSearchModelV/>
+                    <UserControls:UcSearchModelV x:Name="ucSearchModel"/>
                 </TabItem>
                 <TabItem>
                     <TabItem.Header>

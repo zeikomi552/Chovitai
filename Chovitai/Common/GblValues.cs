@@ -290,5 +290,29 @@ namespace Chovitai.Common
             }
         }
         #endregion
+
+        #region GET Query Condtion[ModelSearchCondition]プロパティ
+        /// <summary>
+        /// GET Query Condtion[ModelSearchCondition]プロパティ用変数
+        /// </summary>
+        CvsModelGetConditionM _ModelSearchCondition = new CvsModelGetConditionM();
+        /// <summary>
+        /// GET Query Condtion[ModelSearchCondition]プロパティ
+        /// </summary>
+        public CvsModelGetConditionM ModelSearchCondition
+        {
+            get
+            {
+                return _ModelSearchCondition;
+            }
+            set
+            {
+                if (_ModelSearchCondition == null || !_ModelSearchCondition.Equals(value))
+                {
+                    _ModelSearchCondition = value;
+                }
+            }
+        }
+        #endregion
     }
 }

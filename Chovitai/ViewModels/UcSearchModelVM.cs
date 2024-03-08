@@ -20,6 +20,7 @@ namespace Chovitai.ViewModels
 {
     public class UcSearchModelVM : ViewModelBase
     {
+        UcSearchModelV? _Wnd;
         #region イメージリスト[ImageList]プロパティ
         /// <summary>
         /// イメージリスト[ImageList]プロパティ用変数
@@ -118,23 +119,19 @@ namespace Chovitai.ViewModels
 
         #region GET Query Condtion[GetCondition]プロパティ
         /// <summary>
-        /// GET Query Condtion[GetCondition]プロパティ用変数
-        /// </summary>
-        CvsModelGetConditionM _GetCondition = new CvsModelGetConditionM();
-        /// <summary>
         /// GET Query Condtion[GetCondition]プロパティ
         /// </summary>
         public CvsModelGetConditionM GetCondition
         {
             get
             {
-                return _GetCondition;
+                return GblValues.Instance.ModelSearchCondition;
             }
             set
             {
-                if (_GetCondition == null || !_GetCondition.Equals(value))
+                if (GblValues.Instance.ModelSearchCondition == null || !GblValues.Instance.ModelSearchCondition.Equals(value))
                 {
-                    _GetCondition = value;
+                    GblValues.Instance.ModelSearchCondition = value;
                     NotifyPropertyChanged("GetCondition");
                 }
             }
@@ -223,12 +220,30 @@ namespace Chovitai.ViewModels
         /// <summary>
         /// Execute GET REST API
         /// </summary>
+        public void Search()
+        {
+            try
+            {
+                // GET クエリの実行
+                GETQuery(this.GetCondition.GetConditionQuery);
+            }
+            catch (Exception e)
+            {
+                ShowMessage.ShowErrorOK(e.Message, "Error");
+            }
+        }
+        #endregion
+
+        #region Execute GET REST API
+        /// <summary>
+        /// Execute GET REST API
+        /// </summary>
         public void GETQuery(object sender, EventArgs ev)
         {
             try
             {
                 // GET クエリの実行
-                GETQuery(sender, this.GetCondition.GetConditionQuery);
+                GETQuery(this.GetCondition.GetConditionQuery);
             }
             catch (Exception e)
             {
@@ -243,7 +258,7 @@ namespace Chovitai.ViewModels
         /// </summary>
         /// <param name="query"></param>
         /// <param name="add_endpoint"></param>
-        private async void GETQuery(object sender, string query, bool add_endpoint = true)
+        private async void GETQuery(string query, bool add_endpoint = true)
         {
             try
             {
@@ -282,7 +297,7 @@ namespace Chovitai.ViewModels
                         this.CvsModel.Items.SelectedItem = this.CvsModel.Items.ElementAt(0);
 
                         // DataGridを先頭へスクロールさせる
-                        DataGridTopRow(sender);
+                        DataGridTopRow();
 
                         if (this.CvsModel.Items.SelectedItem.ModelVersions.Count > 0)
                         {
@@ -453,7 +468,7 @@ namespace Chovitai.ViewModels
                     if (this.CvsModel.Metadata.CurrentPage + 1 <= CvsModel.Metadata.TotalPages)
                     {
                         // Execute GET Query
-                        GETQuery(sender, this.CvsModel.Metadata.NextPage, false);
+                        GETQuery(this.CvsModel.Metadata.NextPage, false);
                     }
                 }
             }
@@ -479,7 +494,7 @@ namespace Chovitai.ViewModels
                     if (this.CvsModel.Metadata.CurrentPage - 1 >= 1)
                     {
                         // Execute GET Query
-                        GETQuery(sender, this.CvsModel.Metadata.PrevPage, false);
+                        GETQuery(this.CvsModel.Metadata.PrevPage, false);
                     }
                 }
             }
@@ -495,10 +510,13 @@ namespace Chovitai.ViewModels
         /// DataGridを先頭へスクロールさせる処理
         /// </summary>
         /// <param name="sender">画面内のコントロールオブジェクト</param>
-        private void DataGridTopRow(object sender)
+        private void DataGridTopRow()
         {
+            if (this._Wnd == null)
+                return;
+
             // ウィンドウの取得
-            var wnd = (UcSearchModelV)VisualTreeHelperWrapper.GetWindow<UcSearchModelV>(sender);
+            var wnd = this._Wnd;
 
             // モデルのDataGridのスクロールバーを先頭へ移動
             ScrollbarTopRow.TopRow4DataGrid(wnd.dgModel);
@@ -675,6 +693,9 @@ namespace Chovitai.ViewModels
         {
             try
             {
+                // ウィンドウの取得
+                this._Wnd = (UcSearchModelV)VisualTreeHelperWrapper.GetWindow<UcSearchModelV>(sender);
+
                 if (this.CvsModel != null)
                 {
                     // 画面とブックマークを合致させる

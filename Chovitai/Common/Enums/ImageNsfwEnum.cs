@@ -18,7 +18,9 @@ namespace Chovitai.Common.Enums
         [Description("Mature")]
         Mature,
         [Description("X")]
-        X
+        X,
+        [Description("Blocked")]
+        Blocked
     }
-    
+
 }

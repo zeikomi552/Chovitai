@@ -310,7 +310,6 @@ namespace Chovitai.Models.Condition
         }
         #endregion
 
-
         #region Filter to models that require or don't require crediting the creator[AllowNoCredit ]プロパティ
         /// <summary>
         /// Filter to models that require or don't require crediting the creator[AllowNoCredit ]プロパティ用変数
@@ -436,6 +435,32 @@ namespace Chovitai.Models.Condition
         }
         #endregion
 
+        #region 検索条件の初期化
+        /// <summary>
+        /// 検索条件の初期化
+        /// </summary>
+        public void ClearCondition()
+        {
+            this.Limit = 100;
+            this.Page = 1;
+            this.Query = null;
+            this.Tag = null;
+            this.Username = null;
+            this.Types = ModelTypeEnum.Empty;
+            this.Sort = ModelSortEnum.Empty;
+            this.Period = ModelPeriodEnum.Empty;
+            this.Rating = null;
+            this.Favorites = null;
+            this.Hidden = null;
+            this.PrimaryFileOnly = null;
+            this.AllowNoCredit = null;
+            this.AllowDerivatives = null;
+            this.AllowDifferentLicenses = null;
+            this.AllowCommercialUse = ModelAllowCommercialUseEnum.Empty;
+            this.Nsfw = null;
+        }
+        #endregion
+
         #region GET Condition[GetConditionQuery]プロパティ
         /// <summary>
         /// GET Condition[GetConditionQuery]プロパティ用変数
@@ -474,8 +499,5 @@ namespace Chovitai.Models.Condition
             }
         }
         #endregion
-
-
-
     }
 }
