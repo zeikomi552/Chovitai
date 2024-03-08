@@ -351,6 +351,35 @@ namespace Chovitai.Models.A1111
         }
         #endregion
 
+        #region 512x768のような文字列を幅と高さに分割する
+        /// <summary>
+        /// 512x768のような文字列を幅と高さに分割する
+        /// </summary>
+        /// <param name="size">サイズ</param>
+        /// <param name="w">幅</param>
+        /// <param name="h">高さ</param>
+        /// <returns>true:分割成功 false:分割失敗(デフォルト 512x768)</returns>
+        public static bool SizeToWH(string size, out int w, out int h)
+        {
+            string[] wh = size.Split('x');
+
+            if (wh.Length >= 2)
+            {
+                int tmp;
+                w = int.TryParse(wh[0], out tmp) ? tmp : 512;
+                h = int.TryParse(wh[1], out tmp) ? tmp : 768;
+                return true;
+            }
+            else
+            {
+                w = 512;
+                h = 768;
+                return false;
+            }
+
+        }
+        #endregion
+
         #region Imageに含まれるテキストの prameter:などを確認し後続の文字列のみ取り出す関数
         /// <summary>
         /// Imageに含まれるテキストの prameter:などを確認し後続の文字列のみ取り出す関数

@@ -21,6 +21,7 @@ using Chovitai.Views;
 using Chovitai.Models.Bookmark;
 using System.ComponentModel;
 using System.Reflection;
+using Chovitai.Models.A1111;
 
 namespace Chovitai.ViewModels
 {
@@ -482,6 +483,13 @@ namespace Chovitai.ViewModels
                 {
                     GblValues.Instance.Request.PromptItem.Prompt = this.ImageList.SelectedImage.Meta.Prompt;                // プロンプトのセット
                     GblValues.Instance.Request.PromptItem.NegativePrompt = ImageList.SelectedImage.Meta.NegativePrompt;     // ネガティブプロンプトのセット
+                    long tmp_seed = -1;
+                    GblValues.Instance.Request.PromptItem.Seed = long.TryParse( ImageList.SelectedImage.Meta.Seed!.ToString(), out tmp_seed) ? tmp_seed : -1;     // シードのセット
+
+                    int w, h;
+                    PromptM.SizeToWH(ImageList.SelectedImage.Meta.Size, out w, out h);
+                    GblValues.Instance.Request.PromptItem.Width = w;
+                    GblValues.Instance.Request.PromptItem.Height = h;
 
                     // Samplerのセット
                     foreach (SamplerIndexEnum value in Enum.GetValues(typeof(SamplerIndexEnum)))
