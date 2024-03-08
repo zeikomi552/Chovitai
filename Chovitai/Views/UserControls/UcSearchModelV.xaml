@@ -623,15 +623,6 @@
                                                         </b:Interaction.Triggers>
                                                     </MenuItem>
                                                 </MenuItem>
-
-
-                                                <MenuItem Header="Open PromptTool">
-                                                    <b:Interaction.Triggers>
-                                                        <b:EventTrigger EventName="Click">
-                                                            <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenPromptTool"/>
-                                                        </b:EventTrigger>
-                                                    </b:Interaction.Triggers>
-                                                </MenuItem>
                                             </ContextMenu>
                                         </MediaElement.ContextMenu>
                                     </MediaElement>
@@ -639,55 +630,6 @@
                             </DataTemplate>
                         </ListView.ItemTemplate>
                     </ListView>
-
-                    <Grid Grid.Row="2">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="*"/>
-                            <ColumnDefinition Width="*"/>
-                        </Grid.ColumnDefinitions>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock VerticalAlignment="Center" TextAlignment="Right" Text="Prompt:" ToolTip="{Binding ImageList.SelectedImage.Meta.Prompt}"/>
-                            <TextBox VerticalAlignment="Center" Grid.Column="1" IsReadOnly="True" Margin="5"
-                                    TextAlignment="Center" Text="{Binding ImageList.SelectedImage.Meta.Prompt}"/>
-                            <Button Grid.Column="2" Margin="5" Cursor="Hand">
-                                <b:Interaction.Triggers>
-                                    <b:EventTrigger EventName="Click">
-                                        <Actions:ClipboardCopyAction CopyText="{Binding ImageList.SelectedImage.Meta.Prompt}"/>
-                                    </b:EventTrigger>
-                                </b:Interaction.Triggers>
-
-                                <StackPanel Orientation="Vertical">
-                                    <svgc:SvgViewbox Source="/Common/Images/copy-1-svgrepo-com.svg" />
-                                </StackPanel>
-
-                            </Button>
-                        </Grid>
-                        <Grid Grid.Column="1">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="auto"/>
-                                <ColumnDefinition Width="*"/>
-                                <ColumnDefinition Width="auto"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock VerticalAlignment="Center" TextAlignment="Right" Text="NegativPrompt:" ToolTip="{Binding ImageList.SelectedImage.Meta.NegativPrompt}"/>
-                            <TextBox VerticalAlignment="Center" Grid.Column="1" IsReadOnly="True" Margin="5" TextAlignment="Center"
-                                    Text="{Binding ImageList.SelectedImage.Meta.NegativPrompt, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
-                            <Button Grid.Column="2" Margin="5" Cursor="Hand">
-                                <b:Interaction.Triggers>
-                                    <b:EventTrigger EventName="Click">
-                                        <Actions:ClipboardCopyAction CopyText="{Binding ImageList.SelectedImage.Meta.NegativPrompt}"/>
-                                    </b:EventTrigger>
-                                </b:Interaction.Triggers>
-                                <StackPanel Orientation="Vertical">
-                                    <svgc:SvgViewbox Source="/Common/Images/copy-1-svgrepo-com.svg" />
-                                </StackPanel>
-                            </Button>
-                        </Grid>
-                    </Grid>
                 </Grid>
             </Grid>
         </Grid>
