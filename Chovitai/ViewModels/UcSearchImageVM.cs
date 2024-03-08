@@ -452,6 +452,10 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        #region 一気にブックマークする
+        /// <summary>
+        /// 一気にブックマークする
+        /// </summary>
         public void AllBookmark()
         {
             try
@@ -470,6 +474,7 @@ namespace Chovitai.ViewModels
                 ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
         }
+        #endregion
 
         #region コマンドのセット処理
         /// <summary>
