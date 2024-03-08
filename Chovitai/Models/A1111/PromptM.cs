@@ -15,6 +15,31 @@ namespace Chovitai.Models.A1111
 {
     public class PromptM : ModelBase
     {
+        #region チェックポイント[CheckPoint]プロパティ
+        /// <summary>
+        /// チェックポイント[CheckPoint]プロパティ用変数
+        /// </summary>
+        string _CheckPoint = string.Empty;
+        /// <summary>
+        /// チェックポイント[CheckPoint]プロパティ
+        /// </summary>
+        public string CheckPoint
+        {
+            get
+            {
+                return _CheckPoint;
+            }
+            set
+            {
+                if (_CheckPoint == null || !_CheckPoint.Equals(value))
+                {
+                    _CheckPoint = value;
+                    NotifyPropertyChanged("CheckPoint");
+                }
+            }
+        }
+        #endregion
+
         #region Prompt for Webui A1111 api[Prompt]プロパティ
         /// <summary>
         /// Prompt for Webui A1111 api[Prompt]プロパティ用変数

@@ -35,6 +35,7 @@
             <Grid Margin="5">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="auto"/>
+                    <RowDefinition Height="auto"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="*"/>
                     <RowDefinition Height="auto"/>
@@ -81,10 +82,18 @@
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
+                    <TextBlock VerticalAlignment="Center" Margin="5" Text="Checkpoint"/>
+                    <TextBox TextWrapping="Wrap" AcceptsReturn="True" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.CheckPoint}"/>
+                </Grid>
+                <Grid Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
                     <TextBlock VerticalAlignment="Center" Margin="5" Text="Prompt"/>
                     <TextBox TextWrapping="Wrap" AcceptsReturn="True" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Prompt}"/>
                 </Grid>
-                <Grid Grid.Row="2">
+                <Grid Grid.Row="3">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
                         <RowDefinition Height="*"/>
@@ -92,7 +101,7 @@
                     <TextBlock VerticalAlignment="Center" Margin="5" Text="Negative Prompt"/>
                     <TextBox TextWrapping="Wrap" AcceptsReturn="True" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.NegativePrompt}"/>
                 </Grid>
-                <Grid Grid.Row="3">
+                <Grid Grid.Row="4">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center" Margin="5" Text="W:"/>
                         <TextBox Width="50" TextAlignment="Center" VerticalAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Width}"/>
@@ -110,7 +119,7 @@
                         </Button>
                     </StackPanel>
                 </Grid>
-                <Grid Grid.Row="4">
+                <Grid Grid.Row="5">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center" Margin="5" Text="Seed:"/>
@@ -132,7 +141,7 @@
                         </StackPanel>
                     </StackPanel>
                 </Grid>
-                <Grid Grid.Row="5">
+                <Grid Grid.Row="6">
                     <StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Width="auto" TextAlignment="Right" VerticalAlignment="Center" Margin="5" Text="Sampler"/>
@@ -146,7 +155,7 @@
                 </Grid>
             </Grid>
         </GroupBox>
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" Cursor="">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>

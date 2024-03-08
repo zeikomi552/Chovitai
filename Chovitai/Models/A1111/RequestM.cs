@@ -57,7 +57,11 @@ namespace Chovitai.Models.A1111
                     height = prompt.Height,
                     steps = prompt.Steps,
                     seed = prompt.Seed,
-                    sampler_index = prompt.SamplerIndex
+                    sampler_index = prompt.SamplerIndex,
+                    override_settings = new
+                    {
+                        sd_model_checkpoint = prompt.CheckPoint
+                    }
                 };
 
                 request = await tmp.Request(url, data.AsJson());
