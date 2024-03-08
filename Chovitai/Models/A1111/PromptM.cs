@@ -322,6 +322,10 @@ namespace Chovitai.Models.A1111
                             {
                                 ret.Seed = Int64.TryParse(div_text, out Int64 seed) ? seed : 20;
                             }
+                            else if (CheckAndDiv(item, "Model:", out div_text))
+                            {
+                                ret.CheckPoint = div_text;
+                            }
                             else if (CheckAndDiv(item, "Size:", out div_text))
                             {
                                 string[] wh = div_text.Split("x");
