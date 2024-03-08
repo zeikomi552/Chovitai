@@ -19,6 +19,8 @@ using static Chovitai.Models.CvsImage.CvsImageM;
 using System.Windows;
 using Chovitai.Views;
 using Chovitai.Models.Bookmark;
+using System.ComponentModel;
+using System.Reflection;
 
 namespace Chovitai.ViewModels
 {
@@ -478,11 +480,25 @@ namespace Chovitai.ViewModels
             {
                 if (this.ImageList != null && this.ImageList.SelectedImage != null && this.ImageList.SelectedImage.Meta != null)
                 {
-                    GblValues.Instance.Request.PromptItem.Prompt = this.ImageList.SelectedImage.Meta.Prompt;
-                    GblValues.Instance.Request.PromptItem.NegativePrompt = ImageList.SelectedImage.Meta.NegativePrompt;
-                    //GblValues.Instance.Request.PromptItem.Width = ImageList.SelectedImage.Width;
-                    //GblValues.Instance.Request.PromptItem.Height = ImageList.SelectedImage.Height;
-                    //GblValues.Instance.Request.PromptItem.Sampler = ImageList.SelectedImage.Meta.Sampler;
+                    GblValues.Instance.Request.PromptItem.Prompt = this.ImageList.SelectedImage.Meta.Prompt;                // プロンプトのセット
+                    GblValues.Instance.Request.PromptItem.NegativePrompt = ImageList.SelectedImage.Meta.NegativePrompt;     // ネガティブプロンプトのセット
+
+                    // Samplerのセット
+                    foreach (SamplerIndexEnum value in Enum.GetValues(typeof(SamplerIndexEnum)))
+                    {
+                        FieldInfo fieldInfo = value.GetType().GetField(value.ToString())!;
+                        Attribute attr = Attribute.GetCustomAttribute(fieldInfo, typeof(DescriptionAttribute))!;
+                        if (attr != null)
+                        {
+                            DescriptionAttribute descAttr = (DescriptionAttribute)attr;
+
+                            if (ImageList.SelectedImage.Meta.Sampler.Equals(descAttr.Description))
+                            {
+                                GblValues.Instance.Request.PromptItem.Sampler = value;
+                                break;
+                            }
+                        }
+                    }
                 }
             }
             catch (Exception ex)
