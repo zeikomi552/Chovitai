@@ -18,6 +18,7 @@ using System.Windows.Threading;
 using Chovitai.Views.UserControls;
 using MVVMCore.Common.Wrapper;
 using System.Windows;
+using System.Text.RegularExpressions;
 
 namespace Chovitai.ViewModels
 {
@@ -290,6 +291,7 @@ namespace Chovitai.ViewModels
             }
         }
         #endregion
+
 
         #region ファイル名が変更された際の処理
         /// <summary>
