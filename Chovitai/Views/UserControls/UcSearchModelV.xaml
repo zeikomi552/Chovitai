@@ -17,7 +17,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Chovitai.Views.UserControls"
              mc:Ignorable="d" 
-             d:DesignHeight="800" d:DesignWidth="1200">
+             d:DesignHeight="800" d:DesignWidth="1200" Background="{DynamicResource MaterialDesignDarkBackground}">
     <UserControl.Resources>
         <Converters:NullToBooleanFalseConverter x:Key="NullToBooleanFalseConverter"/>
         <Converters:ConvertBooleanConverter x:Key="ConvertBooleanConverter"/>

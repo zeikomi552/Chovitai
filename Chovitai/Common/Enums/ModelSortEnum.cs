@@ -26,7 +26,6 @@ namespace Chovitai.Common.Enums
         Most_Discussed,
         [Description("Most Collected")]
         Most_Collected,
-
         [Description("Most Images")]
         Most_Images,
         [Description("Newest")]

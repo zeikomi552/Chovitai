@@ -12,7 +12,7 @@
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:ViewModels="clr-namespace:Chovitai.ViewModels" x:Class="Chovitai.Views.UserControls.UcA1111V"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Background="{DynamicResource MahApps.Brushes.Control.Background}" Cursor="">
+             d:DesignHeight="450" d:DesignWidth="800" Background="{DynamicResource MaterialDesignDarkBackground}" Cursor="">
     <UserControl.Resources>
         <ViewModels:UcA1111VM x:Key="vm"/>
         <Converters:URLStringToImageSourceConverter x:Key="URLStringToImageSourceConverter"/>

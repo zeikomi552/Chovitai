@@ -12,7 +12,7 @@
              xmlns:ViewModels="clr-namespace:Chovitai.ViewModels"
              xmlns:Actions="clr-namespace:Chovitai.Common.Actions" x:Class="Chovitai.Views.UserControls.UcImageBookmarkV"
              mc:Ignorable="d"
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800" Background="{DynamicResource MaterialDesignDarkBackground}">
     <UserControl.Resources>
         <Converters:NullToBooleanFalseConverter x:Key="NullToBooleanFalseConverter"/>
         <Converters:ImageNsfwEnumToVisibilityConverter x:Key="ImageNsfwEnumToVisibilityConverter"/>
