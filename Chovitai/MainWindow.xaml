@@ -19,6 +19,15 @@
     <mah:MetroWindow.DataContext>
         <ViewModels:MainWindowVM/>
     </mah:MetroWindow.DataContext>
+    <b:Interaction.Triggers>
+        <b:EventTrigger>
+            <b:CallMethodAction TargetObject="{Binding}" MethodName="Init"/>
+        </b:EventTrigger>
+        <b:EventTrigger EventName="Closing">
+            <b:CallMethodAction TargetObject="{Binding}" MethodName="Close"/>
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
+
     <TabControl x:Name="Maintab">
         <TabItem x:Name="TabModel">
             <TabItem.Header>
