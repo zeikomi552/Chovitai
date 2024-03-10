@@ -160,8 +160,6 @@ namespace Chovitai.ViewModels
         {
             try
             {
-
-
                 switch (e.ChangeType)
                 {
                     case System.IO.WatcherChangeTypes.Changed:
