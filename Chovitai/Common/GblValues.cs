@@ -7,6 +7,7 @@ using MVVMCore.Common.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -314,5 +315,10 @@ namespace Chovitai.Common
             }
         }
         #endregion
+
+        /// <summary>
+        /// A1111用プロセス
+        /// </summary>
+        public Process? A1111Proc { get; set; }
     }
 }

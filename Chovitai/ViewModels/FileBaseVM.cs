@@ -158,72 +158,74 @@ namespace Chovitai.ViewModels
         public virtual void watcher_Changed(System.Object source,
             System.IO.FileSystemEventArgs e)
         {
-            Debug.WriteLine("test-changed");
-
-            switch (e.ChangeType)
+            try
             {
-                case System.IO.WatcherChangeTypes.Changed:
-                    {
-                        Console.WriteLine(
-                            "ファイル 「" + e.FullPath + "」が変更されました。");
-
-                        var file_info = GetFileInfo(e.FullPath);
-                        if (file_info != null)
+                switch (e.ChangeType)
+                {
+                    case System.IO.WatcherChangeTypes.Changed:
                         {
-                            // スレッドセーフの呼び出し
-                            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                                new Action(() =>
-                                {
-                                    var bfind = (from x in this.FileList.Items
-                                                where x.FilePath == file_info.FilePath
-                                                select x).Any();
+                            Console.WriteLine(
+                                "ファイル 「" + e.FullPath + "」が変更されました。");
 
-                                    if (!bfind)
+                            var file_info = GetFileInfo(e.FullPath);
+                            if (file_info != null)
+                            {
+                                // スレッドセーフの呼び出し
+                                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                                    new Action(() =>
+                                    {
+                                        var bfind = (from x in this.FileList.Items
+                                                     where x.FilePath == file_info.FilePath
+                                                     select x).Any();
+
+                                        if (!bfind)
+                                        {
+                                            this.FileList.Items.Add(file_info);
+                                        }
+                                    }));
+                            }
+                            break;
+                        }
+                    case System.IO.WatcherChangeTypes.Created:
+                        {
+                            var file_info = GetFileInfo(e.FullPath);
+                            if (file_info != null)
+                            {
+                                // スレッドセーフの呼び出し
+                                Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                                    new Action(() =>
                                     {
                                         this.FileList.Items.Add(file_info);
-                                    }
-                                }));
-                        }
-                        break;
-                    }
-                case System.IO.WatcherChangeTypes.Created:
-                    {
-                        var file_info = GetFileInfo(e.FullPath);
-                        if (file_info != null)
-                        {
-                            // スレッドセーフの呼び出し
-                            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                                new Action(() =>
-                                {
-                                    this.FileList.Items.Add(file_info);
-                                }));
-                        }
-
-                        // memo : StableDiffusionで作成時は*.tmpファイルが作られてそのあと*.pngになるためリネーム扱いとなる
-                        //        したがって、この処理には入らない。本処理はコピペなどで追加した場合用
-
-                        break;
-                    }
-                case System.IO.WatcherChangeTypes.Deleted:
-                    // スレッドセーフの呼び出し
-                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                        new Action(() =>
-                        {
-                            var tmp = (from x in this.FileList.Items
-                                       where x.FilePath.Equals(e.FullPath)
-                                       select x).FirstOrDefault();
-
-                            if (tmp != null)
-                            {
-                                this.FileList.Items.Remove(tmp);
+                                    }));
                             }
 
-                        }));
+                            // memo : StableDiffusionで作成時は*.tmpファイルが作られてそのあと*.pngになるためリネーム扱いとなる
+                            //        したがって、この処理には入らない。本処理はコピペなどで追加した場合用
 
-                    //Console.WriteLine(
-                    //    "ファイル 「" + e.FullPath + "」が削除されました。");
-                    break;
+                            break;
+                        }
+                    case System.IO.WatcherChangeTypes.Deleted:
+                        // スレッドセーフの呼び出し
+                        Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                            new Action(() =>
+                            {
+                                var tmp = (from x in this.FileList.Items
+                                           where x.FilePath.Equals(e.FullPath)
+                                           select x).FirstOrDefault();
+
+                                if (tmp != null)
+                                {
+                                    this.FileList.Items.Remove(tmp);
+                                }
+
+                            }));
+
+                        //Console.WriteLine(
+                        //    "ファイル 「" + e.FullPath + "」が削除されました。");
+                        break;
+                }
             }
+            catch { }
         }
         #endregion
 
