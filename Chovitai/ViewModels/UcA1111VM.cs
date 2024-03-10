@@ -30,11 +30,11 @@ namespace Chovitai.ViewModels
         /// <summary>
         /// リダイレクトメッセージ[RedirectMessage]プロパティ用変数
         /// </summary>
-        string _RedirectMessage = string.Empty;
+        RedirectMessageM _RedirectMessage = new RedirectMessageM();
         /// <summary>
         /// リダイレクトメッセージ[RedirectMessage]プロパティ
         /// </summary>
-        public string RedirectMessage
+        public RedirectMessageM RedirectMessage
         {
             get
             {
@@ -50,6 +50,8 @@ namespace Chovitai.ViewModels
             }
         }
         #endregion
+
+
 
         #region A1111 Request[Request]プロパティ
         /// <summary>
@@ -278,7 +280,7 @@ namespace Chovitai.ViewModels
                             {
                                 if (!string.IsNullOrEmpty(msg))
                                 {
-                                    this.RedirectMessage += msg + "\r\n";
+                                    this.RedirectMessage.Add(msg);
                                 }
 
                                 if (!ExecuteProcessF)
