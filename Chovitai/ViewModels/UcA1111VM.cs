@@ -21,6 +21,7 @@ using System.Windows;
 using System.Text.RegularExpressions;
 using ControlzEx.Standard;
 using System.Windows.Interop;
+using System.Runtime.CompilerServices;
 
 namespace Chovitai.ViewModels
 {
@@ -82,7 +83,7 @@ namespace Chovitai.ViewModels
         /// <summary>
         /// プロンプトの実行処理[ExecutePrompt]プロパティ用変数
         /// </summary>
-        bool _ExecutePrompt = false;
+        static bool _ExecutePrompt = false;
         /// <summary>
         /// プロンプトの実行処理[ExecutePrompt]プロパティ
         /// </summary>
@@ -486,6 +487,16 @@ namespace Chovitai.ViewModels
             {
                 ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
+        }
+        #endregion
+
+        #region プロンプトの実行処理停止
+        /// <summary>
+        /// プロンプトの実行処理停止
+        /// </summary>
+        public static void StopPrompt()
+        {
+            _ExecutePrompt = false;
         }
         #endregion
     }
