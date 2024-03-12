@@ -161,7 +161,9 @@
                     </Grid>
                 </Grid>
             </GroupBox>
-            <TextBox hlp:TextBoxAttachedHelper.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto" Margin="5" Grid.Row="1" IsReadOnly="True" Text="{Binding RedirectMessage.RedirectMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Border Grid.Row="1" BorderThickness="1" BorderBrush="{DynamicResource MahApps.Brushes.AccentBase}" >
+                <TextBox hlp:TextBoxAttachedHelper.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto" Margin="5" IsReadOnly="True" Text="{Binding RedirectMessage.RedirectMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            </Border>
         </Grid>
         <Grid Grid.Column="1" Cursor="">
             <Grid.ColumnDefinitions>
