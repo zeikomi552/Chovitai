@@ -81,7 +81,8 @@ namespace Chovitai.ViewModels
         {
             try
             {
-                UcA1111VM.StopPrompt();
+                // アプリケーションのシャットダウン
+                GblValues.AppShutdown();
 
                 Process? p = GblValues.Instance.A1111Proc;
 

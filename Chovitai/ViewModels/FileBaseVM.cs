@@ -1,4 +1,5 @@
-﻿using Chovitai.Common.Utilities;
+﻿using Chovitai.Common;
+using Chovitai.Common.Utilities;
 using Chovitai.Models;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using MVVMCore.BaseClass;
@@ -161,6 +162,14 @@ namespace Chovitai.ViewModels
         {
             try
             {
+                // シャットダウンフラグの確認
+                if (GblValues.ShutdownF)
+                {
+                    // シャットダウン中のためファイルウォッチャーを解放し抜ける
+                    DisposeFileWatcher();
+                    return;
+                }
+
                 switch (e.ChangeType)
                 {
                     case System.IO.WatcherChangeTypes.Changed:
@@ -362,7 +371,6 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
-
         #region ディレクトリ読み出しの更新処理
         /// <summary>
         /// ディレクトリ読み出しの更新処理
@@ -388,8 +396,6 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
-
-
         #region ディレクトリのファイル全て読み込み
         /// <summary>
         /// ディレクトリのファイル全て読み込み
@@ -399,6 +405,14 @@ namespace Chovitai.ViewModels
         {
             try
             {
+                // シャットダウンフラグの確認
+                if (GblValues.ShutdownF)
+                {
+                    // シャットダウン中のためファイルウォッチャーを解放し抜ける
+                    DisposeFileWatcher();
+                    return;
+                }
+
                 // ファイル情報のセット
                 this.FileList.Items.Clear();
 
@@ -514,5 +528,13 @@ namespace Chovitai.ViewModels
             }
         }
         #endregion
+
+        public void DisposeFileWatcher()
+        {
+            if (_Watcher != null)
+            {
+                _Watcher.Dispose();
+            }
+        }
     }
 }

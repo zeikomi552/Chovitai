@@ -383,6 +383,14 @@ namespace Chovitai.ViewModels
         {
             try
             {
+                // シャットダウンフラグの確認
+                if (GblValues.ShutdownF)
+                {
+                    // シャットダウン中のためファイルウォッチャーを解放し抜ける
+                    DisposeFileWatcher();
+                    return;
+                }
+
                 base.watcher_Changed(source, e);
                 switch (e.ChangeType)
                 {
