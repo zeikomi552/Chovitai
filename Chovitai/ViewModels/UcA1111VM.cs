@@ -341,15 +341,7 @@ namespace Chovitai.ViewModels
             {
                 while (this.ExecutePrompt)
                 {
-                    var prompt = this.Request.PromptItem.ShallowCopy<PromptM>();
-
-                    // Pormptが-1以下の設定であればランダムの値にすり替える
-                    if (prompt.Seed <= -1)
-                    {
-                        prompt.Seed = _Rand.Next(); // Seed値の作成
-                    }
-
-                    var ret = await this.Request.PostRequest(this.A1111Config.URL, this.A1111Config.ImageOutDirectory, prompt);
+                    var ret = await this.Request.PostRequest(this.A1111Config.URL, this.A1111Config.ImageOutDirectory, this.Request.PromptItem);
 
                     // スレッドセーフの呼び出し
                     await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
@@ -358,7 +350,7 @@ namespace Chovitai.ViewModels
                             this.FileList.SelectedLast();       // 追加されたファイルを選択
                                                                 // プロンプト実行履歴
                                                                 // 最終実行プロンプトのセット
-                            this.LastPromptConfig.LastPrompt = prompt;
+                            this.LastPromptConfig.LastPrompt = this.Request.PromptItem;
                             GblValues.Instance.LastPrompt!.SaveXML();   // 最終プロンプトの保存
                         }));
                 }
