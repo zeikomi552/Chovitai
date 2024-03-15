@@ -213,7 +213,7 @@
                             </b:Interaction.Triggers>
                         </ToggleButton>
                     </StackPanel>
-                    <TextBox Grid.Row="1" hlp:TextBoxAttachedHelper.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto" Margin="5" IsReadOnly="True" Text="{Binding RedirectMessage.RedirectMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <TextBox Grid.Row="1" hlp:TextBoxAttachedHelper.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto" Margin="5" IsReadOnly="True" Text="{Binding RedirectMessage.OutputMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
             </Border>
         </Grid>
