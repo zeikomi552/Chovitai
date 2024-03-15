@@ -156,7 +156,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Margin="5" Text="Cfg Scale:"/>
-                                <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.CfgScale, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.CfgScale}"/>
                                 <Slider VerticalAlignment="Center" Width="100" IsSnapToTickEnabled="True"  Value="{Binding Request.PromptItem.CfgScale, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SmallChange="0.5" TickFrequency="0.1"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal">
