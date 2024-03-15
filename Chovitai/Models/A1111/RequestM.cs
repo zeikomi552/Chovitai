@@ -49,22 +49,9 @@ namespace Chovitai.Models.A1111
 
                 // エンドポイント + パラメータ
                 string url = uri + "/sdapi/v1/txt2img";
-                var data = new
-                {
-                    prompt = prompt.Prompt,
-                    negative_prompt = prompt.NegativePrompt,
-                    width = prompt.Width,
-                    height = prompt.Height,
-                    steps = prompt.Steps,
-                    seed = prompt.Seed,
-                    sampler_index = prompt.SamplerIndex,
-                    override_settings = new
-                    {
-                        sd_model_checkpoint = prompt.CheckPoint
-                    }
-                };
-
-                request = await tmp.Request(url, data.AsJson());
+                
+                StringContent payload = prompt.GetPayload();    // Payloadの取得
+                request = await tmp.Request(url, payload);      // Requestの実行
 
                 // 実行してJSON形式をデシリアライズ
                 var request_model = JSONUtil.DeserializeFromText<PostResponseM>(request);

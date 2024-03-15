@@ -13,7 +13,7 @@
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:ViewModels="clr-namespace:Chovitai.ViewModels" x:Class="Chovitai.Views.UserControls.UcA1111V"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Background="{DynamicResource MaterialDesignDarkBackground}" Cursor="">
+             d:DesignHeight="800" d:DesignWidth="800" Background="{DynamicResource MaterialDesignDarkBackground}" Cursor="">
     <UserControl.Resources>
         <ViewModels:UcA1111VM x:Key="vm"/>
         <Converters:URLStringToImageSourceConverter x:Key="URLStringToImageSourceConverter"/>
@@ -144,6 +144,21 @@
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock VerticalAlignment="Center" Margin="5" Text="Steps:"/>
                                 <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Steps}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Margin="5" Text="Cfg Scale:"/>
+                                <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.CfgScale, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Slider VerticalAlignment="Center" Width="100" IsSnapToTickEnabled="True"  Value="{Binding Request.PromptItem.CfgScale, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SmallChange="0.5" TickFrequency="0.1"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Margin="5" Text="N_iter:"/>
+                                <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.N_iter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Slider VerticalAlignment="Center" Width="100" IsSnapToTickEnabled="True"  Value="{Binding Request.PromptItem.N_iter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SmallChange="1" TickFrequency="1" Minimum="1" Maximum="100"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Margin="5" Text="Batch Size:"/>
+                                <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.BatchSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Slider VerticalAlignment="Center" Width="100" IsSnapToTickEnabled="True"  Value="{Binding Request.PromptItem.BatchSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SmallChange="1" TickFrequency="1" Minimum="1" Maximum="8"/>
                             </StackPanel>
                         </StackPanel>
                     </Grid>

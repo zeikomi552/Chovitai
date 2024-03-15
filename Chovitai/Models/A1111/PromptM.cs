@@ -10,6 +10,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Chovitai.Common.Utilities;
 using System.ComponentModel;
+using System.Net.Http;
+using System.Diagnostics;
 
 namespace Chovitai.Models.A1111
 {
@@ -90,6 +92,31 @@ namespace Chovitai.Models.A1111
         }
         #endregion
 
+        #region Steps[Steps]プロパティ
+        /// <summary>
+        /// Steps[Steps]プロパティ用変数
+        /// </summary>
+        int _Steps = 40;
+        /// <summary>
+        /// Steps[Steps]プロパティ
+        /// </summary>
+        public int Steps
+        {
+            get
+            {
+                return _Steps;
+            }
+            set
+            {
+                if (!_Steps.Equals(value))
+                {
+                    _Steps = value;
+                    NotifyPropertyChanged("Steps");
+                }
+            }
+        }
+        #endregion
+
         #region Picture width[Width]プロパティ
         /// <summary>
         /// Picture width[Width]プロパティ用変数
@@ -140,6 +167,34 @@ namespace Chovitai.Models.A1111
         }
         #endregion
 
+        #region cfg scale value[CfgScale]プロパティ
+        /// <summary>
+        /// cfg scale value[CfgScale]プロパティ用変数
+        /// </summary>
+        decimal _CfgScale = 7;
+        /// <summary>
+        /// cfg scale value[CfgScale]プロパティ
+        /// </summary>
+        public decimal CfgScale
+        {
+            get
+            {
+                return _CfgScale;
+            }
+            set
+            {
+                if (!_CfgScale.Equals(value))
+                {
+                    if (value >= 0 && value <= 30)
+                    {
+                        _CfgScale = value;
+                        NotifyPropertyChanged("CfgScale");
+                    }
+                }
+            }
+        }
+        #endregion
+
         #region Picture Sampler[SamplerIndex]プロパティ
         /// <summary>
         /// Picture Sampler[SamplerIndex]プロパティ用変数
@@ -166,9 +221,9 @@ namespace Chovitai.Models.A1111
         }
         #endregion
 
-        #region Picture Sampler[SamplerIndex]プロパティ
+        #region Picture Sampler[Sampler]プロパティ
         /// <summary>
-        /// Picture Sampler[SamplerIndex]プロパティ
+        /// Picture Sampler[Sampler]プロパティ
         /// </summary>
         public SamplerIndexEnum? Sampler
         {
@@ -213,26 +268,57 @@ namespace Chovitai.Models.A1111
         }
         #endregion
 
-        #region Steps[Steps]プロパティ
+        #region n_iter value[N_iter]プロパティ
         /// <summary>
-        /// Steps[Steps]プロパティ用変数
+        /// n_iter value[N_iter]プロパティ用変数
         /// </summary>
-        int _Steps = 40;
+        int _N_iter = 1;
         /// <summary>
-        /// Steps[Steps]プロパティ
+        /// n_iter value[N_iter]プロパティ
         /// </summary>
-        public int Steps
+        public int N_iter
         {
             get
             {
-                return _Steps;
+                return _N_iter;
             }
             set
             {
-                if (!_Steps.Equals(value))
+                if (!_N_iter.Equals(value))
                 {
-                    _Steps = value;
-                    NotifyPropertyChanged("Steps");
+                    if (value >= 1 && value <= 100)
+                    {
+                        _N_iter = value;
+                        NotifyPropertyChanged("N_iter");
+                    }
+                }
+            }
+        }
+        #endregion
+
+        #region Batch size value[BatchSize]プロパティ
+        /// <summary>
+        /// Batch size value[BatchSize]プロパティ用変数
+        /// </summary>
+        int _BatchSize = 1;
+        /// <summary>
+        /// Batch size value[BatchSize]プロパティ
+        /// </summary>
+        public int BatchSize
+        {
+            get
+            {
+                return _BatchSize;
+            }
+            set
+            {
+                if (!_BatchSize.Equals(value))
+                {
+                    if (value >= 1 && value <= 8)
+                    {
+                        _BatchSize = value;
+                        NotifyPropertyChanged("BatchSize");
+                    }
                 }
             }
         }
@@ -263,6 +349,32 @@ namespace Chovitai.Models.A1111
         }
         #endregion
 
+        #region Seed値のバックアップ（最後に実行したSeed値）[SeedBackup]プロパティ
+        /// <summary>
+        /// Seed値のバックアップ（最後に実行したSeed値）[SeedBackup]プロパティ用変数
+        /// </summary>
+        Int64 _SeedBackup = -1;
+        /// <summary>
+        /// Seed値のバックアップ（最後に実行したSeed値）[SeedBackup]プロパティ
+        /// </summary>
+        public Int64 SeedBackup
+        {
+            get
+            {
+                return _SeedBackup;
+            }
+            set
+            {
+                if (!_SeedBackup.Equals(value))
+                {
+                    _SeedBackup = value;
+                    NotifyPropertyChanged("SeedBackup");
+                }
+            }
+        }
+        #endregion
+
+
         #region 一致確認
         /// <summary>
         /// 一致確認
@@ -280,7 +392,6 @@ namespace Chovitai.Models.A1111
             else return false;
         }
         #endregion
-
 
         #region Commandへセット
         /// <summary>
@@ -400,6 +511,42 @@ namespace Chovitai.Models.A1111
                 div_text = string.Empty;
                 return false;
             }
+        }
+        #endregion
+
+        Random _Rand = new Random();
+
+        #region Payloadの作成処理
+        /// <summary>
+        /// Payloadの作成処理
+        /// </summary>
+        /// <returns></returns>
+        public StringContent GetPayload()
+        {
+            var prompt = this;
+            this.SeedBackup = _Rand.Next(); // ランダムのSeed値を作成しておく
+
+            var data = new
+            {
+                prompt = prompt.Prompt,
+                negative_prompt = prompt.NegativePrompt,
+                steps = prompt.Steps,
+                width = prompt.Width,
+                height = prompt.Height,
+                cfg_scale = prompt.CfgScale,
+                sampler_index = prompt.SamplerIndex,
+                n_iter = prompt.N_iter,
+                batch_size = prompt.BatchSize,
+                seed = prompt.Seed < 0 ? this.SeedBackup : prompt.Seed,
+                override_settings = new
+                {
+                    sd_model_checkpoint = prompt.CheckPoint
+                }
+            };
+
+            Debug.WriteLine(data.ToString());
+
+            return data.AsJson();
         }
         #endregion
     }
