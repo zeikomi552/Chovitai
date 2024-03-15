@@ -63,7 +63,7 @@ namespace Chovitai.Models.A1111
         /// </summary>
         /// <param name="uri">URI</param>
         /// <param name="outdir">出力先ディレクトリ</param>
-        public async Task<bool> PostRequest(string uri, string outdir, PromptM prompt)
+        public async Task<bool> PostRequest(string uri, string outdir, Text2ImagePromptM prompt)
         {
             try
             {
@@ -158,11 +158,11 @@ namespace Chovitai.Models.A1111
         /// <summary>
         /// プロンプト要素[PromptItem]プロパティ用変数
         /// </summary>
-        PromptM _PromptItem = new PromptM();
+        Text2ImagePromptM _PromptItem = new Text2ImagePromptM();
         /// <summary>
         /// プロンプト要素[PromptItem]プロパティ
         /// </summary>
-        public PromptM PromptItem
+        public Text2ImagePromptM PromptItem
         {
             get
             {

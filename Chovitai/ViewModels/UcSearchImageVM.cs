@@ -492,7 +492,7 @@ namespace Chovitai.ViewModels
                     GblValues.Instance.Request.PromptItem.Seed = long.TryParse( ImageList.SelectedImage.Meta.Seed!.ToString(), out tmp_seed) ? tmp_seed : -1;     // シードのセット
 
                     int w, h;
-                    PromptM.SizeToWH(ImageList.SelectedImage.Meta.Size, out w, out h);
+                    Text2ImagePromptM.SizeToWH(ImageList.SelectedImage.Meta.Size, out w, out h);
                     GblValues.Instance.Request.PromptItem.Width = w;
                     GblValues.Instance.Request.PromptItem.Height = h;
 

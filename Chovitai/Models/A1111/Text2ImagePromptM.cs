@@ -15,7 +15,7 @@ using System.Diagnostics;
 
 namespace Chovitai.Models.A1111
 {
-    public class PromptM : ModelBase
+    public class Text2ImagePromptM : ModelBase
     {
         Random _Rand = new Random();
 
@@ -383,7 +383,7 @@ namespace Chovitai.Models.A1111
         /// </summary>
         /// <param name="req">リクエスト</param>
         /// <returns>true:一致する false:不一致</returns>
-        public bool Equals(PromptM req)
+        public bool Equals(Text2ImagePromptM req)
         {
             if (req.Prompt.Equals(this.Prompt)
                 && req.NegativePrompt.Equals(this.NegativePrompt)
@@ -399,12 +399,12 @@ namespace Chovitai.Models.A1111
         /// <summary>
         /// Commandへセット
         /// </summary>
-        public static PromptM CreateCommandFromImageText(string image_text)
+        public static Text2ImagePromptM CreateCommandFromImageText(string image_text)
         {
             try
             {
                 string[] text = image_text.Split("\n");
-                PromptM ret = new PromptM();
+                Text2ImagePromptM ret = new Text2ImagePromptM();
 
                 foreach (var tmp in text)
                 {
@@ -459,7 +459,7 @@ namespace Chovitai.Models.A1111
             catch (Exception ex)
             {
                 ShowMessage.ShowErrorOK(ex.Message, "Error");
-                return new PromptM();
+                return new Text2ImagePromptM();
             }
         }
         #endregion

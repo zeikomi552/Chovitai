@@ -28,11 +28,11 @@ namespace Chovitai.Models.Config
         /// <summary>
         /// 最終実行プロンプト[LastPrompt]プロパティ用変数
         /// </summary>
-        PromptM _LastPrompt = new PromptM();
+        Text2ImagePromptM _LastPrompt = new Text2ImagePromptM();
         /// <summary>
         /// 最終実行プロンプト[LastPrompt]プロパティ
         /// </summary>
-        public PromptM LastPrompt
+        public Text2ImagePromptM LastPrompt
         {
             get
             {

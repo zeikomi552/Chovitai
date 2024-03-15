@@ -402,7 +402,7 @@ namespace Chovitai.ViewModels
             try
             {
                 this.Request.PromptItem 
-                    = PromptM.CreateCommandFromImageText(this.FileList.SelectedItem.ImageText);
+                    = Text2ImagePromptM.CreateCommandFromImageText(this.FileList.SelectedItem.ImageText);
             }
             catch (Exception ex)
             {
