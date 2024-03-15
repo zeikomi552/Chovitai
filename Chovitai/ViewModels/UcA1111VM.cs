@@ -22,6 +22,7 @@ using System.Text.RegularExpressions;
 using ControlzEx.Standard;
 using System.Windows.Interop;
 using System.Runtime.CompilerServices;
+using System.Security.Policy;
 
 namespace Chovitai.ViewModels
 {
@@ -78,6 +79,32 @@ namespace Chovitai.ViewModels
             }
         }
         #endregion
+
+        #region お気に入りフォルダ選択中[SelectedFavoriteFolderF]プロパティ
+        /// <summary>
+        /// お気に入りフォルダ選択中[SelectedFavoriteFolderF]プロパティ用変数
+        /// </summary>
+        bool _SelectedFavoriteFolderF = false;
+        /// <summary>
+        /// お気に入りフォルダ選択中[SelectedFavoriteFolderF]プロパティ
+        /// </summary>
+        public bool SelectedFavoriteFolderF
+        {
+            get
+            {
+                return _SelectedFavoriteFolderF;
+            }
+            set
+            {
+                if (!_SelectedFavoriteFolderF.Equals(value))
+                {
+                    _SelectedFavoriteFolderF = value;
+                    NotifyPropertyChanged("SelectedFavoriteFolderF");
+                }
+            }
+        }
+        #endregion
+
 
         #region プロンプトの実行処理[ExecutePrompt]プロパティ
         /// <summary>
@@ -289,12 +316,50 @@ namespace Chovitai.ViewModels
 
                             }));
                         }
+
+
                     }
                     catch
                     {
                         ExecuteProcessF = false;
                     }
                 });
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
+        }
+        #endregion
+
+        public async void GetModels()
+        {
+            try
+            {
+                var ret2 = await this.Request.GetModels(this.A1111Config.URL);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
+        }
+
+        #region お気に入りフォルダに切り替える
+        /// <summary>
+        /// お気に入りフォルダに切り替える
+        /// </summary>
+        public void ChangeFolder()
+        {
+            try
+            {
+                if (this.SelectedFavoriteFolderF)
+                {
+                    ReadDirectory(this.A1111Config.FavoriteDirectory);
+                }
+                else
+                {
+                    ReadDirectory(this.A1111Config.ImageOutDirectory);
+                }
             }
             catch (Exception ex)
             {

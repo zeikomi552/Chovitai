@@ -38,6 +38,25 @@ namespace Chovitai.Models.A1111
         }
         #endregion
 
+        #region 接続用クライアントの作成
+        /// <summary>
+        /// 接続用クライアントの作成
+        /// </summary>
+        /// <param name="url">パラメータ</param>
+        /// <returns>Task</returns>
+        public async Task<string> Request(string url)
+        {
+            using (var client = new HttpClient())
+            {
+                // 上から来たクエリをそのまま実行
+                var response = await client.GetAsync(url);
+
+                // レスポンスを返却
+                return await response.Content.ReadAsStringAsync();
+            }
+        }
+        #endregion
+
         #region POSTのリクエスト実行処理
         /// <summary>
         /// POSTのリクエスト実行処理
@@ -67,6 +86,39 @@ namespace Chovitai.Models.A1111
                     SaveByteArrayAsImage(path, base64string);
                     count++;
                 }
+
+                return true;
+            }
+            catch (JSONDeserializeException e)
+            {
+                string msg = e.Message + "\r\n" + e.JSON;
+                ShowMessage.ShowErrorOK(msg, "Error");
+                return false;
+            }
+            finally
+            {
+
+            }
+        }
+        #endregion
+
+        #region POSTのリクエスト実行処理
+        /// <summary>
+        /// POSTのリクエスト実行処理
+        /// </summary>
+        /// <param name="uri">URI</param>
+        /// <param name="outdir">出力先ディレクトリ</param>
+        public async Task<bool> GetModels(string uri)
+        {
+            try
+            {
+                PostResponseM tmp = new PostResponseM();
+                string request = string.Empty;
+
+                // エンドポイント + パラメータ
+                string url = uri + "/sdapi/v1/sd-models";
+
+                var ret = await tmp.Request(url);      // Requestの実行
 
                 return true;
             }
