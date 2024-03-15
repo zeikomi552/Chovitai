@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection.PortableExecutable;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Chovitai.Models.A1111
@@ -25,6 +26,9 @@ namespace Chovitai.Models.A1111
         {
             using (var client = new HttpClient())
             {
+                // タイムアウト無制限
+                client.Timeout = new TimeSpan(0, 0, 0, 0, Timeout.Infinite);
+
                 // 上から来たクエリをそのまま実行
                 var response = await client.PostAsync(url, payload);
 
