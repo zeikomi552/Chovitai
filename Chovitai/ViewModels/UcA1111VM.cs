@@ -110,21 +110,21 @@ namespace Chovitai.ViewModels
         /// <summary>
         /// プロンプトの実行処理[ExecutePrompt]プロパティ用変数
         /// </summary>
-        static bool _ExecutePrompt = false;
+        static bool _ExecutePromptF = false;
         /// <summary>
         /// プロンプトの実行処理[ExecutePrompt]プロパティ
         /// </summary>
-        public bool ExecutePrompt
+        public bool ExecutePromptF
         {
             get
             {
-                return _ExecutePrompt;
+                return _ExecutePromptF;
             }
             set
             {
-                if (!_ExecutePrompt.Equals(value))
+                if (!_ExecutePromptF.Equals(value))
                 {
-                    _ExecutePrompt = value;
+                    _ExecutePromptF = value;
                     NotifyPropertyChanged("ExecutePrompt");
                 }
             }
@@ -400,24 +400,13 @@ namespace Chovitai.ViewModels
         /// <summary>
         /// Promptの実行処理
         /// </summary>
-        public async void ClickPromptStart()
+        public async void ClickPromptStartRepeat()
         {
             try
             {
-                while (this.ExecutePrompt)
+                while (this.ExecutePromptF)
                 {
-                    var ret = await this.Request.PostRequest(this.A1111Config.URL, this.A1111Config.ImageOutDirectory, this.Request.PromptItem);
-
-                    // スレッドセーフの呼び出し
-                    await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                        new Action(() =>
-                        {
-                            this.FileList.SelectedLast();       // 追加されたファイルを選択
-                                                                // プロンプト実行履歴
-                                                                // 最終実行プロンプトのセット
-                            this.LastPromptConfig.LastPrompt = this.Request.PromptItem;
-                            GblValues.Instance.LastPrompt!.SaveXML();   // 最終プロンプトの保存
-                        }));
+                    await ExecutePrompt();
                 }
             }
             catch (Exception ex)
@@ -427,6 +416,51 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        #region Promptの実行処理
+        /// <summary>
+        /// Promptの実行処理
+        /// </summary>
+        public async void ClickPromptStart()
+        {
+            try
+            {
+                await ExecutePrompt();
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
+        }
+        #endregion
+        #region Promptの実行処理
+        /// <summary>
+        /// Promptの実行処理
+        /// </summary>
+        private async Task<bool> ExecutePrompt()
+        {
+            try
+            {
+                var ret = await this.Request.PostRequest(this.A1111Config.URL, this.A1111Config.ImageOutDirectory, this.Request.PromptItem);
+
+                // スレッドセーフの呼び出し
+                await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                    new Action(() =>
+                    {
+                        this.FileList.SelectedLast();       // 追加されたファイルを選択
+                                                            // プロンプト実行履歴
+                                                            // 最終実行プロンプトのセット
+                        this.LastPromptConfig.LastPrompt = this.Request.PromptItem;
+                        GblValues.Instance.LastPrompt!.SaveXML();   // 最終プロンプトの保存
+                    }));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+                return false;
+            }
+        }
+        #endregion
 
         #region ファイル名が変更された際の処理
         /// <summary>
@@ -561,7 +595,7 @@ namespace Chovitai.ViewModels
         /// </summary>
         public static void StopPrompt()
         {
-            _ExecutePrompt = false;
+            _ExecutePromptF = false;
         }
         #endregion
     }

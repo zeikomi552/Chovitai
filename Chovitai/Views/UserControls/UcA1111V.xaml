@@ -38,7 +38,34 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="200"/>
             </Grid.RowDefinitions>
-            <GroupBox Header="Command">
+            <GroupBox>
+                <GroupBox.Header>
+                    <StackPanel Orientation="Horizontal" Cursor="">
+                        <TextBlock Margin="5" VerticalAlignment="Center" Text="Command"/>
+                        <Button IsEnabled="{Binding ExecuteReadDirF, Converter={StaticResource ConvertBooleanConverter}}" Margin="5,0" ToolTip="Setting">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Click">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenSetting"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                            <StackPanel Orientation="Vertical">
+                                <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/setting-2-svgrepo-com.svg" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button ToolTip="Execute prompt one shot" Margin="5,0" Cursor="Hand">
+                            <Grid>
+                                <svgc:SvgViewbox Height="20" Width="20" Source="/Common/Images/play-1shot-button-svgrepo-com.svg"/>
+                            </Grid>
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Click">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="ClickPromptStart"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </Button>
+
+                    </StackPanel>
+                </GroupBox.Header>
                 <Grid Margin="5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -51,39 +78,6 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <StackPanel Margin="5">
-                        <StackPanel Orientation="Horizontal" Cursor="">
-                            <Button IsEnabled="{Binding ExecuteReadDirF, Converter={StaticResource ConvertBooleanConverter}}" Margin="5" ToolTip="Setting">
-                                <b:Interaction.Triggers>
-                                    <b:EventTrigger EventName="Click">
-                                        <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenSetting"/>
-                                    </b:EventTrigger>
-                                </b:Interaction.Triggers>
-                                <StackPanel Orientation="Vertical">
-                                    <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/setting-2-svgrepo-com.svg" />
-                                </StackPanel>
-                            </Button>
-
-                            <Button Margin="5" ToolTip="A1111 Execute" Cursor="Hand">
-                                <b:Interaction.Triggers>
-                                    <b:EventTrigger EventName="Click">
-                                        <b:CallMethodAction TargetObject="{Binding}" MethodName="WebUIExecute"/>
-                                    </b:EventTrigger>
-                                </b:Interaction.Triggers>
-                                <StackPanel Orientation="Vertical">
-                                    <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/ai-svgrepo-com.svg" />
-                                </StackPanel>
-                            </Button>
-                            <ToggleButton Margin="5" Style="{StaticResource MaterialDesignActionDarkToggleButton}" IsChecked="{Binding ExecutePrompt}" Width="30" Height="30" Cursor="Hand">
-                                <Grid>
-                                    <svgc:SvgViewbox Height="20" Width="20" Source="/Common/Images/repeat-alt-svgrepo-com.svg"/>
-                                </Grid>
-                                <b:Interaction.Triggers>
-                                    <b:EventTrigger EventName="Checked">
-                                        <b:CallMethodAction TargetObject="{Binding}" MethodName="ClickPromptStart"/>
-                                    </b:EventTrigger>
-                                </b:Interaction.Triggers>
-                            </ToggleButton>
-                        </StackPanel>
                     </StackPanel>
                     <Grid Grid.Row="1">
                         <Grid.RowDefinitions>
@@ -192,7 +186,35 @@
                 </Grid>
             </GroupBox>
             <Border Grid.Row="1" BorderThickness="1" BorderBrush="{DynamicResource MahApps.Brushes.AccentBase}" >
-                <TextBox hlp:TextBoxAttachedHelper.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto" Margin="5" IsReadOnly="True" Text="{Binding RedirectMessage.RedirectMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Button HorizontalAlignment="Left" Margin="5" ToolTip="A1111 Execute" Cursor="Hand">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Click">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="WebUIExecute"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                            <StackPanel Orientation="Vertical">
+                                <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/ai-svgrepo-com.svg" />
+                            </StackPanel>
+                        </Button>
+                        <ToggleButton ToolTip="Execute prompt forever" Margin="5,0" Style="{StaticResource MaterialDesignActionDarkToggleButton}" IsChecked="{Binding ExecutePromptF}" Width="30" Height="30" Cursor="Hand">
+                            <Grid>
+                                <svgc:SvgViewbox Height="20" Width="20" Source="/Common/Images/play-repeat-button-svgrepo-com.svg"/>
+                            </Grid>
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Checked">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="ClickPromptStartRepeat"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </ToggleButton>
+                    </StackPanel>
+                    <TextBox Grid.Row="1" hlp:TextBoxAttachedHelper.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto" Margin="5" IsReadOnly="True" Text="{Binding RedirectMessage.RedirectMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
             </Border>
         </Grid>
         <Grid Grid.Column="1" Cursor="">
