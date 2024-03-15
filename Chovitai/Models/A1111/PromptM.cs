@@ -17,6 +17,9 @@ namespace Chovitai.Models.A1111
 {
     public class PromptM : ModelBase
     {
+        Random _Rand = new Random();
+
+
         #region チェックポイント[CheckPoint]プロパティ
         /// <summary>
         /// チェックポイント[CheckPoint]プロパティ用変数
@@ -374,7 +377,6 @@ namespace Chovitai.Models.A1111
         }
         #endregion
 
-
         #region 一致確認
         /// <summary>
         /// 一致確認
@@ -513,8 +515,6 @@ namespace Chovitai.Models.A1111
             }
         }
         #endregion
-
-        Random _Rand = new Random();
 
         #region Payloadの作成処理
         /// <summary>

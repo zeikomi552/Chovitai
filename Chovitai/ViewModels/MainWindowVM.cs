@@ -10,18 +10,6 @@ namespace Chovitai.ViewModels
 {
     public class MainWindowVM : ViewModelBase
     {
-        internal const int CTRL_C_EVENT = 0;
-        [DllImport("kernel32.dll")]
-        internal static extern bool GenerateConsoleCtrlEvent(uint dwCtrlEvent, uint dwProcessGroupId);
-        [DllImport("kernel32.dll", SetLastError = true)]
-        internal static extern bool AttachConsole(uint dwProcessId);
-        [DllImport("kernel32.dll", SetLastError = true, ExactSpelling = true)]
-        internal static extern bool FreeConsole();
-        [DllImport("kernel32.dll")]
-        static extern bool SetConsoleCtrlHandler(ConsoleCtrlDelegate? HandlerRoutine, bool Add);
-        // Delegate type to be used as the Handler Routine for SCCH
-        delegate Boolean ConsoleCtrlDelegate(uint CtrlType);
-
         #region デバッグフラグ[DebugF]プロパティ
         /// <summary>
         /// デバッグフラグ[DebugF]プロパティ
@@ -84,28 +72,8 @@ namespace Chovitai.ViewModels
                 // アプリケーションのシャットダウン
                 GblValues.AppShutdown();
 
-                Process? p = GblValues.Instance.A1111Proc;
-
-                if (p == null)
-                {
-                    return;
-                }
-
-                if (AttachConsole((uint)p.Id))
-                {
-                    SetConsoleCtrlHandler(null, true);
-                    try
-                    {
-                        if (!GenerateConsoleCtrlEvent(CTRL_C_EVENT, 0))
-                            return;
-                        p.WaitForExit();
-                    }
-                    finally
-                    {
-                        SetConsoleCtrlHandler(null, false);
-                        FreeConsole();
-                    }
-                }
+                // A111プロセスの終了処理
+                UcA1111VM.WebUIProcessEnd();
             }
             catch
             {

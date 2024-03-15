@@ -192,7 +192,7 @@
                         <RowDefinition Height="*"/>
                     </Grid.RowDefinitions>
                     <StackPanel Orientation="Horizontal">
-                        <Button HorizontalAlignment="Left" Margin="5" ToolTip="A1111 Execute" Cursor="Hand">
+                        <Button IsEnabled="{Binding ExecuteProcessF, Converter={StaticResource ConvertBooleanConverter}}" HorizontalAlignment="Left" Margin="5" ToolTip="A1111 Execute" Cursor="Hand">
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="Click">
                                     <b:CallMethodAction TargetObject="{Binding}" MethodName="WebUIExecute"/>

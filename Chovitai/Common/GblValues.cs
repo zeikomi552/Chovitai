@@ -322,6 +322,11 @@ namespace Chovitai.Common
         /// </summary>
         public Process? A1111Proc { get; set; }
 
+        /// <summary>
+        /// A1111プロセス実行中フラグ
+        /// </summary>
+        public bool ExecA111ProcF { get; set; } = false;
+
         #region アプリケーション終了
         /// <summary>
         /// アプリケーション終了

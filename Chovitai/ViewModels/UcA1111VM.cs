@@ -23,38 +23,13 @@ using ControlzEx.Standard;
 using System.Windows.Interop;
 using System.Runtime.CompilerServices;
 using System.Security.Policy;
+using OpenCvSharp.XFeatures2D;
+using System.Runtime.InteropServices;
 
 namespace Chovitai.ViewModels
 {
-    public class UcA1111VM : FileBaseVM
+    public class UcA1111VM : WebUIBaseM
     {
-        #region リダイレクトメッセージ[RedirectMessage]プロパティ
-        /// <summary>
-        /// リダイレクトメッセージ[RedirectMessage]プロパティ用変数
-        /// </summary>
-        RedirectMessageM _RedirectMessage = new RedirectMessageM();
-        /// <summary>
-        /// リダイレクトメッセージ[RedirectMessage]プロパティ
-        /// </summary>
-        public RedirectMessageM RedirectMessage
-        {
-            get
-            {
-                return _RedirectMessage;
-            }
-            set
-            {
-                if (_RedirectMessage == null || !_RedirectMessage.Equals(value))
-                {
-                    _RedirectMessage = value;
-                    NotifyPropertyChanged("RedirectMessage");
-                }
-            }
-        }
-        #endregion
-
-
-
         #region A1111 Request[Request]プロパティ
         /// <summary>
         /// A1111 Request[Request]プロパティ用変数
@@ -105,7 +80,6 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
-
         #region プロンプトの実行処理[ExecutePrompt]プロパティ
         /// <summary>
         /// プロンプトの実行処理[ExecutePrompt]プロパティ用変数
@@ -138,7 +112,6 @@ namespace Chovitai.ViewModels
         static bool bInit = false;
         #endregion
 
-        public static bool ExecuteProcessF { get; set; } = false;
 
         #region 画面初期化処理
         /// <summary>
@@ -166,6 +139,10 @@ namespace Chovitai.ViewModels
                     }
 
                     this.Request.PromptItem = this.LastPromptConfig.LastPrompt;
+
+                    // WebUIの実行
+                    WebUIExecute();
+
                     bInit = true;
                 }
             }
@@ -249,88 +226,6 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
-        /// <summary>
-        /// DOSコマンドを実行し結果を受取る関数
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        public IEnumerable<string> RunCommand()
-        {
-            if (!ExecuteProcessF)
-            {
-                ExecuteProcessF = true;
-                var curr_dir_path = GblValues.Instance.A1111Setting?.Item.CurrentDirectory;
-
-                GblValues.Instance.A1111Proc = new Process();
-                ProcessStartInfo info = new ProcessStartInfo();
-                info.FileName = "cmd.exe";
-                //info.Arguments = "/c " + $"python {curr_dir_path}\\launch.py --nowebui --xformers";//引数
-                info.RedirectStandardInput = true;
-                info.RedirectStandardOutput = true;
-                info.UseShellExecute = false;
-                info.CreateNoWindow = true; // コンソール・ウィンドウを開かない
-                GblValues.Instance.A1111Proc.StartInfo = info;
-                GblValues.Instance.A1111Proc.Start();
-
-                using (StreamWriter sw = GblValues.Instance.A1111Proc.StandardInput)
-                {
-                    if (sw.BaseStream.CanWrite)
-                    {
-                        sw.WriteLine("cd {0}", curr_dir_path);
-                        sw.WriteLine("python launch.py --nowebui --xformers");
-                    }
-                }
-                string line;
-
-                while ((line = GblValues.Instance.A1111Proc.StandardOutput.ReadLine()!) != null && ExecuteProcessF)
-                {
-                    yield return line;
-                }
-            }
-        }
-
-        #region WebUI A1111の実行
-        /// <summary>
-        /// WebUI A1111の実行
-        /// </summary>
-        public void WebUIExecute()
-        {
-            try
-            {
-                Task.Run(() =>
-                {
-                    try
-                    {
-                        foreach (var msg in RunCommand())
-                        {
-                            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                            new Action(() =>
-                            {
-                                if (!string.IsNullOrEmpty(msg))
-                                {
-                                    this.RedirectMessage.Add(msg);
-                                }
-
-                                if (!ExecuteProcessF)
-                                    return;
-
-                            }));
-                        }
-
-
-                    }
-                    catch
-                    {
-                        ExecuteProcessF = false;
-                    }
-                });
-            }
-            catch (Exception ex)
-            {
-                ShowMessage.ShowErrorOK(ex.Message, "Error");
-            }
-        }
-        #endregion
 
         public async void GetModels()
         {
@@ -364,19 +259,6 @@ namespace Chovitai.ViewModels
             catch (Exception ex)
             {
                 ShowMessage.ShowErrorOK(ex.Message, "Error");
-            }
-        }
-        #endregion
-
-        #region コンフィグデータ
-        /// <summary>
-        /// コンフィグデータ
-        /// </summary>
-        public A1111SettingConfigM A1111Config
-        {
-            get
-            {
-                return GblValues.Instance.A1111Setting!.Item;
             }
         }
         #endregion
