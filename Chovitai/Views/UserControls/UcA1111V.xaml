@@ -13,10 +13,11 @@
              xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:ViewModels="clr-namespace:Chovitai.ViewModels" x:Class="Chovitai.Views.UserControls.UcA1111V"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800" Background="{DynamicResource MaterialDesignDarkBackground}" Cursor="">
+             d:DesignHeight="800" d:DesignWidth="1200" Background="{DynamicResource MaterialDesignDarkBackground}" Cursor="">
     <UserControl.Resources>
         <ViewModels:UcA1111VM x:Key="vm"/>
         <Converters:URLStringToImageSourceConverter x:Key="URLStringToImageSourceConverter"/>
+        <Converters:ConvertBooleanConverter x:Key="ConvertBooleanConverter"/>
     </UserControl.Resources>
     <UserControl.DataContext>
         <Binding Source="{StaticResource vm}"/>
@@ -37,7 +38,34 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="200"/>
             </Grid.RowDefinitions>
-            <GroupBox Header="Command">
+            <GroupBox>
+                <GroupBox.Header>
+                    <StackPanel Orientation="Horizontal" Cursor="">
+                        <TextBlock Margin="5" VerticalAlignment="Center" Text="Command"/>
+                        <Button IsEnabled="{Binding ExecuteReadDirF, Converter={StaticResource ConvertBooleanConverter}}" Margin="5,0" ToolTip="Setting">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Click">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenSetting"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                            <StackPanel Orientation="Vertical">
+                                <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/setting-2-svgrepo-com.svg" />
+                            </StackPanel>
+                        </Button>
+
+                        <Button ToolTip="Execute prompt one shot" Margin="5,0" Cursor="Hand">
+                            <Grid>
+                                <svgc:SvgViewbox Height="20" Width="20" Source="/Common/Images/play-1shot-button-svgrepo-com.svg"/>
+                            </Grid>
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Click">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="ClickPromptStart"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </Button>
+
+                    </StackPanel>
+                </GroupBox.Header>
                 <Grid Margin="5">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="auto"/>
@@ -50,38 +78,6 @@
                         <RowDefinition Height="auto"/>
                     </Grid.RowDefinitions>
                     <StackPanel Margin="5">
-                        <StackPanel Orientation="Horizontal" Cursor="">
-                            <Button Margin="5" ToolTip="Setting">
-                                <b:Interaction.Triggers>
-                                    <b:EventTrigger EventName="Click">
-                                        <b:CallMethodAction TargetObject="{Binding}" MethodName="OpenSetting"/>
-                                    </b:EventTrigger>
-                                </b:Interaction.Triggers>
-                                <StackPanel Orientation="Vertical">
-                                    <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/setting-2-svgrepo-com.svg" />
-                                </StackPanel>
-                            </Button>
-                            <Button Margin="5" ToolTip="A1111 Execute" Cursor="Hand">
-                                <b:Interaction.Triggers>
-                                    <b:EventTrigger EventName="Click">
-                                        <b:CallMethodAction TargetObject="{Binding}" MethodName="WebUIExecute"/>
-                                    </b:EventTrigger>
-                                </b:Interaction.Triggers>
-                                <StackPanel Orientation="Vertical">
-                                    <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/ai-svgrepo-com.svg" />
-                                </StackPanel>
-                            </Button>
-                            <ToggleButton Margin="5" Style="{StaticResource MaterialDesignActionDarkToggleButton}" IsChecked="{Binding ExecutePrompt}" Width="30" Height="30" Cursor="Hand">
-                                <Grid>
-                                    <svgc:SvgViewbox Height="20" Width="20" Source="/Common/Images/repeat-alt-svgrepo-com.svg"/>
-                                </Grid>
-                                <b:Interaction.Triggers>
-                                    <b:EventTrigger EventName="Checked">
-                                        <b:CallMethodAction TargetObject="{Binding}" MethodName="ClickPromptStart"/>
-                                    </b:EventTrigger>
-                                </b:Interaction.Triggers>
-                            </ToggleButton>
-                        </StackPanel>
                     </StackPanel>
                     <Grid Grid.Row="1">
                         <Grid.RowDefinitions>
@@ -89,7 +85,20 @@
                             <RowDefinition Height="*"/>
                         </Grid.RowDefinitions>
                         <TextBlock VerticalAlignment="Center" Margin="5" Text="Checkpoint"/>
-                        <TextBox TextWrapping="Wrap" AcceptsReturn="True" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.CheckPoint}"/>
+                        <Grid Grid.Row="1">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox TextWrapping="Wrap" AcceptsReturn="True" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.CheckPoint}"/>
+                            <Button Content="Check" Grid.Column="1">
+                                <b:Interaction.Triggers>
+                                    <b:EventTrigger EventName="Click">
+                                        <b:CallMethodAction TargetObject="{Binding}" MethodName="GetModels"/>
+                                    </b:EventTrigger>
+                                </b:Interaction.Triggers>
+                            </Button>
+                        </Grid>
                     </Grid>
                     <Grid Grid.Row="2">
                         <Grid.RowDefinitions>
@@ -145,6 +154,21 @@
                                 <TextBlock VerticalAlignment="Center" Margin="5" Text="Steps:"/>
                                 <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.Steps}"/>
                             </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Margin="5" Text="Cfg Scale:"/>
+                                <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.CfgScale}"/>
+                                <Slider VerticalAlignment="Center" Width="100" IsSnapToTickEnabled="True"  Value="{Binding Request.PromptItem.CfgScale, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SmallChange="0.5" TickFrequency="0.1"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Margin="5" Text="N_iter:"/>
+                                <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.N_iter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Slider VerticalAlignment="Center" Width="100" IsSnapToTickEnabled="True"  Value="{Binding Request.PromptItem.N_iter, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SmallChange="1" TickFrequency="1" Minimum="1" Maximum="100"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock VerticalAlignment="Center" Margin="5" Text="Batch Size:"/>
+                                <TextBox Width="50" TextAlignment="Center" Margin="5" Grid.Row="1" Text="{Binding Request.PromptItem.BatchSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                                <Slider VerticalAlignment="Center" Width="100" IsSnapToTickEnabled="True"  Value="{Binding Request.PromptItem.BatchSize, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" SmallChange="1" TickFrequency="1" Minimum="1" Maximum="8"/>
+                            </StackPanel>
                         </StackPanel>
                     </Grid>
                     <Grid Grid.Row="6">
@@ -161,73 +185,119 @@
                     </Grid>
                 </Grid>
             </GroupBox>
-            <TextBox hlp:TextBoxAttachedHelper.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto" Margin="5" Grid.Row="1" IsReadOnly="True" Text="{Binding RedirectMessage.RedirectMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Border Grid.Row="1" BorderThickness="1" BorderBrush="{DynamicResource MahApps.Brushes.AccentBase}" >
+                <Grid >
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="auto"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <StackPanel Orientation="Horizontal">
+                        <Button IsEnabled="{Binding ExecuteProcessF, Converter={StaticResource ConvertBooleanConverter}}" HorizontalAlignment="Left" Margin="5" ToolTip="A1111 Execute" Cursor="Hand">
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Click">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="WebUIExecute"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                            <StackPanel Orientation="Vertical">
+                                <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/ai-svgrepo-com.svg" />
+                            </StackPanel>
+                        </Button>
+                        <ToggleButton ToolTip="Execute prompt forever" Margin="5,0" Style="{StaticResource MaterialDesignActionDarkToggleButton}" IsChecked="{Binding ExecutePromptF}" Width="30" Height="30" Cursor="Hand">
+                            <Grid>
+                                <svgc:SvgViewbox Height="20" Width="20" Source="/Common/Images/play-repeat-button-svgrepo-com.svg"/>
+                            </Grid>
+                            <b:Interaction.Triggers>
+                                <b:EventTrigger EventName="Checked">
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="ClickPromptStartRepeat"/>
+                                </b:EventTrigger>
+                            </b:Interaction.Triggers>
+                        </ToggleButton>
+                    </StackPanel>
+                    <TextBox Grid.Row="1" hlp:TextBoxAttachedHelper.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto" Margin="5" IsReadOnly="True" Text="{Binding RedirectMessage.OutputMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                </Grid>
+            </Border>
         </Grid>
         <Grid Grid.Column="1" Cursor="">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <ListView Margin="5,5,5,5" x:Name="lvImages" ItemsSource="{Binding FileList.Items}"
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <ToggleButton IsEnabled="{Binding ExecuteReadDirF, Converter={StaticResource ConvertBooleanConverter}}" HorizontalAlignment="Left" Margin="5" Style="{StaticResource MaterialDesignActionDarkToggleButton}" IsChecked="{Binding SelectedFavoriteFolderF}" Width="30" Height="30" Cursor="Hand" ToolTip="Change favorite folder">
+                    <Grid>
+                        <svgc:SvgViewbox Height="20" Width="20" Source="/Common/Images/favorite-svgrepo-com.svg"/>
+                    </Grid>
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="Click">
+                            <b:CallMethodAction TargetObject="{Binding}" MethodName="ChangeFolder"/>
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
+                </ToggleButton>
+                <ListView Grid.Row="1" Margin="5,5,5,5" x:Name="lvImages" ItemsSource="{Binding FileList.Items}"
                               SelectedItem="{Binding FileList.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
-                <b:Interaction.Triggers>
-                    <b:EventTrigger EventName="SelectionChanged">
-                        <b:CallMethodAction TargetObject="{Binding}" MethodName="SelectedItemChanged"/>
-                    </b:EventTrigger>
-                </b:Interaction.Triggers>
-                <ListView.Template>
-                    <ControlTemplate TargetType="{x:Type ListView}">
-                        <Border BorderThickness="5">
-                            <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
-                                <ItemsPresenter x:Name="itemsPresenter" Margin="5"/>
-                            </ScrollViewer>
-                        </Border>
-                    </ControlTemplate>
-                </ListView.Template>
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" Width="{Binding ActualWidth, ElementName=itemsPresenter, Mode=OneWay}"/>
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Image Width="100" Source="{Binding FilePath, Converter={StaticResource URLStringToImageSourceConverter}}">
-                            <Image.ContextMenu>
-                                <ContextMenu Name="cm" StaysOpen="true">
-                                    <MenuItem Header="Reveal in File Explore">
-                                        <b:Interaction.Triggers>
-                                            <b:EventTrigger EventName="Click">
-                                                <b:CallMethodAction TargetObject="{Binding}" MethodName="RevealInFileExplore"/>
-                                            </b:EventTrigger>
-                                        </b:Interaction.Triggers>
-                                    </MenuItem>
-                                    <MenuItem Header="Delete File">
-                                        <b:Interaction.Triggers>
-                                            <b:EventTrigger EventName="Click">
-                                                <b:CallMethodAction TargetObject="{Binding Mode=OneWay, Source={StaticResource vm}}" MethodName="DeleteFile"/>
-                                            </b:EventTrigger>
-                                        </b:Interaction.Triggers>
-                                    </MenuItem>
-                                    <MenuItem Header="Set Command">
-                                        <b:Interaction.Triggers>
-                                            <b:EventTrigger EventName="Click">
-                                                <b:CallMethodAction TargetObject="{Binding Mode=OneWay, Source={StaticResource vm}}" MethodName="SetCommand"/>
-                                            </b:EventTrigger>
-                                        </b:Interaction.Triggers>
-                                    </MenuItem>
-                                    <MenuItem Header="Move Favorite">
-                                        <b:Interaction.Triggers>
-                                            <b:EventTrigger EventName="Click">
-                                                <b:CallMethodAction TargetObject="{Binding Mode=OneWay, Source={StaticResource vm}}" MethodName="MoveFavorite"/>
-                                            </b:EventTrigger>
-                                        </b:Interaction.Triggers>
-                                    </MenuItem>
-                                </ContextMenu>
-                            </Image.ContextMenu>
-                        </Image>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
+                    <b:Interaction.Triggers>
+                        <b:EventTrigger EventName="SelectionChanged">
+                            <b:CallMethodAction TargetObject="{Binding}" MethodName="SelectedItemChanged"/>
+                        </b:EventTrigger>
+                    </b:Interaction.Triggers>
+                    <ListView.Template>
+                        <ControlTemplate TargetType="{x:Type ListView}">
+                            <Border BorderThickness="5">
+                                <ScrollViewer VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled">
+                                    <ItemsPresenter x:Name="itemsPresenter" Margin="5"/>
+                                </ScrollViewer>
+                            </Border>
+                        </ControlTemplate>
+                    </ListView.Template>
+                    <ListView.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <WrapPanel Orientation="Horizontal" Width="{Binding ActualWidth, ElementName=itemsPresenter, Mode=OneWay}"/>
+                        </ItemsPanelTemplate>
+                    </ListView.ItemsPanel>
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Image Width="100" Source="{Binding FilePath, Converter={StaticResource URLStringToImageSourceConverter}}">
+                                <Image.ContextMenu>
+                                    <ContextMenu Name="cm" StaysOpen="true">
+                                        <MenuItem Header="Reveal in File Explore">
+                                            <b:Interaction.Triggers>
+                                                <b:EventTrigger EventName="Click">
+                                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="RevealInFileExplore"/>
+                                                </b:EventTrigger>
+                                            </b:Interaction.Triggers>
+                                        </MenuItem>
+                                        <MenuItem Header="Delete File">
+                                            <b:Interaction.Triggers>
+                                                <b:EventTrigger EventName="Click">
+                                                    <b:CallMethodAction TargetObject="{Binding Mode=OneWay, Source={StaticResource vm}}" MethodName="DeleteFile"/>
+                                                </b:EventTrigger>
+                                            </b:Interaction.Triggers>
+                                        </MenuItem>
+                                        <MenuItem Header="Set Command">
+                                            <b:Interaction.Triggers>
+                                                <b:EventTrigger EventName="Click">
+                                                    <b:CallMethodAction TargetObject="{Binding Mode=OneWay, Source={StaticResource vm}}" MethodName="SetCommand"/>
+                                                </b:EventTrigger>
+                                            </b:Interaction.Triggers>
+                                        </MenuItem>
+                                        <MenuItem Header="Move Favorite">
+                                            <b:Interaction.Triggers>
+                                                <b:EventTrigger EventName="Click">
+                                                    <b:CallMethodAction TargetObject="{Binding Mode=OneWay, Source={StaticResource vm}}" MethodName="MoveFavorite"/>
+                                                </b:EventTrigger>
+                                            </b:Interaction.Triggers>
+                                        </MenuItem>
+                                    </ContextMenu>
+                                </Image.ContextMenu>
+                            </Image>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
+            </Grid>
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>

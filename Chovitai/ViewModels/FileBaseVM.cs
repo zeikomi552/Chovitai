@@ -1,4 +1,5 @@
-﻿using Chovitai.Common.Utilities;
+﻿using Chovitai.Common;
+using Chovitai.Common.Utilities;
 using Chovitai.Models;
 using Microsoft.WindowsAPICodePack.Dialogs;
 using MVVMCore.BaseClass;
@@ -8,6 +9,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +25,7 @@ namespace Chovitai.ViewModels
         /// <summary>
         /// ディレクトリ読み込み処理実行中[ExecuteReadDirF]プロパティ用変数
         /// </summary>
-        bool _ExecuteReadDirF = false;
+        static bool _ExecuteReadDirF = false;
         /// <summary>
         /// ディレクトリ読み込み処理実行中[ExecuteReadDirF]プロパティ
         /// </summary>
@@ -160,6 +162,14 @@ namespace Chovitai.ViewModels
         {
             try
             {
+                // シャットダウンフラグの確認
+                if (GblValues.ShutdownF)
+                {
+                    // シャットダウン中のためファイルウォッチャーを解放し抜ける
+                    DisposeFileWatcher();
+                    return;
+                }
+
                 switch (e.ChangeType)
                 {
                     case System.IO.WatcherChangeTypes.Changed:
@@ -174,14 +184,18 @@ namespace Chovitai.ViewModels
                                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
                                     new Action(() =>
                                     {
-                                        var bfind = (from x in this.FileList.Items
-                                                     where x.FilePath == file_info.FilePath
-                                                     select x).Any();
-
-                                        if (!bfind)
+                                        try
                                         {
-                                            this.FileList.Items.Add(file_info);
+                                            var bfind = (from x in this.FileList.Items
+                                                         where x.FilePath == file_info.FilePath
+                                                         select x).Any();
+
+                                            if (!bfind)
+                                            {
+                                                this.FileList.Items.Add(file_info);
+                                            }
                                         }
+                                        catch { }
                                     }));
                             }
                             break;
@@ -195,7 +209,11 @@ namespace Chovitai.ViewModels
                                 Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
                                     new Action(() =>
                                     {
-                                        this.FileList.Items.Add(file_info);
+                                        try
+                                        {
+                                            this.FileList.Items.Add(file_info);
+                                        }
+                                        catch { }
                                     }));
                             }
 
@@ -209,15 +227,18 @@ namespace Chovitai.ViewModels
                         Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
                             new Action(() =>
                             {
-                                var tmp = (from x in this.FileList.Items
-                                           where x.FilePath.Equals(e.FullPath)
-                                           select x).FirstOrDefault();
-
-                                if (tmp != null)
+                                try
                                 {
-                                    this.FileList.Items.Remove(tmp);
-                                }
+                                    var tmp = (from x in this.FileList.Items
+                                               where x.FilePath.Equals(e.FullPath)
+                                               select x).FirstOrDefault();
 
+                                    if (tmp != null)
+                                    {
+                                        this.FileList.Items.Remove(tmp);
+                                    }
+                                }
+                                catch { }
                             }));
 
                         //Console.WriteLine(
@@ -350,7 +371,6 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
-
         #region ディレクトリ読み出しの更新処理
         /// <summary>
         /// ディレクトリ読み出しの更新処理
@@ -376,8 +396,6 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
-
-
         #region ディレクトリのファイル全て読み込み
         /// <summary>
         /// ディレクトリのファイル全て読み込み
@@ -387,6 +405,14 @@ namespace Chovitai.ViewModels
         {
             try
             {
+                // シャットダウンフラグの確認
+                if (GblValues.ShutdownF)
+                {
+                    // シャットダウン中のためファイルウォッチャーを解放し抜ける
+                    DisposeFileWatcher();
+                    return;
+                }
+
                 // ファイル情報のセット
                 this.FileList.Items.Clear();
 
@@ -400,7 +426,11 @@ namespace Chovitai.ViewModels
                     Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
                         new Action(() =>
                         {
-                            this.ExecuteReadDirF = true;    // 読み込み処理実行
+                            try
+                            {
+                                this.ExecuteReadDirF = true;    // 読み込み処理実行
+                            }
+                            catch { }
                         }));
 
                     // フォルダ内のファイル一覧を取得
@@ -416,7 +446,11 @@ namespace Chovitai.ViewModels
                             Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
                                 new Action(() =>
                                 {
-                                    this.FileList.Items.Add(file_info);
+                                    try
+                                    {
+                                        this.FileList.Items.Add(file_info);
+                                    }
+                                    catch { }
                                 }));
                         }
                     }
@@ -424,20 +458,28 @@ namespace Chovitai.ViewModels
                     Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
                         new Action(() =>
                         {
-                            this.FileList.SelectedLast();
+                            try
+                            {
+                                this.FileList.SelectedLast();
 
-                            // ファイルウォッチャーをいったん終了
-                            FinishDirectoryWatching();
+                                // ファイルウォッチャーをいったん終了
+                                FinishDirectoryWatching();
 
-                            // ファイルウォッチャーの開始
-                            StartDirectoryWatching(dir, "*.png");
+                                // ファイルウォッチャーの開始
+                                StartDirectoryWatching(dir, "*.png");
+                            }
+                            catch { }
                         }));
 
                     // スレッドセーフの呼び出し
                     Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
                         new Action(() =>
                         {
-                            this.ExecuteReadDirF = false;    // 読み込み処理終了
+                            try
+                            {
+                                this.ExecuteReadDirF = false;    // 読み込み処理終了
+                            }
+                            catch { }
                         }));
 
                 });
@@ -487,5 +529,12 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        public void DisposeFileWatcher()
+        {
+            if (_Watcher != null)
+            {
+                _Watcher.Dispose();
+            }
+        }
     }
 }

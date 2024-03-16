@@ -21,38 +21,15 @@ using System.Windows;
 using System.Text.RegularExpressions;
 using ControlzEx.Standard;
 using System.Windows.Interop;
+using System.Runtime.CompilerServices;
+using System.Security.Policy;
+using OpenCvSharp.XFeatures2D;
+using System.Runtime.InteropServices;
 
 namespace Chovitai.ViewModels
 {
-    public class UcA1111VM : FileBaseVM
+    public class UcA1111VM : WebUIBaseM
     {
-        #region リダイレクトメッセージ[RedirectMessage]プロパティ
-        /// <summary>
-        /// リダイレクトメッセージ[RedirectMessage]プロパティ用変数
-        /// </summary>
-        RedirectMessageM _RedirectMessage = new RedirectMessageM();
-        /// <summary>
-        /// リダイレクトメッセージ[RedirectMessage]プロパティ
-        /// </summary>
-        public RedirectMessageM RedirectMessage
-        {
-            get
-            {
-                return _RedirectMessage;
-            }
-            set
-            {
-                if (_RedirectMessage == null || !_RedirectMessage.Equals(value))
-                {
-                    _RedirectMessage = value;
-                    NotifyPropertyChanged("RedirectMessage");
-                }
-            }
-        }
-        #endregion
-
-
-
         #region A1111 Request[Request]プロパティ
         /// <summary>
         /// A1111 Request[Request]プロパティ用変数
@@ -78,25 +55,50 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        #region お気に入りフォルダ選択中[SelectedFavoriteFolderF]プロパティ
+        /// <summary>
+        /// お気に入りフォルダ選択中[SelectedFavoriteFolderF]プロパティ用変数
+        /// </summary>
+        bool _SelectedFavoriteFolderF = false;
+        /// <summary>
+        /// お気に入りフォルダ選択中[SelectedFavoriteFolderF]プロパティ
+        /// </summary>
+        public bool SelectedFavoriteFolderF
+        {
+            get
+            {
+                return _SelectedFavoriteFolderF;
+            }
+            set
+            {
+                if (!_SelectedFavoriteFolderF.Equals(value))
+                {
+                    _SelectedFavoriteFolderF = value;
+                    NotifyPropertyChanged("SelectedFavoriteFolderF");
+                }
+            }
+        }
+        #endregion
+
         #region プロンプトの実行処理[ExecutePrompt]プロパティ
         /// <summary>
         /// プロンプトの実行処理[ExecutePrompt]プロパティ用変数
         /// </summary>
-        bool _ExecutePrompt = false;
+        static bool _ExecutePromptF = false;
         /// <summary>
         /// プロンプトの実行処理[ExecutePrompt]プロパティ
         /// </summary>
-        public bool ExecutePrompt
+        public bool ExecutePromptF
         {
             get
             {
-                return _ExecutePrompt;
+                return _ExecutePromptF;
             }
             set
             {
-                if (!_ExecutePrompt.Equals(value))
+                if (!_ExecutePromptF.Equals(value))
                 {
-                    _ExecutePrompt = value;
+                    _ExecutePromptF = value;
                     NotifyPropertyChanged("ExecutePrompt");
                 }
             }
@@ -110,7 +112,6 @@ namespace Chovitai.ViewModels
         static bool bInit = false;
         #endregion
 
-        public static bool ExecuteProcessF { get; set; } = false;
 
         #region 画面初期化処理
         /// <summary>
@@ -138,6 +139,10 @@ namespace Chovitai.ViewModels
                     }
 
                     this.Request.PromptItem = this.LastPromptConfig.LastPrompt;
+
+                    // WebUIの実行
+                    WebUIExecute();
+
                     bInit = true;
                 }
             }
@@ -221,96 +226,39 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
-        /// <summary>
-        /// DOSコマンドを実行し結果を受取る関数
-        /// </summary>
-        /// <param name="command"></param>
-        /// <returns></returns>
-        public IEnumerable<string> RunCommand()
-        {
-            if (!ExecuteProcessF)
-            {
-                ExecuteProcessF = true;
-                var curr_dir_path = GblValues.Instance.A1111Setting?.Item.CurrentDirectory;
 
-                GblValues.Instance.A1111Proc = new Process();
-                ProcessStartInfo info = new ProcessStartInfo();
-                info.FileName = "cmd.exe";
-                //info.Arguments = "/c " + $"python {curr_dir_path}\\launch.py --nowebui --xformers";//引数
-                info.RedirectStandardInput = true;
-                info.RedirectStandardOutput = true;
-                info.UseShellExecute = false;
-                info.CreateNoWindow = true; // コンソール・ウィンドウを開かない
-                GblValues.Instance.A1111Proc.StartInfo = info;
-                GblValues.Instance.A1111Proc.Start();
-
-                using (StreamWriter sw = GblValues.Instance.A1111Proc.StandardInput)
-                {
-                    if (sw.BaseStream.CanWrite)
-                    {
-                        sw.WriteLine("cd {0}", curr_dir_path);
-                        sw.WriteLine("python launch.py --nowebui --xformers");
-                    }
-                }
-                string line;
-
-                while ((line = GblValues.Instance.A1111Proc.StandardOutput.ReadLine()!) != null && ExecuteProcessF)
-                {
-                    yield return line;
-                }
-            }
-        }
-
-        #region WebUI A1111の実行
-        /// <summary>
-        /// WebUI A1111の実行
-        /// </summary>
-        public void WebUIExecute()
+        public async void GetModels()
         {
             try
             {
-                Task.Run(() =>
-                {
-                    try
-                    {
-                        foreach (var msg in RunCommand())
-                        {
-                            Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                            new Action(() =>
-                            {
-                                if (!string.IsNullOrEmpty(msg))
-                                {
-                                    this.RedirectMessage.Add(msg);
-                                }
-
-                                if (!ExecuteProcessF)
-                                    return;
-
-                            }));
-                        }
-                    }
-                    catch
-                    {
-                        ExecuteProcessF = false;
-                    }
-                });
+                var ret2 = await this.Request.GetModels(this.A1111Config.URL);
             }
             catch (Exception ex)
             {
                 ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
         }
-        #endregion
 
-        #region コンフィグデータ
+        #region お気に入りフォルダに切り替える
         /// <summary>
-        /// コンフィグデータ
+        /// お気に入りフォルダに切り替える
         /// </summary>
-        public A1111SettingConfigM A1111Config
+        public void ChangeFolder()
         {
-            get
+            try
             {
-                return GblValues.Instance.A1111Setting!.Item;
+                if (this.SelectedFavoriteFolderF)
+                {
+                    ReadDirectory(this.A1111Config.FavoriteDirectory);
+                }
+                else
+                {
+                    ReadDirectory(this.A1111Config.ImageOutDirectory);
+                }
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
         }
         #endregion
@@ -334,32 +282,13 @@ namespace Chovitai.ViewModels
         /// <summary>
         /// Promptの実行処理
         /// </summary>
-        public async void ClickPromptStart()
+        public async void ClickPromptStartRepeat()
         {
             try
             {
-                while (this.ExecutePrompt)
+                while (this.ExecutePromptF)
                 {
-                    var prompt = this.Request.PromptItem.ShallowCopy<PromptM>();
-
-                    // Pormptが-1以下の設定であればランダムの値にすり替える
-                    if (prompt.Seed <= -1)
-                    {
-                        prompt.Seed = _Rand.Next(); // Seed値の作成
-                    }
-
-                    var ret = await this.Request.PostRequest(this.A1111Config.URL, this.A1111Config.ImageOutDirectory, prompt);
-
-                    // スレッドセーフの呼び出し
-                    await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                        new Action(() =>
-                        {
-                            this.FileList.SelectedLast();       // 追加されたファイルを選択
-                                                                // プロンプト実行履歴
-                                                                // 最終実行プロンプトのセット
-                            this.LastPromptConfig.LastPrompt = prompt;
-                            GblValues.Instance.LastPrompt!.SaveXML();   // 最終プロンプトの保存
-                        }));
+                    await ExecutePrompt();
                 }
             }
             catch (Exception ex)
@@ -369,6 +298,51 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        #region Promptの実行処理
+        /// <summary>
+        /// Promptの実行処理
+        /// </summary>
+        public async void ClickPromptStart()
+        {
+            try
+            {
+                await ExecutePrompt();
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
+        }
+        #endregion
+        #region Promptの実行処理
+        /// <summary>
+        /// Promptの実行処理
+        /// </summary>
+        private async Task<bool> ExecutePrompt()
+        {
+            try
+            {
+                var ret = await this.Request.PostRequest(this.A1111Config.URL, this.A1111Config.ImageOutDirectory, this.Request.PromptItem);
+
+                // スレッドセーフの呼び出し
+                await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                    new Action(() =>
+                    {
+                        this.FileList.SelectedLast();       // 追加されたファイルを選択
+                                                            // プロンプト実行履歴
+                                                            // 最終実行プロンプトのセット
+                        this.LastPromptConfig.LastPrompt = this.Request.PromptItem;
+                        GblValues.Instance.LastPrompt!.SaveXML();   // 最終プロンプトの保存
+                    }));
+                return true;
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+                return false;
+            }
+        }
+        #endregion
 
         #region ファイル名が変更された際の処理
         /// <summary>
@@ -382,6 +356,14 @@ namespace Chovitai.ViewModels
         {
             try
             {
+                // シャットダウンフラグの確認
+                if (GblValues.ShutdownF)
+                {
+                    // シャットダウン中のためファイルウォッチャーを解放し抜ける
+                    DisposeFileWatcher();
+                    return;
+                }
+
                 base.watcher_Changed(source, e);
                 switch (e.ChangeType)
                 {
@@ -420,7 +402,7 @@ namespace Chovitai.ViewModels
             try
             {
                 this.Request.PromptItem 
-                    = PromptM.CreateCommandFromImageText(this.FileList.SelectedItem.ImageText);
+                    = Text2ImagePromptM.CreateCommandFromImageText(this.FileList.SelectedItem.ImageText);
             }
             catch (Exception ex)
             {
@@ -486,6 +468,16 @@ namespace Chovitai.ViewModels
             {
                 ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
+        }
+        #endregion
+
+        #region プロンプトの実行処理停止
+        /// <summary>
+        /// プロンプトの実行処理停止
+        /// </summary>
+        public static void StopPrompt()
+        {
+            _ExecutePromptF = false;
         }
         #endregion
     }

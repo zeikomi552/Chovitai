@@ -9,6 +9,7 @@ using System.Linq;
 using System.Net.Http;
 using System.Reflection.PortableExecutable;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace Chovitai.Models.A1111
@@ -25,8 +26,30 @@ namespace Chovitai.Models.A1111
         {
             using (var client = new HttpClient())
             {
+                // タイムアウト無制限
+                client.Timeout = new TimeSpan(0, 0, 0, 0, Timeout.Infinite);
+
                 // 上から来たクエリをそのまま実行
                 var response = await client.PostAsync(url, payload);
+
+                // レスポンスを返却
+                return await response.Content.ReadAsStringAsync();
+            }
+        }
+        #endregion
+
+        #region 接続用クライアントの作成
+        /// <summary>
+        /// 接続用クライアントの作成
+        /// </summary>
+        /// <param name="url">パラメータ</param>
+        /// <returns>Task</returns>
+        public async Task<string> Request(string url)
+        {
+            using (var client = new HttpClient())
+            {
+                // 上から来たクエリをそのまま実行
+                var response = await client.GetAsync(url);
 
                 // レスポンスを返却
                 return await response.Content.ReadAsStringAsync();
@@ -40,7 +63,7 @@ namespace Chovitai.Models.A1111
         /// </summary>
         /// <param name="uri">URI</param>
         /// <param name="outdir">出力先ディレクトリ</param>
-        public async Task<bool> PostRequest(string uri, string outdir, PromptM prompt)
+        public async Task<bool> PostRequest(string uri, string outdir, Text2ImagePromptM prompt)
         {
             try
             {
@@ -49,22 +72,9 @@ namespace Chovitai.Models.A1111
 
                 // エンドポイント + パラメータ
                 string url = uri + "/sdapi/v1/txt2img";
-                var data = new
-                {
-                    prompt = prompt.Prompt,
-                    negative_prompt = prompt.NegativePrompt,
-                    width = prompt.Width,
-                    height = prompt.Height,
-                    steps = prompt.Steps,
-                    seed = prompt.Seed,
-                    sampler_index = prompt.SamplerIndex,
-                    override_settings = new
-                    {
-                        sd_model_checkpoint = prompt.CheckPoint
-                    }
-                };
-
-                request = await tmp.Request(url, data.AsJson());
+                
+                StringContent payload = prompt.GetPayload();    // Payloadの取得
+                request = await tmp.Request(url, payload);      // Requestの実行
 
                 // 実行してJSON形式をデシリアライズ
                 var request_model = JSONUtil.DeserializeFromText<PostResponseM>(request);
@@ -76,6 +86,39 @@ namespace Chovitai.Models.A1111
                     SaveByteArrayAsImage(path, base64string);
                     count++;
                 }
+
+                return true;
+            }
+            catch (JSONDeserializeException e)
+            {
+                string msg = e.Message + "\r\n" + e.JSON;
+                ShowMessage.ShowErrorOK(msg, "Error");
+                return false;
+            }
+            finally
+            {
+
+            }
+        }
+        #endregion
+
+        #region POSTのリクエスト実行処理
+        /// <summary>
+        /// POSTのリクエスト実行処理
+        /// </summary>
+        /// <param name="uri">URI</param>
+        /// <param name="outdir">出力先ディレクトリ</param>
+        public async Task<bool> GetModels(string uri)
+        {
+            try
+            {
+                PostResponseM tmp = new PostResponseM();
+                string request = string.Empty;
+
+                // エンドポイント + パラメータ
+                string url = uri + "/sdapi/v1/sd-models";
+
+                var ret = await tmp.Request(url);      // Requestの実行
 
                 return true;
             }
@@ -115,11 +158,11 @@ namespace Chovitai.Models.A1111
         /// <summary>
         /// プロンプト要素[PromptItem]プロパティ用変数
         /// </summary>
-        PromptM _PromptItem = new PromptM();
+        Text2ImagePromptM _PromptItem = new Text2ImagePromptM();
         /// <summary>
         /// プロンプト要素[PromptItem]プロパティ
         /// </summary>
-        public PromptM PromptItem
+        public Text2ImagePromptM PromptItem
         {
             get
             {

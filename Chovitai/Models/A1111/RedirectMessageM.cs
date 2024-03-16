@@ -9,11 +9,12 @@ namespace Chovitai.Models.A1111
 {
     public class RedirectMessageM : ModelBase
     {
-        #region リダイレクトメッセージ[RedirectMessage]プロパティ
+        #region リダイレクトメッセージ[OutputMessage]プロパティ
         /// <summary>
-        /// リダイレクトメッセージ[RedirectMessage]プロパティ
+        /// リダイレクトメッセージ[OutputMessage]プロパティ
+        /// WebUIのコンソール上に出力されたメッセージ
         /// </summary>
-        public string RedirectMessage
+        public string OutputMessage
         {
             get
             {
@@ -94,7 +95,7 @@ namespace Chovitai.Models.A1111
             {
                 this.AddMessage = message;
             }
-            NotifyPropertyChanged("RedirectMessage");
+            NotifyPropertyChanged("OutputMessage");
 
         }
         #endregion

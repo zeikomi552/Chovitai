@@ -95,6 +95,9 @@
     <None Update="Common\Images\download-cloud-1-svgrepo-com.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Update="Common\Images\favorite-svgrepo-com.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Update="Common\Images\filter-1384-svgrepo-com.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -129,6 +132,12 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Common\Images\pencil-svgrepo-com.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Common\Images\play-1shot-button-svgrepo-com.svg">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Common\Images\play-repeat-button-svgrepo-com.svg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Common\Images\repeat-alt-svgrepo-com.svg">

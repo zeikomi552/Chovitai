@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 using static Chovitai.Models.CvsModel.CvsModelM;
@@ -320,5 +321,22 @@ namespace Chovitai.Common
         /// A1111用プロセス
         /// </summary>
         public Process? A1111Proc { get; set; }
+
+        /// <summary>
+        /// A1111プロセス実行中フラグ
+        /// </summary>
+        public bool ExecA111ProcF { get; set; } = false;
+
+        #region アプリケーション終了
+        /// <summary>
+        /// アプリケーション終了
+        /// </summary>
+        public static bool ShutdownF { get; set; } = false;
+        #endregion
+
+        public static void AppShutdown()
+        {
+            ShutdownF = true;
+        }
     }
 }
