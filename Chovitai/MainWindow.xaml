@@ -95,10 +95,10 @@
             <TabItem.Header>
                 <StackPanel Orientation="Horizontal">
                     <svgc:SvgViewbox Source="/Common/Images/ai-svgrepo-com.svg" Width="50" />
-                    <TextBlock Margin="5" VerticalAlignment="Center" Text="Prompt"/>
+                    <TextBlock Margin="5" VerticalAlignment="Center" Text="Text2Img"/>
                 </StackPanel>
             </TabItem.Header>
-            <UserControls:UcA1111V />
+            <UserControls:UcText2ImgV />
         </TabItem>
     </TabControl>
 

@@ -1,34 +1,24 @@
-﻿using Chovitai.Common;
+﻿using Chovitai.Common.Utilities;
+using Chovitai.Common;
 using Chovitai.Models.A1111;
-using Chovitai.Models.Config;
+using Chovitai.Views.UserControls;
 using Chovitai.Views;
 using MVVMCore.BaseClass;
 using MVVMCore.Common.Utilities;
+using MVVMCore.Common.Wrapper;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Chovitai.Common.Utilities;
-using System.Drawing;
-using Chovitai.Models;
+using Chovitai.Models.Config;
 using System.Windows.Threading;
-using Chovitai.Views.UserControls;
-using MVVMCore.Common.Wrapper;
 using System.Windows;
-using System.Text.RegularExpressions;
-using ControlzEx.Standard;
-using System.Windows.Interop;
-using System.Runtime.CompilerServices;
-using System.Security.Policy;
-using OpenCvSharp.XFeatures2D;
-using System.Runtime.InteropServices;
 
 namespace Chovitai.ViewModels
 {
-    public class UcA1111VM : WebUIBaseM
+    public class UcText2ImgVM : WebUIBaseM
     {
         #region A1111 Request[Request]プロパティ
         /// <summary>
@@ -112,7 +102,6 @@ namespace Chovitai.ViewModels
         static bool bInit = false;
         #endregion
 
-
         #region 画面初期化処理
         /// <summary>
         /// 画面初期化処理
@@ -153,6 +142,19 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        #region 最終プロンプト
+        /// <summary>
+        /// 最終プロンプト
+        /// </summary>
+        public LastPromptConfigM LastPromptConfig
+        {
+            get
+            {
+                return GblValues.Instance.LastPrompt!.Item;
+            }
+        }
+        #endregion
+
         #region 選択行が変化した際の処理
         /// <summary>
         /// 選択行が変化した際の処理
@@ -164,7 +166,7 @@ namespace Chovitai.ViewModels
             try
             {
                 // ウィンドウを取得
-                var wnd = VisualTreeHelperWrapper.GetWindow<UcA1111V>(sender) as UcA1111V;
+                var wnd = VisualTreeHelperWrapper.GetWindow<UcText2ImgV>(sender) as UcText2ImgV;
 
                 // ウィンドウが取得できた場合
                 if (wnd != null && FileList.SelectedItem != null)
@@ -226,7 +228,6 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
-
         public async void GetModels()
         {
             try
@@ -259,19 +260,6 @@ namespace Chovitai.ViewModels
             catch (Exception ex)
             {
                 ShowMessage.ShowErrorOK(ex.Message, "Error");
-            }
-        }
-        #endregion
-
-        #region 最終プロンプト
-        /// <summary>
-        /// 最終プロンプト
-        /// </summary>
-        public LastPromptConfigM LastPromptConfig
-        {
-            get
-            {
-                return GblValues.Instance.LastPrompt!.Item;
             }
         }
         #endregion
@@ -314,6 +302,7 @@ namespace Chovitai.ViewModels
             }
         }
         #endregion
+
         #region Promptの実行処理
         /// <summary>
         /// Promptの実行処理
@@ -343,6 +332,7 @@ namespace Chovitai.ViewModels
             }
         }
         #endregion
+
 
         #region ファイル名が変更された際の処理
         /// <summary>
@@ -401,7 +391,7 @@ namespace Chovitai.ViewModels
         {
             try
             {
-                this.Request.PromptItem 
+                this.Request.PromptItem
                     = Text2ImagePromptM.CreateCommandFromImageText(this.FileList.SelectedItem.ImageText);
             }
             catch (Exception ex)

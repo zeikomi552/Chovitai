@@ -73,7 +73,7 @@ namespace Chovitai.ViewModels
                 GblValues.AppShutdown();
 
                 // A111プロセスの終了処理
-                UcA1111VM.WebUIProcessEnd();
+                UcText2ImgVM.WebUIProcessEnd();
             }
             catch
             {

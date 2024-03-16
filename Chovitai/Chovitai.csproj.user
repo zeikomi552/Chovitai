@@ -22,9 +22,6 @@
     <Compile Update="Views\SearchTagV.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="Views\UserControls\UcA1111V.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="Views\UserControls\UcImageBookmarkV.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -44,6 +41,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="Views\UserControls\UcSearchTagV.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="Views\UserControls\UcText2ImgV.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -66,9 +66,6 @@
     <Page Update="Views\SearchTagV.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="Views\UserControls\UcA1111V.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="Views\UserControls\UcImageBookmarkV.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -88,6 +85,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="Views\UserControls\UcSearchTagV.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="Views\UserControls\UcText2ImgV.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

@@ -16,11 +16,11 @@ using System.Windows.Shapes;
 namespace Chovitai.Views.UserControls
 {
     /// <summary>
-    /// UcA1111V.xaml の相互作用ロジック
+    /// UcText2ImgV.xaml の相互作用ロジック
     /// </summary>
-    public partial class UcA1111V : UserControl
+    public partial class UcText2ImgV : UserControl
     {
-        public UcA1111V()
+        public UcText2ImgV()
         {
             InitializeComponent();
         }
