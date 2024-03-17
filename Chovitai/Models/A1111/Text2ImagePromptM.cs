@@ -19,7 +19,6 @@ namespace Chovitai.Models.A1111
     {
         Random _Rand = new Random();
 
-
         #region チェックポイント[CheckPoint]プロパティ
         /// <summary>
         /// チェックポイント[CheckPoint]プロパティ用変数
@@ -538,10 +537,10 @@ namespace Chovitai.Models.A1111
                 n_iter = prompt.N_iter,
                 batch_size = prompt.BatchSize,
                 seed = prompt.Seed < 0 ? this.SeedBackup : prompt.Seed,
-                override_settings = new
-                {
-                    sd_model_checkpoint = prompt.CheckPoint
-                }
+                //override_settings = new
+                //{
+                //    sd_model_checkpoint = prompt.CheckPoint
+                //}
             };
 
             Debug.WriteLine(data.ToString());

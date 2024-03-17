@@ -94,6 +94,32 @@ namespace Chovitai.Models.Config
         }
         #endregion
 
+        #region 動画保存パス[MovieDirectoryPath]プロパティ
+        /// <summary>
+        /// 動画保存パス[MovieDirectoryPath]プロパティ用変数
+        /// </summary>
+        string _MovieDirectoryPath = string.Empty;
+        /// <summary>
+        /// 動画保存パス[MovieDirectoryPath]プロパティ
+        /// </summary>
+        public string MovieDirectoryPath
+        {
+            get
+            {
+                return _MovieDirectoryPath;
+            }
+            set
+            {
+                if (_MovieDirectoryPath == null || !_MovieDirectoryPath.Equals(value))
+                {
+                    _MovieDirectoryPath = value;
+                    NotifyPropertyChanged("MovieDirectoryPath");
+                }
+            }
+        }
+        #endregion
+
+
         #region URL[URL]プロパティ
         /// <summary>
         /// URL[URL]プロパティ用変数

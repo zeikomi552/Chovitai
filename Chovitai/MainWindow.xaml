@@ -100,6 +100,15 @@
             </TabItem.Header>
             <UserControls:UcText2ImgV />
         </TabItem>
+        <TabItem Visibility="{Binding DebugF, Converter={StaticResource BoolToVisibilityConverter}}">
+            <TabItem.Header>
+                <StackPanel Orientation="Horizontal">
+                    <svgc:SvgViewbox Source="/Common/Images/ai-svgrepo-com.svg" Width="50" />
+                    <TextBlock Margin="5" VerticalAlignment="Center" Text="Mov2Mov(Img2Img)"/>
+                </StackPanel>
+            </TabItem.Header>
+            <UserControls:UcMovie2MovieV />
+        </TabItem>
     </TabControl>
 
 </mah:MetroWindow>
