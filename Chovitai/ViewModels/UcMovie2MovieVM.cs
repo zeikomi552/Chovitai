@@ -431,6 +431,10 @@ namespace Chovitai.ViewModels
         }
         #endregion
 
+        #region 動画ファイル選択処理
+        /// <summary>
+        /// 動画ファイル選択処理
+        /// </summary>
         public void FileOpen()
         {
             try
@@ -447,6 +451,7 @@ namespace Chovitai.ViewModels
                     // 選択されたファイル名 (ファイルパス) をメッセージボックスに表示
                     this.FilePath = dialog.FileName;
 
+                    // フレーム分割
                     CaptureFrame(dialog.FileName);
                 }
             }
@@ -454,10 +459,96 @@ namespace Chovitai.ViewModels
             {
                 ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
+        }
+        #endregion
+
+        /// <summary>
+        /// 作業フォルダ
+        /// </summary>
+        public string WorkDir { get; set; } = string.Empty;
+        /// <summary>
+        /// フレーム分割ファイルの保管場所
+        /// </summary>
+        public string FrameDirPath { get; set;} = string.Empty;
+        /// <summary>
+        /// 出力先ディレクトリ
+        /// </summary>
+        public string OutputDirPath { get; set; } = string.Empty;
+
+        #region 動画ファイルのフレーム分割
+        /// <summary>
+        /// 動画ファイルのフレーム分割
+        /// </summary>
+        /// <param name="mov_file_path">動画ファイルパス</param>
+        private void MovieFramediv(string mov_file_path)
+        {
+            var setting = GblValues.Instance.A1111Setting;
+
+            if (setting == null)
+            {
+                return;
+            }
+            
+            // ディレクトリを作成する
+            PathManager.CreateDirectory(this.WorkDir);
+
+            // 動画ファイルパス
+            this.FilePath = Path.Combine(this.WorkDir, Path.GetFileName(mov_file_path));
+
+            // カレントディレクトリにファイルをコピーする
+            File.Copy(mov_file_path, this.FilePath);
+
+            // 拡張子なしのファイル名を取得しフォルダ名とする
+            string fileName = Path.GetFileNameWithoutExtension(mov_file_path);
+
+            // Frameフォルダを保持する
+            this.FrameDirPath = Path.Combine(setting.Item.MovieDirectoryPath, fileName, "Frame");
+
+            // Outputフォルダを保持する
+            this.OutputDirPath = Path.Combine(setting.Item.MovieDirectoryPath, fileName, "Output");
+
+            // ディレクトリを作成する(フレームで分割した画像ファイルを配置するディレクトリ)
+            PathManager.CreateDirectory(this.FrameDirPath);
+
+            // ディレクトリを作成する(Img2Imgで出力する先のディレクトリ)
+            PathManager.CreateDirectory(this.OutputDirPath);
+
+            // フレーム分割
+            ExecuteFramediv(mov_file_path, this.FrameDirPath);
+
+            ReadDirectory(this.FrameDirPath);   // 画像分割したファイル置き場のフォルダの読み込み
+            ReadDirectory2(this.OutputDirPath); // img2imgの出力先フォルダの読み込み
 
         }
+        #endregion
 
-        public string WorkDir { get; set; } = string.Empty;
+        #region 動画ファイルのフレーム分割と保存
+        /// <summary>
+        /// 動画ファイルのフレーム分割と保存
+        /// </summary>
+        /// <param name="movfile_path"></param>
+        /// <param name="out_dir"></param>
+        public void ExecuteFramediv(string movfile_path, string out_dir)
+        {
+            using (var capture = new VideoCapture(movfile_path))
+            {
+                for (int i = 0; i < capture.FrameCount - 2; i++)
+                {
+                    string out_file_path = Path.Combine(out_dir, $"{out_dir}\\Frame-{i:00000}.png");
+
+                    var img = new Mat();
+                    capture.PosFrames = i;  // フレーム位置
+                    capture.Read(img);      // イメージの読み込み
+                    BitmapConverter.ToBitmap(img).Save(out_file_path, ImageFormat.Png); // .pngで保存
+                }
+            }
+
+            // 高さと幅のセット
+            this.Request.Img2ImgPrompt.SetMovieWH(movfile_path);
+        }
+        #endregion
+
+        #region フレームの保存処理
         /// <summary>
         /// フレームの保存処理
         /// </summary>
@@ -481,46 +572,33 @@ namespace Chovitai.ViewModels
                     // カレントディレクトリの保持
                     this.WorkDir = Path.Combine(GblValues.Instance.A1111Setting!.Item.MovieDirectoryPath, fileName);
 
-                    // ディレクトリを作成する
-                    PathManager.CreateDirectory(this.WorkDir);
-
-                    // カレントディレクトリにファイルをコピーする
-                    File.Copy(filepath, Path.Combine(this.WorkDir, Path.GetFileName(filepath)));
-
-                    // Frameフォルダを保持する
-                    string frame_path = Path.Combine(GblValues.Instance.A1111Setting!.Item.MovieDirectoryPath, fileName, "Frame");
-
-                    // Outputフォルダを保持する
-                    string outut_path = Path.Combine(GblValues.Instance.A1111Setting!.Item.MovieDirectoryPath, fileName, "Output");
-
-
-                    // ディレクトリを作成する
-                    PathManager.CreateDirectory(frame_path);
-                    // ディレクトリを作成する
-                    PathManager.CreateDirectory(outut_path);
-
-                    using (var capture = new VideoCapture(this.FilePath))
+                    if (Directory.Exists(this.WorkDir))
                     {
-                        for (int i = 0; i < capture.FrameCount - 2; i++)
+                        string msg = "Already directory exist. Are you sure you want to delete the directory?\r\nYes -> delete directory and new create.\r\nNo -> read directory.";
+                        if (ShowMessage.ShowQuestionYesNo(msg, "Question") != MessageBoxResult.Yes)
                         {
-                            string out_file_path = Path.Combine(frame_path, $"{frame_path}\\Frame-{i:00000}.png");
+                            ReadDirectory(this.FrameDirPath);   // 画像分割したファイル置き場のフォルダの読み込み
+                            ReadDirectory2(this.OutputDirPath); // img2imgの出力先フォルダの読み込み
+                        }
+                        else
+                        {
+                            // ファイルの全て削除
+                            System.IO.Directory.Delete(this.WorkDir, true);
 
-                            if (i == 0)
+                            // ディレクトリが完全に削除されるまで待機
+                            while(Directory.Exists(this.WorkDir))
                             {
-                                this.Request.Img2ImgPrompt.InitImage = out_file_path;
+                                System.Threading.Thread.Sleep(100);
                             }
 
-                            var img = new Mat();
-                            capture.PosFrames = i;
-
-                            this.Request.Img2ImgPrompt.Width = capture.FrameWidth;
-                            this.Request.Img2ImgPrompt.Height = capture.FrameHeight;
-
-                            capture.Read(img);
-                            BitmapConverter.ToBitmap(img).Save(out_file_path, ImageFormat.Png);
+                            // フレーム分割
+                            MovieFramediv(filepath);
                         }
-                        ReadDirectory(frame_path);
-                        ReadDirectory2(outut_path);
+                    }
+                    else
+                    {
+                        // フレーム分割
+                        MovieFramediv(filepath);
                     }
                 }
 
@@ -530,12 +608,33 @@ namespace Chovitai.ViewModels
                 ShowMessage.ShowErrorOK(ex.Message, "Error");
             }
         }
+        #endregion
 
         public async void ExecutePromptSingle()
         {
             try
             {
-                await ExecutePrompt();
+                await ExecutePrompt(this.FileList.SelectedItem.FilePath);
+            }
+            catch (Exception ex)
+            {
+                ShowMessage.ShowErrorOK(ex.Message, "Error");
+            }
+        }
+
+        public async void ExecutePromptRepeat()
+        {
+            try
+            {
+                // DirectoryInfoのインスタンスを生成する
+                DirectoryInfo di = new DirectoryInfo(this.FrameDirPath);
+
+                // ディレクトリ直下のすべてのファイル一覧を取得する
+                FileInfo[] fiAlls = di.GetFiles();
+                foreach (var fi in fiAlls)
+                {
+                    await ExecutePrompt(fi.FullName);
+                }
             }
             catch (Exception ex)
             {
@@ -547,36 +646,27 @@ namespace Chovitai.ViewModels
         /// <summary>
         /// Promptの実行処理
         /// </summary>
-        private async Task<bool> ExecutePrompt()
+        private async Task<bool> ExecutePrompt(string filepath)
         {
             try
             {
-                string movie_dir = Path.Combine(this.WorkDir, "Output");    // 出力先フォルダパスの作成
-                string frame_dir = Path.Combine(this.WorkDir, "Frame");    // 出力先フォルダパスの作成
+                this.Request.Img2ImgPrompt.InitImage = filepath;
+                var ret = await this.Request.PostRequest(this.A1111Config.URL, this.OutputDirPath, this.Request.Img2ImgPrompt);
 
-                // DirectoryInfoのインスタンスを生成する
-                DirectoryInfo di = new DirectoryInfo(frame_dir);
+                // スレッドセーフの呼び出し
+                await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
+                    new Action(() =>
+                    {
+                        this.FileList2.SelectedLast();       // 追加されたファイルを選択
+                                                             // プロンプト実行履歴
+                                                             // 最終実行プロンプトのセット
+                                                             //this.LastPromptConfig.LastPrompt = this.Request.PromptItem;
+                                                             //GblValues.Instance.LastPrompt!.SaveXML();   // 最終プロンプトの保存
+                    }));
 
-                // ディレクトリ直下のすべてのファイル一覧を取得する
-                FileInfo[] fiAlls = di.GetFiles();
-                foreach (var fi in fiAlls)
-                {
-                    this.Request.Img2ImgPrompt.InitImage = fi.FullName;
-                    var ret = await this.Request.PostRequest(this.A1111Config.URL, movie_dir, this.Request.Img2ImgPrompt);
 
-                    // スレッドセーフの呼び出し
-                    await Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background,
-                        new Action(() =>
-                        {
-                            this.FileList2.SelectedLast();       // 追加されたファイルを選択
-                                                                 // プロンプト実行履歴
-                                                                 // 最終実行プロンプトのセット
-                                                                 //this.LastPromptConfig.LastPrompt = this.Request.PromptItem;
-                                                                 //GblValues.Instance.LastPrompt!.SaveXML();   // 最終プロンプトの保存
-                        }));
-                }
 
-                
+
                 return true;
             }
             catch (Exception ex)

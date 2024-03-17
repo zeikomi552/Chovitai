@@ -3,6 +3,7 @@ using Chovitai.Common.Utilities;
 using Microsoft.Win32;
 using MVVMCore.BaseClass;
 using Newtonsoft.Json;
+using OpenCvSharp;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -216,6 +217,7 @@ namespace Chovitai.Models.A1111
             }
         }
         #endregion
+
         #region denoising strength parameter[Denoising_Strength]プロパティ
         /// <summary>
         /// denoising strength parameter[Denoising_Strength]プロパティ用変数
@@ -290,6 +292,7 @@ namespace Chovitai.Models.A1111
             }
         }
         #endregion
+
         #region Picture Sampler[SamplerIndex]プロパティ
         /// <summary>
         /// Picture Sampler[SamplerIndex]プロパティ用変数
@@ -362,6 +365,7 @@ namespace Chovitai.Models.A1111
             }
         }
         #endregion
+
         #region Payloadの作成処理
         /// <summary>
         /// Payloadの作成処理
@@ -381,10 +385,10 @@ namespace Chovitai.Models.A1111
                 height = prompt.Height,
                 denoising_strength = prompt.Denoising_Strength,
                 ////cfg_scale = prompt.CfgScale,
-                //sampler_index = prompt.SamplerIndex,
+                sampler_index = prompt.SamplerIndex,
                 ////n_iter = prompt.N_iter,
                 ////batch_size = prompt.BatchSize,
-                //seed = prompt.Seed < 0 ? this.SeedBackup : prompt.Seed,
+                seed = prompt.Seed < 0 ? this.SeedBackup : prompt.Seed,
                 //override_settings = new
                 //{
                 //    sd_model_checkpoint = prompt.CheckPoint
@@ -397,6 +401,21 @@ namespace Chovitai.Models.A1111
             Debug.WriteLine(tmp);
 
             return json;
+        }
+        #endregion
+
+        #region 動画の縦・横からImg2Imgの高さと幅をセットする
+        /// <summary>
+        /// 動画の縦・横からImg2Imgの高さと幅をセットする
+        /// </summary>
+        /// <param name="mov_path">動画ファイルサイズ</param>
+        public void SetMovieWH(string mov_path)
+        {
+            using (var capture = new VideoCapture(mov_path))
+            {
+                this.Width = capture.FrameWidth;
+                this.Height = capture.FrameHeight;
+            }
         }
         #endregion
     }

@@ -165,16 +165,16 @@
                                 <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/ai-svgrepo-com.svg" />
                             </StackPanel>
                         </Button>
-                        <ToggleButton ToolTip="Execute prompt forever" Margin="5,0" Style="{StaticResource MaterialDesignActionDarkToggleButton}" IsChecked="{Binding ExecutePromptF}" Width="30" Height="30" Cursor="Hand">
+                        <Button ToolTip="Execute prompt all files" Margin="5,0" Width="30" Height="30" Cursor="Hand">
                             <Grid>
                                 <svgc:SvgViewbox Height="20" Width="20" Source="/Common/Images/play-repeat-button-svgrepo-com.svg"/>
                             </Grid>
                             <b:Interaction.Triggers>
                                 <b:EventTrigger EventName="Checked">
-                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="ClickPromptStartRepeat"/>
+                                    <b:CallMethodAction TargetObject="{Binding}" MethodName="ExecutePromptRepeat"/>
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>
-                        </ToggleButton>
+                        </Button>
                     </StackPanel>
                     <TextBox Grid.Row="1" hlp:TextBoxAttachedHelper.AutoScrollToEnd="True" VerticalScrollBarVisibility="Auto" Margin="5" IsReadOnly="True" Text="{Binding RedirectMessage.OutputMessage, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>
@@ -200,7 +200,17 @@
                 </StackPanel>
             </Grid>
             <Grid Grid.Row="1">
-                <MediaElement x:Name="media" Source="{Binding FilePath}" IsMuted="True"/>
+                <TabControl>
+                    <TabItem Header="Movie">
+                        <MediaElement Source="{Binding FilePath}" IsMuted="True"/>
+                    </TabItem>
+                    <TabItem Header="Frame">
+                        <MediaElement Source="{Binding FileList.SelectedItem.FilePath}" IsMuted="True"/>
+                    </TabItem>
+                    <TabItem Header="Output">
+                        <MediaElement Source="{Binding FileList2.SelectedItem.FilePath}" IsMuted="True"/>
+                    </TabItem>
+                </TabControl>
             </Grid>
             <ListView Grid.Row="2" Margin="5,5,5,5" x:Name="lvImages" ItemsSource="{Binding FileList.Items}"
                               SelectedItem="{Binding FileList.SelectedItem, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
