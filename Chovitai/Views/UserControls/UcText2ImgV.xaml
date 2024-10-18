@@ -298,6 +298,7 @@
                     </ListView.ItemTemplate>
                 </ListView>
             </Grid>
+            <GridSplitter Grid.Column="1" Background="{DynamicResource MahApps.Brushes.Accent4}" Width="5" HorizontalAlignment="Left" />
             <Grid Grid.Column="1">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="*"/>

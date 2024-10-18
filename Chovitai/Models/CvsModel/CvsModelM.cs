@@ -908,7 +908,31 @@ namespace Chovitai.Models.CvsModel
                     }
                 }
                 #endregion
-
+                #region Whether or not the image is NSFW (note: if the model is NSFW, treat all images on the model as NSFW)[Nsfw]プロパティ
+                /// <summary>
+                /// Whether or not the image is NSFW (note: if the model is NSFW, treat all images on the model as NSFW)[Nsfw]プロパティ用変数
+                /// </summary>
+                int _NsfwLevel = 0;
+                /// <summary>
+                /// Whether or not the image is NSFW (note: if the model is NSFW, treat all images on the model as NSFW)[Nsfw]プロパティ
+                /// </summary>
+                [JsonPropertyName("nsfwLevel")]
+                public int NsfwLevel
+                {
+                    get
+                    {
+                        return _NsfwLevel;
+                    }
+                    set
+                    {
+                        if (!_NsfwLevel.Equals(value))
+                        {
+                            _NsfwLevel = value;
+                            NotifyPropertyChanged("NsfwLevel");
+                        }
+                    }
+                }
+                #endregion
                 #region The original width of the image[Width]プロパティ
                 /// <summary>
                 /// The original width of the image[Width]プロパティ用変数

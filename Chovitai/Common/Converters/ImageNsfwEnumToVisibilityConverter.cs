@@ -20,21 +20,21 @@ namespace Chovitai.Common.Converters
 
         public static bool Convert(string value)
         {
+            return true;
+            //var target = (ImageNsfwEnum)Enum.Parse(typeof(ImageNsfwEnum), value.ToString()!);
 
-            var target = (ImageNsfwEnum)Enum.Parse(typeof(ImageNsfwEnum), value.ToString()!);
-
-            if (ImageFilter == ImageNsfwEnum.Empty)
-            {
-                return true;
-            }
-            else if (target == ImageFilter)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            //if (ImageFilter == ImageNsfwEnum.Empty)
+            //{
+            //    return true;
+            //}
+            //else if (target == ImageFilter)
+            //{
+            //    return true;
+            //}
+            //else
+            //{
+            //    return false;
+            //}
         }
 
 
