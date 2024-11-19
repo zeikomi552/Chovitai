@@ -61,7 +61,7 @@
                     </b:EventTrigger>
                 </b:Interaction.Triggers>
                 <StackPanel Orientation="Vertical">
-                    <svgc:SvgViewbox Source="/Common/Images/directory-search-1623-svgrepo-com.svg" />
+                    <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/directory-search-1623-svgrepo-com.svg" />
                 </StackPanel>
             </Button>
             <Button Cursor="Hand">
@@ -71,7 +71,7 @@
                     </b:EventTrigger>   
                 </b:Interaction.Triggers>
                 <StackPanel Orientation="Vertical">
-                    <svgc:SvgViewbox Source="/Common/Images/markdown-svgrepo-com.svg" />
+                    <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/markdown-svgrepo-com.svg" />
                 </StackPanel>
             </Button>
             <CheckBox Margin="5" Content="Select new file" IsChecked="{Binding SelectNewFolderF}"/>
@@ -166,7 +166,7 @@
                         </b:Interaction.Triggers>
 
                         <StackPanel Orientation="Vertical">
-                            <svgc:SvgViewbox Source="/Common/Images/copy-1-svgrepo-com.svg" />
+                            <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/copy-1-svgrepo-com.svg" />
                         </StackPanel>
 
                     </Button>

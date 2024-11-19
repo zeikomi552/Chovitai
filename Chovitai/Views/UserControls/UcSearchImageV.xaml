@@ -125,7 +125,7 @@
                         </b:EventTrigger>
                     </b:Interaction.Triggers>
                     <StackPanel Orientation="Vertical">
-                        <svgc:SvgViewbox Source="/Common/Images/copy-1-svgrepo-com.svg" />
+                        <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/copy-1-svgrepo-com.svg" />
                     </StackPanel>
                 </Button>
             </Grid>
@@ -146,7 +146,7 @@
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                                 <StackPanel Orientation="Vertical">
-                                    <svgc:SvgViewbox Height="10" Source="/Common/Images/arrowleft-svgrepo-com.svg" Cursor="" />
+                                    <svgc:SvgViewbox  Width="20" Height="20" Source="/Common/Images/arrowleft-svgrepo-com.svg" Cursor="" />
                                 </StackPanel>
 
                             </Button>
@@ -160,7 +160,7 @@
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                                 <StackPanel Orientation="Vertical">
-                                    <svgc:SvgViewbox Height="10" Source="/Common/Images/arrowright-svgrepo-com.svg" />
+                                    <svgc:SvgViewbox  Width="20" Height="20" Source="/Common/Images/arrowright-svgrepo-com.svg" />
                                 </StackPanel>
                             </Button>
                         </StackPanel>
@@ -486,7 +486,7 @@
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>
                             <StackPanel Orientation="Vertical">
-                                <svgc:SvgViewbox Source="/Common/Images/copy-1-svgrepo-com.svg" />
+                                <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/copy-1-svgrepo-com.svg" />
                             </StackPanel>
 
                         </Button>
@@ -507,7 +507,7 @@
                                 </b:EventTrigger>
                             </b:Interaction.Triggers>
                             <StackPanel Orientation="Vertical">
-                                <svgc:SvgViewbox Source="/Common/Images/copy-1-svgrepo-com.svg" />
+                                <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/copy-1-svgrepo-com.svg" />
                             </StackPanel>
                         </Button>
                     </Grid>

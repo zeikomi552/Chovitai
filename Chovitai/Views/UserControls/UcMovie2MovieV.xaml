@@ -165,7 +165,7 @@
                                 <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/ai-svgrepo-com.svg" />
                             </StackPanel>
                         </Button>
-                        <Button ToolTip="Execute prompt all files" Margin="5,0" Width="30" Height="30" Cursor="Hand">
+                        <Button ToolTip="Execute prompt all files" Margin="5,0" Cursor="Hand">
                             <Grid>
                                 <svgc:SvgViewbox Height="20" Width="20" Source="/Common/Images/play-repeat-button-svgrepo-com.svg"/>
                             </Grid>

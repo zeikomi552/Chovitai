@@ -11,9 +11,9 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <!--  Material Design  -->
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Amber.xaml"/>
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Accent/MaterialDesignColor.Cyan.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Secondary/MaterialDesignColor.Cyan.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Dark.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesign3.Defaults.xaml" />
 
                 <!--  MahApps  -->
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
@@ -44,13 +44,13 @@
                 x:Key="MahApps.Brushes.IdealForegroundDisabled"
                 Opacity="0.4"
                 Color="{DynamicResource Primary500}" />
-            
+
             <!--#region MaterialDesign ScrollBar-->
             <Style x:Key="MaterialDesignScrollBarButtonStyle" TargetType="RepeatButton" BasedOn="{StaticResource MaterialDesignScrollBarButton}"/>
             <Style x:Key="MaterialDesignRepeatButtonTransparentStyle" TargetType="RepeatButton" BasedOn="{StaticResource MaterialDesignRepeatButtonTransparent}"/>
             <Style x:Key="MaterialDesignScrollBarThumbStyle" TargetType="Thumb" BasedOn="{StaticResource MaterialDesignScrollBarThumb}"/>
-            <Style x:Key="MaterialDesignScrollBarThumbVerticalStyle" TargetType="Thumb" BasedOn="{StaticResource MaterialDesignScrollBarThumbVertical}"/>
-            <Style x:Key="MaterialDesignScrollBarThumbHorizontalStyle" TargetType="Thumb" BasedOn="{StaticResource MaterialDesignScrollBarThumbHorizontal}"/>
+            <!--<Style x:Key="MaterialDesignScrollBarThumbVerticalStyle" TargetType="Thumb" BasedOn="{StaticResource MaterialDesignScrollBarThumbVertical}"/>
+            <Style x:Key="MaterialDesignScrollBarThumbHorizontalStyle" TargetType="Thumb" BasedOn="{StaticResource MaterialDesignScrollBarThumbHorizontal}"/>-->
             <Style x:Key="MaterialDesignScrollBarStyle" TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBar}"/>
             <Style TargetType="ScrollBar" BasedOn="{StaticResource MaterialDesignScrollBarMinimal}"/>
             <!--#endregion-->

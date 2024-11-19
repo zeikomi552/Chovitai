@@ -36,7 +36,7 @@
                         </b:EventTrigger>
                     </b:Interaction.Triggers>
                     <StackPanel Orientation="Vertical">
-                        <svgc:SvgViewbox Source="/Common/Images/search-file-svgrepo-com.svg" />
+                        <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/search-file-svgrepo-com.svg" />
                     </StackPanel>
                 </Button>
             </StackPanel>

@@ -37,7 +37,7 @@
                 </StackPanel>
             </TabItem.Header>
             <TabControl TabStripPlacement="Left">
-                <TabItem>
+                <TabItem Background="Yellow">
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <svgc:SvgViewbox Source="/Common/Images/lens2-svgrepo-com.svg" ToolTip="Search" Width="50" />
@@ -45,7 +45,7 @@
                     </TabItem.Header>
                     <UserControls:UcSearchModelV x:Name="ucSearchModel"/>
                 </TabItem>
-                <TabItem>
+                <TabItem Background="Yellow">
                     <TabItem.Header>
                         <StackPanel Orientation="Horizontal">
                             <svgc:SvgViewbox Source="/Common/Images/star-svgrepo-com.svg" ToolTip="Bookmark" Width="50" />

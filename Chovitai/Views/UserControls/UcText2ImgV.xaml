@@ -320,7 +320,7 @@
                         </b:Interaction.Triggers>
 
                         <StackPanel Orientation="Vertical">
-                            <svgc:SvgViewbox Source="/Common/Images/copy-1-svgrepo-com.svg" />
+                            <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/copy-1-svgrepo-com.svg" />
                         </StackPanel>
 
                     </Button>

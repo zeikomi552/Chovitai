@@ -224,7 +224,7 @@
                                     </b:EventTrigger>
                                 </b:Interaction.Triggers>
                                 <StackPanel Orientation="Vertical">
-                                    <svgc:SvgViewbox Source="/Common/Images/copy-1-svgrepo-com.svg" />
+                                    <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/copy-1-svgrepo-com.svg" />
                                 </StackPanel>
                             </Button>
                         </Grid>
@@ -255,7 +255,7 @@
                                         </b:EventTrigger>
                                     </b:Interaction.Triggers>
                                     <StackPanel Orientation="Vertical">
-                                        <svgc:SvgViewbox Height="10" Source="/Common/Images/arrowleft-svgrepo-com.svg" />
+                                        <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/arrowleft-svgrepo-com.svg" />
                                     </StackPanel>
                                 </Button>
                                 <TextBlock MinWidth="25" Text="{Binding CvsModel.Metadata.CurrentPage}" TextAlignment="Center" VerticalAlignment="Center"/>
@@ -268,7 +268,7 @@
                                         </b:EventTrigger>
                                     </b:Interaction.Triggers>
                                     <StackPanel Orientation="Vertical">
-                                        <svgc:SvgViewbox Height="10" Source="/Common/Images/arrowright-svgrepo-com.svg" />
+                                        <svgc:SvgViewbox  Width="20" Height="20" Source="/Common/Images/arrowright-svgrepo-com.svg" />
                                     </StackPanel>
                                 </Button>
                                 <Button  Margin="5" Cursor="Hand" ToolTip="Output to markdown">
@@ -278,7 +278,7 @@
                                         </b:EventTrigger>
                                     </b:Interaction.Triggers>
                                     <StackPanel Orientation="Vertical">
-                                        <svgc:SvgViewbox Source="/Common/Images/markdown-svgrepo-com.svg" />
+                                        <svgc:SvgViewbox Width="20" Height="20" Source="/Common/Images/markdown-svgrepo-com.svg" />
                                     </StackPanel>
                                 </Button>
                                 <Button Margin="5" ToolTip="Check the prompts">
@@ -506,7 +506,7 @@
                     <StackPanel Grid.Row="0" Orientation="Horizontal">
                         <TextBlock VerticalAlignment="Center">
                             <StackPanel Orientation="Vertical">
-                                <svgc:SvgViewbox Margin="5" Source="/Common/Images/filter-1384-svgrepo-com.svg" />
+                                <svgc:SvgViewbox Width="20" Height="20" Margin="5" Source="/Common/Images/filter-1384-svgrepo-com.svg" />
                             </StackPanel>
 
                         </TextBlock>
